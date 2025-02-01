@@ -69,7 +69,7 @@ class DistrictElement extends MapElement {
 
     var outerRing = Array.isArray(districtPolygon[0][0]) ? districtPolygon[0] : districtPolygon;
 
-    var gasolineras = registry.getByCategory('gasolinera');
+    var gasStations = registry.getByCategory('gasStation');
     var metroRoutes = registry.getAllElements().filter(function(el) {
       return el.type === 'polyline' && (
         (el.metadata && el.metadata.category === 'metro_route') ||
@@ -85,8 +85,8 @@ class DistrictElement extends MapElement {
 
     var filteredIds = [];
 
-    var filteredGasolineras = filterElementsByPolygon(gasolineras, outerRing);
-    filteredGasolineras.forEach(function(el) { filteredIds.push(el.id); });
+    var filteredGasStations = filterElementsByPolygon(gasStations, outerRing);
+    filteredGasStations.forEach(function(el) { filteredIds.push(el.id); });
 
     var filteredMetroRoutes = filterElementsByPolygon(metroRoutes, outerRing);
     filteredMetroRoutes.forEach(function(el) { filteredIds.push(el.id); });

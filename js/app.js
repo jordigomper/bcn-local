@@ -11,7 +11,7 @@ function loadJSON(url) {
 function loadData() {
   return Promise.all([
     loadJSON('data/barcelona_admin.json'),
-    loadJSON('data/transport_public/gasolineras.json'),
+    loadJSON('data/transport_public/gasStations.json'),
     loadJSON('data/transport_public/bicing.json'),
     loadJSON('data/sports_services.json'),
     loadJSON('data/transport_public/metro_routes.json'),
@@ -21,7 +21,7 @@ function loadData() {
   ]).then(function(results) {
     return {
       admin: results[0],
-      gasolineras: results[1],
+      gasStations: results[1],
       bicing: results[2],
       sports: results[3],
       metroRoutes: results[4],
@@ -99,10 +99,10 @@ function createElementsFromData(data) {
     });
   }
 
-  if (data.gasolineras) {
-    data.gasolineras.forEach(function(item) {
+  if (data.gasStations) {
+    data.gasStations.forEach(function(item) {
       if (item.type === 'marker') {
-        var element = ElementFactory.createSingle(item, TransportElement);
+        var element = ElementFactory.createSingle(item, GasStationElement);
         if (element) elements.push(element);
       }
     });
@@ -111,14 +111,14 @@ function createElementsFromData(data) {
   if (data.bicing) {
     data.bicing.forEach(function(item) {
       if (item.type === 'marker') {
-        var element = ElementFactory.createSingle(item, TransportElement);
+        var element = ElementFactory.createSingle(item, StopBicingElement);
         if (element) elements.push(element);
       }
     });
   }
 
   if (data.sports) {
-    var allowedTipologies = [
+    var allowedTypologies = [
       'Gimnasos',
       'Piscines',
       'Piscines - Refugis Climàtics',
@@ -141,7 +141,7 @@ function createElementsFromData(data) {
       'Pistes de pàdel'
     ];
 
-    var excludedTipologies = [
+    var excludedTypologies = [
       'Clubs',
       'Penyes',
       'Federacions esportives',
@@ -160,15 +160,15 @@ function createElementsFromData(data) {
     data.sports.forEach(function(item) {
       if (!item.location || !item.location.lat || !item.location.lon) return;
 
-      var tipologias = item.categories && item.categories.Tipologia ? item.categories.Tipologia : [];
-      if (tipologias.length === 0) return;
+      var typologies = item.categories && item.categories.Tipologia ? item.categories.Tipologia : [];
+      if (typologies.length === 0) return;
 
-      var hasAllowed = tipologias.some(function(tipo) {
-        return allowedTipologies.indexOf(tipo) !== -1;
+      var hasAllowed = typologies.some(function(typology) {
+        return allowedTypologies.indexOf(typology) !== -1;
       });
 
-      var hasExcluded = tipologias.some(function(tipo) {
-        return excludedTipologies.indexOf(tipo) !== -1;
+      var hasExcluded = typologies.some(function(typology) {
+        return excludedTypologies.indexOf(typology) !== -1;
       });
 
       if (!hasAllowed || hasExcluded) return;
@@ -181,7 +181,7 @@ function createElementsFromData(data) {
         metadata: {
           name: item.name || defaultSports,
           category: 'sports',
-        tipologias: tipologias,
+        typologies: typologies,
           district: item.address ? item.address.district : null,
           neighborhood: item.address ? item.address.neighborhood : null,
           url: item.url || null
@@ -196,7 +196,14 @@ function createElementsFromData(data) {
   if (data.metroRoutes) {
     data.metroRoutes.forEach(function(item) {
       if (item.type === 'polyline') {
-        var element = ElementFactory.createSingle(item, TransportElement);
+        var meta = item.metadata || {};
+        var routeType = meta.routeType || '1';
+        var TransportClass = routeType === '0' ? TransportTramElement : TransportMetroElement;
+        if (!meta.category) {
+          meta.category = routeType === '0' ? 'tram_route' : 'metro_route';
+          item.metadata = meta;
+        }
+        var element = ElementFactory.createSingle(item, TransportClass);
         if (element) elements.push(element);
       }
     });
@@ -212,7 +219,8 @@ function createElementsFromData(data) {
         meta.routeType = routeType;
         meta.routeNames = routeNames;
         item.metadata = meta;
-        var element = ElementFactory.createSingle(item, StopElement);
+        var StopClass = routeType === '0' ? StopTramElement : StopMetroElement;
+        var element = ElementFactory.createSingle(item, StopClass);
         if (element) elements.push(element);
       }
     });
@@ -221,7 +229,12 @@ function createElementsFromData(data) {
   if (data.busRoutes) {
     data.busRoutes.forEach(function(item) {
       if (item.type === 'polyline') {
-        var element = ElementFactory.createSingle(item, TransportElement);
+        var meta = item.metadata || {};
+        if (!meta.category) {
+          meta.category = 'bus_route';
+          item.metadata = meta;
+        }
+        var element = ElementFactory.createSingle(item, TransportBusElement);
         if (element) elements.push(element);
       }
     });
@@ -238,7 +251,7 @@ function createElementsFromData(data) {
         meta.routeType = '3';
         meta.routeNames = routeNames;
         item.metadata = meta;
-        var element = ElementFactory.createSingle(item, StopElement);
+        var element = ElementFactory.createSingle(item, StopBusElement);
         if (element) elements.push(element);
       }
     });
@@ -516,7 +529,7 @@ function setupEventListeners() {
   });
 
   document.getElementById('transport-toggle').addEventListener('click', function() {
-    filterManager.toggleFilter('gasolinera');
+    filterManager.toggleFilter('gasStation');
     this.classList.toggle('active');
   });
 

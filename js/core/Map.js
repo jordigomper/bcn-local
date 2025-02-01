@@ -1,4 +1,4 @@
-class Map {
+class BaseMap {
   constructor(containerId, options = {}) {
     this.containerId = containerId;
     this.center = options.center || [41.392328443726626, 2.1602100372314458];
@@ -48,21 +48,6 @@ class Map {
       self.zoom = self.leafletMap.getZoom();
       console.log('zoom', self.zoom);
       self.emit('zoomchange', { zoom: self.zoom });
-      self.renderedElements.forEach(function(id) {
-        var el = self.elements.get(id);
-        var minZoom = el && typeof el.getMinZoom === 'function' ? el.getMinZoom() : null;
-        if (minZoom !== null && el.leafletLayer) {
-          if (self.zoom >= minZoom) {
-            if (!self.leafletMap.hasLayer(el.leafletLayer)) {
-              el.leafletLayer.addTo(self.leafletMap);
-            }
-          } else {
-            if (self.leafletMap.hasLayer(el.leafletLayer)) {
-              self.leafletMap.removeLayer(el.leafletLayer);
-            }
-          }
-        }
-      });
     });
 
     this.leafletMap.on('moveend', function() {
@@ -163,10 +148,7 @@ class Map {
     }
 
     if (element.leafletLayer) {
-      var minZoom = typeof element.getMinZoom === 'function' ? element.getMinZoom() : null;
-      if (minZoom === null || this.zoom >= minZoom) {
-        element.leafletLayer.addTo(this.leafletMap);
-      }
+      element.leafletLayer.addTo(this.leafletMap);
       element.updateState({ visible: true });
     }
   }

@@ -139,11 +139,11 @@ class SelectionLegendManager {
     if (this.hasCategoryElements(visibleElements, 'bus')) {
       html += this.renderTransportIcon('bus', 'bus', visibleElements, '3');
     }
-    if (this.hasCategoryElements(visibleElements, 'gasolinera')) {
-      html += this.renderTransportIcon('gasolinera', 'gasolineras', visibleElements);
+    if (this.hasCategoryElements(visibleElements, 'gasStation')) {
+      html += this.renderTransportIcon('gasStation', 'gasolineras', visibleElements);
     }
-    if (this.hasCategoryElements(visibleElements, 'gimnasio')) {
-      html += this.renderTransportIcon('gimnasio', 'gimnasios', visibleElements);
+    if (this.hasCategoryElements(visibleElements, 'gym')) {
+      html += this.renderTransportIcon('gym', 'gimnasios', visibleElements);
     }
 
     this.content.innerHTML = html;
@@ -390,14 +390,14 @@ class SelectionLegendManager {
         if (routeType === '3' || meta.category === 'bus_route' || meta.category === 'bus_stop') {
           return true;
         }
-      } else if (category === 'gasolinera') {
-        if (meta.category === 'gasolinera') {
+      } else if (category === 'gasStation') {
+        if (meta.category === 'gasStation') {
           return true;
         }
-      } else if (category === 'gimnasio') {
+      } else if (category === 'gym') {
         if (meta.category === 'sports') {
-          var tipologias = meta.tipologias || [];
-          if (tipologias.indexOf('Gimnasos') !== -1) {
+          var typologies = meta.typologies || [];
+          if (typologies.indexOf('Gimnasos') !== -1) {
             return true;
           }
         }
@@ -443,45 +443,12 @@ class SelectionLegendManager {
   }
 
   getIconHtml(category) {
-    if (category === 'bicing') {
-      return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<circle cx="9" cy="9" r="7.5" fill="#ffffff" stroke="#000000" stroke-width="1.5" />' +
-        '<text x="9" y="12" text-anchor="end" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="#d32f2f">b</text>' +
-        '<text x="9" y="12" text-anchor="start" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="#000000">g</text>' +
-        '</svg>';
-    } else if (category === 'metro') {
-      return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<circle cx="9" cy="9" r="7.5" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5" />' +
-        '<text x="9" y="12" text-anchor="middle" font-size="9" font-family="Arial, sans-serif" fill="#6a1b9a">M</text>' +
-        '</svg>';
-    } else if (category === 'tram') {
-      return '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<polygon points="10,3 17,10 10,17 3,10" fill="#FFFFFF" stroke="#4CAF50" stroke-width="2"/>' +
-        '<text x="10" y="14" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial, sans-serif" fill="#4CAF50">T</text>' +
-        '</svg>';
-    } else if (category === 'bus') {
-      return '<svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<rect x="3" y="4" width="18" height="12" rx="2" ry="2" fill="#FFFFFF" stroke="#212121" stroke-width="2"/>' +
-        '<text x="12" y="12.8" text-anchor="middle" font-size="6.2" font-weight="bold" font-family="Arial, sans-serif" letter-spacing="0.4" fill="#000000">BUS</text>' +
-        '</svg>';
-    } else if (category === 'gasolinera') {
-      return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<circle cx="9" cy="9" r="8.5" fill="#FF9800" stroke="#FF9800" stroke-width="0.5"/>' +
-        '<g transform="translate(5, 5)">' +
-        '<rect x="0" y="0" width="5" height="6" rx="0.5" fill="#000000"/>' +
-        '<rect x="1" y="1" width="3" height="3" fill="#FF9800"/>' +
-        '<path d="M4.5 -0.5h1.2c0.6 0 1.2 0.6 1.2 1.2v1.8" stroke="#000000" stroke-width="1" fill="none" stroke-linecap="round"/>' +
-        '</g>' +
-        '</svg>';
-    } else if (category === 'gimnasio') {
-      return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-        '<circle cx="9" cy="9" r="7.5" fill="#42A5F5" stroke="#1976D2" stroke-width="1.5" />' +
-        '<rect x="6" y="8" width="6" height="2" fill="#FFFFFF"/>' +
-        '<rect x="5" y="7" width="2" height="4" fill="#FFFFFF"/>' +
-        '<rect x="11" y="7" width="2" height="4" fill="#FFFFFF"/>' +
-        '</svg>';
-    }
-    return '';
+    var path = getIconPathForCategory(category);
+    if (!path) return '';
+    var size = getIconSizeForLegend(category);
+    var w = size[0];
+    var h = size[1];
+    return '<img src="' + path + '" width="' + w + '" height="' + h + '" alt="">';
   }
 
   getVisibleElements(registry) {

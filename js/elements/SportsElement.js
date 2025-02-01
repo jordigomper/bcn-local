@@ -4,14 +4,9 @@ class SportsElement extends MapElement {
   }
 
   createLeafletLayer() {
-    var hasUrl = this.metadata && this.metadata.url;
-    var marker = L.circleMarker(this.coordinates, {
-      radius: hasUrl ? 5 : 4,
-      color: hasUrl ? '#1976D2' : '#1565c0',
-      weight: hasUrl ? 2 : 1,
-      opacity: 0.8,
-      fillColor: hasUrl ? '#42A5F5' : '#64b5f6',
-      fillOpacity: hasUrl ? 0.6 : 0.4
+    var icon = this.getIcon();
+    var marker = L.marker(this.coordinates, {
+      icon: icon
     });
 
     var self = this;
@@ -50,5 +45,16 @@ class SportsElement extends MapElement {
     }
 
     return name;
+  }
+
+  getIcon() {
+    var hasUrl = this.metadata && this.metadata.url;
+    var className = 'leaflet-div-icon services-sports-icon';
+    var size = this.iconWidth;
+    if (hasUrl) {
+      size = this.iconWidth - 2;
+      className += ' services-sports-icon--with-link';
+    }
+    return this.createIconFromPath(this.iconBasePath + 'Sports.svg', size, size, className);
   }
 }

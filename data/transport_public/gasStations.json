@@ -8,7 +8,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Petrocat *Ciutat d'Asunción",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Carrer de la Ciutat d'Asunción",
@@ -26,7 +26,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Urgell - Paris",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "l'Antiga Esquerra de l'Eixample",
       "street": "Comte d'Urgell",
@@ -44,7 +44,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Horta",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Horta-Guinardó",
       "neighborhood": "Horta",
       "street": "Carrer del Tajo",
@@ -62,7 +62,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Sacasa S.A.",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Sant Adrià",
@@ -80,7 +80,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Favencia Julia S.A",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Nou Barris",
       "neighborhood": "Verdun",
       "street": "Via Júlia",
@@ -98,7 +98,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Maragall",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Horta-Guinardó",
       "neighborhood": "el Guinardó",
       "street": "Rbla Volart",
@@ -116,7 +116,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol *Valldaura",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Horta-Guinardó",
       "neighborhood": "Horta",
       "street": "Pg Valldaura",
@@ -134,7 +134,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol  *Legalitat",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Gràcia",
       "neighborhood": "el Camp d'en Grassot i Gràcia Nova",
       "street": "Carrer de la Legalitat",
@@ -152,7 +152,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Avinguda Sarrià",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sarrià-Sant Gervasi",
       "neighborhood": "les Tres Torres",
       "street": "Av Sarrià",
@@ -170,7 +170,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Sant Andreu",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "Sant Andreu",
       "street": "Gran de Sant Andreu",
@@ -188,7 +188,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Clot",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Clot",
       "street": "Carrer del Clot",
@@ -206,7 +206,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Turó Park - M Automocion",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "Provençals del Poblenou",
       "street": "C Perú",
@@ -224,7 +224,7 @@
     ],
     "metadata": {
       "name": "Assortidor Casanova",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "Sant Antoni",
       "street": "Casanova",
@@ -242,7 +242,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Santander",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "C Santander",
@@ -260,7 +260,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Camp de l'Arpa del Clot",
       "street": "Passeig de Maragall",
@@ -278,7 +278,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Meroil Energy Express *Galileu",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Les Corts",
       "neighborhood": "les Corts",
       "street": "Galileu",
@@ -296,7 +296,7 @@
     ],
     "metadata": {
       "name": "Benzinera Barcinova 98",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Poblenou",
       "street": "C Pujades",
@@ -314,7 +314,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moianès",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "Hostafrancs",
       "street": "Carrer del Moianès",
@@ -332,7 +332,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol * Av Mare Deu Montserrat",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Horta-Guinardó",
       "neighborhood": "Can Baró",
       "street": "Av Mare Déu de Montserrat",
@@ -350,7 +350,7 @@
     ],
     "metadata": {
       "name": "Benzinera",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Horta-Guinardó",
       "neighborhood": "Horta",
       "street": "Plaça d'Eivissa",
@@ -368,7 +368,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Ballenoil *Craywinckel",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sarrià-Sant Gervasi",
       "neighborhood": "el Putxet i el Farró",
       "street": "Carrer de Craywinckel",
@@ -386,7 +386,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol  *Nus Trinitat",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "Sant Andreu",
       "street": "Pg Santa Coloma",
@@ -404,7 +404,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Av Paral·lel",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "el Poble-sec",
       "street": "Av Paral.lel",
@@ -422,7 +422,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Pg Vall Hebron",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Gràcia",
       "neighborhood": "Vallcarca i els Penitents",
       "street": "Passeig de la Vall d'Hebron",
@@ -440,7 +440,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol *Passeig Guayaquil",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Passeig de Guayaquil",
@@ -458,7 +458,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve Estació del Nord",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "el Fort Pienc",
       "street": "Roger de Flor",
@@ -476,7 +476,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei BP Almogávars",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Parc i la Llacuna del Poblenou",
       "street": "Carrer dels Almogàvers",
@@ -494,7 +494,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Pg Zona Franca",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Passeig de la Zona Franca",
@@ -512,7 +512,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Ballenoil *Ciutat d'Asunción",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Carrer de la Ciutat d'Asunción",
@@ -530,7 +530,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Meroil *Av Meridiana",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "la Trinitat Vella",
       "street": "Avinguda Meridiana",
@@ -548,7 +548,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Favència",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Nou Barris",
       "neighborhood": "Canyelles",
       "street": "Via Favència",
@@ -566,7 +566,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Arrabassada",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Horta-Guinardó",
       "neighborhood": "Sant Genís dels Agudells",
       "street": "Carretera de Sant Cugat",
@@ -584,7 +584,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei BP Dani",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Les Corts",
       "neighborhood": "les Corts",
       "street": "Carrer de Joan Güell",
@@ -602,7 +602,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol   *Nus Collserola",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Gràcia",
       "neighborhood": "Vallcarca i els Penitents",
       "street": "C Collserola",
@@ -620,7 +620,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol *Zona Franca",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Passeig de la Zona Franca",
@@ -638,7 +638,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Aditi y Gas 2018",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina de Port",
       "street": "Passeig de la Zona Franca",
@@ -656,7 +656,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Pedralbes",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Les Corts",
       "neighborhood": "Pedralbes",
       "street": "Av Esplugues",
@@ -674,7 +674,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Tamoil *Pujades",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "Diagonal Mar i el Front Marítim del Poblenou",
       "street": "Carrer de Pujades",
@@ -692,7 +692,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Plaça Cerdà",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina de Port",
       "street": "Pg Zona Franca",
@@ -710,7 +710,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Bac de Roda",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "Diagonal Mar i el Front Marítim del Poblenou",
       "street": "Carrer de Bac de Roda",
@@ -728,7 +728,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei B-Oil",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "Provençals del Poblenou",
       "street": "C Bac de Roda",
@@ -746,7 +746,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve Aragó-Casanova",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "l'Antiga Esquerra de l'Eixample",
       "street": "Casanova",
@@ -764,7 +764,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Paral.lel",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "Sant Antoni",
       "street": "Av Paral.lel",
@@ -782,7 +782,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Shell *Zona Franca",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Carrer A Zona Franca",
@@ -800,7 +800,7 @@
     ],
     "metadata": {
       "name": "Benzinera Confortauto",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Avinguda Número 3",
@@ -818,7 +818,7 @@
     ],
     "metadata": {
       "name": "Estació de servei Ballenoil*Lope de Vega",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Poblenou",
       "street": "Carrer de Lope de Vega",
@@ -836,7 +836,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol *Vila Olímpica",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Poblenou",
       "street": "Av Litoral",
@@ -854,7 +854,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Pi i Molist S.A.",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Nou Barris",
       "neighborhood": "Porta",
       "street": "Doctor Pi i Molist",
@@ -872,7 +872,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol  *Meridiana",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "la Sagrera",
       "street": "Avinguda Meridiana",
@@ -890,7 +890,7 @@
     ],
     "metadata": {
       "name": "Benzinera Petroprix",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Parc i la Llacuna del Poblenou",
       "street": "Carrer de Badajoz",
@@ -908,7 +908,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Tamoil *Tucumán",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Carrer de Tucumán",
@@ -926,7 +926,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Premiun Energy La Sagrera",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "la Verneda i la Pau",
       "street": "Carrer de Santander",
@@ -944,7 +944,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Gardenoil",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sarrià-Sant Gervasi",
       "neighborhood": "Sarrià",
       "street": "Carrer d'Eduardo Conde",
@@ -962,7 +962,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Almogàvers",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Parc i la Llacuna del Poblenou",
       "street": "Carrer dels Almogàvers",
@@ -980,7 +980,7 @@
     ],
     "metadata": {
       "name": "Estació de servei Moeve Mitre S.A.",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sarrià-Sant Gervasi",
       "neighborhood": "Sant Gervasi - Galvany",
       "street": "Ronda del General Mitre",
@@ -998,7 +998,7 @@
     ],
     "metadata": {
       "name": "Aparcament Benzinera Repsol Balmes",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sarrià-Sant Gervasi",
       "neighborhood": "el Putxet i el Farró",
       "street": "C Balmes",
@@ -1016,7 +1016,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Bon Pastor",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Caracas",
@@ -1034,7 +1034,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol *Av Bogatell",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "la Vila Olímpica del Poblenou",
       "street": "Av Bogatell",
@@ -1052,7 +1052,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Esparga",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "la Dreta de l'Eixample",
       "street": "Diputació",
@@ -1070,7 +1070,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Egara *Av Rio de Janeiro",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Nou Barris",
       "neighborhood": "Porta",
       "street": "Avinguda de Rio de Janeiro",
@@ -1088,7 +1088,7 @@
     ],
     "metadata": {
       "name": "Benzinera Nieves",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Carrer 29 del BZ (No Oficial)",
@@ -1106,7 +1106,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei La Tortuga",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Carrer Major de Mercabarna",
@@ -1124,7 +1124,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Galp *Zona Franca",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Carrer Y Zona Franca",
@@ -1142,7 +1142,7 @@
     ],
     "metadata": {
       "name": "Estació  de Servei Premoil",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Besòs i el Maresme",
       "street": "Carrer de Pere IV",
@@ -1160,7 +1160,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Shell *Iradier",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sarrià-Sant Gervasi",
       "neighborhood": "Sant Gervasi - la Bonanova",
       "street": "Carrer d'Iradier",
@@ -1178,7 +1178,7 @@
     ],
     "metadata": {
       "name": "Estació  de Servei Evolution Oil",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Parc i la Llacuna del Poblenou",
       "street": "Carrer de Pere IV",
@@ -1196,7 +1196,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei RACC",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Les Corts",
       "neighborhood": "la Maternitat i Sant Ramon",
       "street": "Avinguda del Doctor Marañón",
@@ -1214,7 +1214,7 @@
     ],
     "metadata": {
       "name": "Estació  de Servei Pere IV",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "Provençals del Poblenou",
       "street": "Carrer de Pere IV",
@@ -1232,7 +1232,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Mercabarna",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Número 6 Zona Franca",
@@ -1250,7 +1250,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol *Santander",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Andreu",
       "neighborhood": "el Bon Pastor",
       "street": "Carrer de Santander",
@@ -1268,7 +1268,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Repsol  *València",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "la Sagrada Família",
       "street": "Carrer de València",
@@ -1286,7 +1286,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Diputació",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Eixample",
       "neighborhood": "la Nova Esquerra de l'Eixample",
       "street": "Carrer de la Diputació",
@@ -1304,7 +1304,7 @@
     ],
     "metadata": {
       "name": "Benzinera Repsol",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Les Corts",
       "neighborhood": "la Maternitat i Sant Ramon",
       "street": "Av Diagonal",
@@ -1322,7 +1322,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Moeve *Pg. Valldaura",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Nou Barris",
       "neighborhood": "la Guineueta",
       "street": "Passeig de Valldaura",
@@ -1340,7 +1340,7 @@
     ],
     "metadata": {
       "name": "Gm Fuel Stations Zona Franca",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Carrer 29 del BZ (No Oficial)",
@@ -1358,7 +1358,7 @@
     ],
     "metadata": {
       "name": "Benzinera Petrozal",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sants-Montjuïc",
       "neighborhood": "la Marina del Prat Vermell",
       "street": "Passatge de Moçambic",
@@ -1376,7 +1376,7 @@
     ],
     "metadata": {
       "name": "Estació de Servei Ballenoil *Clot",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Clot",
       "street": "Carrer del Clot",
@@ -1394,7 +1394,7 @@
     ],
     "metadata": {
       "name": "Estació  de Servei Q8 Taulat",
-      "category": "gasolinera",
+      "category": "gasStation",
       "district": "Sant Martí",
       "neighborhood": "el Poblenou",
       "street": "Carrer del Taulat",

@@ -1,4 +1,4 @@
-class AppMap extends Map {
+class AppMap extends BaseMap {
   constructor(containerId, options) {
     super(containerId, options);
     this.registry = new ElementRegistry();

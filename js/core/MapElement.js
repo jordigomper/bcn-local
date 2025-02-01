@@ -9,7 +9,10 @@ class MapElement {
       active: false,
       selected: false
     };
-    this.leafletLayer = null;
+    this.leafletLayer = null
+    this.iconBasePath = 'js/components/icons/';
+    this.iconWidth = 11;
+    this.iconHeight = 11;
   }
 
   onClick(map) {
@@ -24,8 +27,20 @@ class MapElement {
     return this.metadata.name || this.id;
   }
 
-  getMinZoom() {
+  getIcon() {
     return null;
+  }
+
+  createIconFromPath(path, width, height, className) {
+    var w = width || this.iconWidth;
+    var h = height || this.iconHeight;
+    var style = 'width:' + w + 'px;height:' + h + 'px;display:block;';
+    return L.divIcon({
+      html: '<img src="' + path + '" width="' + w + '" height="' + h + '" alt="" style="' + style + '" />',
+      iconSize: [w, h],
+      iconAnchor: [w / 2, h / 2],
+      className: className || ''
+    });
   }
 
   createLeafletLayer() {
