@@ -1,0 +1,32 @@
+#facilitea-search-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #e53935;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+  z-index: 999999;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#facilitea-search-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(229, 57, 53, 0.5);
+  background-color: #c62828;
+}
+
+#facilitea-search-btn:active {
+  transform: scale(0.95);
+}
+
+#facilitea-search-btn svg {
+  width: 24px;
+  height: 24px;
+}
