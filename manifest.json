@@ -15,7 +15,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["injected.js", "map.html", "map.js", "leaflet.js", "leaflet.css"],
+      "resources": ["injected.js", "map.html", "map.js", "leaflet.js", "leaflet.css", "data/*.json"],
       "matches": ["https://faciliteacasa.com/*", "<all_urls>"]
     }
   ]
