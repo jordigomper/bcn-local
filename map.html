@@ -45,6 +45,68 @@
     .stats {
       display: flex;
       gap: 20px;
+      align-items: center;
+    }
+
+    .filter-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .filter-label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    #postal-filter {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      color: #eee;
+      font-size: 0.9rem;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    #postal-filter:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    #postal-filter:focus {
+      border-color: #e53935;
+      background: rgba(229, 57, 53, 0.1);
+    }
+
+    #postal-filter option,
+    #neighborhood-filter option {
+      background: #1a1a2e;
+      color: #eee;
+    }
+
+    #neighborhood-filter {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      color: #eee;
+      font-size: 0.9rem;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    #neighborhood-filter:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    #neighborhood-filter:focus {
+      border-color: #e53935;
+      background: rgba(229, 57, 53, 0.1);
     }
 
     .stat {
@@ -157,6 +219,16 @@
   <div class="header">
     <h1>🏠 Facilitea Explorer</h1>
     <div class="stats">
+      <div class="filter-container">
+        <span class="filter-label">Código Postal:</span>
+        <select id="postal-filter">
+          <option value="all">Todos</option>
+        </select>
+        <span class="filter-label">Barrio:</span>
+        <select id="neighborhood-filter">
+          <option value="all">Todos</option>
+        </select>
+      </div>
       <div class="stat">
         <span class="stat-dot new"></span>
         <span class="stat-value" id="new-count">0</span>
