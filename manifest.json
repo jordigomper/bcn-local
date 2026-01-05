@@ -2,13 +2,21 @@
   "manifest_version": 3,
   "name": "Facilitea Search Button",
   "version": "1.0",
-  "description": "Añade un botón de búsqueda en Facilitea",
-  "permissions": ["activeTab"],
+  "description": "Intercepta y muestra datos de propiedades de Facilitea",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": ["https://faciliteacasa.com/*"],
   "content_scripts": [
     {
       "matches": ["https://faciliteacasa.com/viviendas/comprar/*"],
       "js": ["content.js"],
-      "css": ["styles.css"]
+      "css": ["styles.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js"],
+      "matches": ["https://faciliteacasa.com/*"]
     }
   ]
 }
