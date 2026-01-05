@@ -200,6 +200,85 @@
       border-bottom: 1px solid #e0e0e0;
     }
 
+    .legend-district-header {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #333;
+      padding: 10px 12px 6px 12px;
+      margin-top: 12px;
+      background: rgba(0, 0, 0, 0.02);
+      border-left: 3px solid #e53935;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      transition: all 0.2s;
+    }
+
+    .legend-district-header:first-child {
+      margin-top: 0;
+    }
+
+    .legend-district-header:hover {
+      background: rgba(229, 57, 53, 0.1);
+      border-left-color: #c62828;
+      transform: translateX(2px);
+    }
+
+    .legend-district-header.active {
+      background: rgba(229, 57, 53, 0.15);
+      border-left-width: 4px;
+      font-weight: 700;
+    }
+
+    .district-border {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
+      z-index: 2000 !important;
+    }
+
+    .district-border path {
+      stroke: #000000 !important;
+      stroke-width: 4px !important;
+      fill: none !important;
+      stroke-linejoin: round !important;
+      stroke-linecap: round !important;
+    }
+
+    .neighborhood-polygon {
+      z-index: 100 !important;
+    }
+
+    .neighborhood-border {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
+      z-index: 2001 !important;
+    }
+
+    .neighborhood-border path {
+      stroke: #000000 !important;
+      stroke-width: 4px !important;
+      fill: none !important;
+      stroke-linejoin: round !important;
+      stroke-linecap: round !important;
+    }
+
+    .legend-item.active {
+      background: rgba(229, 57, 53, 0.15) !important;
+      font-weight: 600 !important;
+      border-left: 3px solid #e53935;
+      padding-left: 9px;
+    }
+
+    .neighborhood-polygon {
+      cursor: pointer;
+    }
+
+    .neighborhood-tooltip {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+
     .legend-item {
       display: flex;
       align-items: center;
