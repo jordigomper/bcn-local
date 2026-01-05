@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facilitea - Mapa de Propiedades</title>
+  <link rel="stylesheet" href="leaflet.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .header h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #e53935, #ff6f61);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+    }
+
+    .stat-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .stat-dot.new { background: #e53935; }
+    .stat-dot.viewed { background: #4caf50; }
+
+    .stat-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+
+    #map {
+      margin-top: 60px;
+      height: calc(100vh - 60px);
+      width: 100%;
+    }
+
+    .custom-popup {
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .custom-popup .price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #e53935;
+      margin-bottom: 8px;
+    }
+
+    .custom-popup .ref {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .custom-popup .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .custom-popup .status.new {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .custom-popup .status.viewed {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .custom-popup .link {
+      display: block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #e53935;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .custom-popup .link:hover {
+      background: #c62828;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      font-size: 1.5rem;
+      color: #888;
+    }
+
+    .custom-marker {
+      background: transparent;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🏠 Facilitea Explorer</h1>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-dot new"></span>
+        <span class="stat-value" id="new-count">0</span>
+        <span class="stat-label">Nuevas</span>
+      </div>
+      <div class="stat">
+        <span class="stat-dot viewed"></span>
+        <span class="stat-value" id="viewed-count">0</span>
+        <span class="stat-label">Vistas</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="leaflet.js"></script>
+  <script src="map.js"></script>
+</body>
+</html>

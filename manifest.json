@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Facilitea Search Button",
   "version": "1.0",
-  "description": "Intercepta y muestra datos de propiedades de Facilitea",
+  "description": "Intercepta y muestra datos de propiedades de Facilitea en un mapa",
   "permissions": ["activeTab", "storage"],
   "host_permissions": ["https://faciliteacasa.com/*"],
   "content_scripts": [
@@ -15,8 +15,8 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["injected.js"],
-      "matches": ["https://faciliteacasa.com/*"]
+      "resources": ["injected.js", "map.html", "map.js", "leaflet.js", "leaflet.css"],
+      "matches": ["https://faciliteacasa.com/*", "<all_urls>"]
     }
   ]
 }

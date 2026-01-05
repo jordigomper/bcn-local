@@ -68,7 +68,7 @@
       const newItems = capturedData.filter(item => !item.viewed).length;
       button.disabled = false;
       button.classList.add('enabled');
-      button.title = `${capturedData.length} propiedades (${newItems} sin ver) - Click para ver`;
+      button.title = `${capturedData.length} propiedades (${newItems} sin ver) - Click para ver mapa`;
 
       if (newItems > 0) {
         updateBadge(newItems);
@@ -106,10 +106,8 @@
         return;
       }
 
-      const jsonString = JSON.stringify(capturedData, null, 2);
-      const blob = new Blob([jsonString], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      const mapUrl = chrome.runtime.getURL('map.html');
+      window.open(mapUrl, '_blank');
     });
 
     document.body.appendChild(button);
