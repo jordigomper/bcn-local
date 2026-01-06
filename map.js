@@ -260,6 +260,22 @@ function convertEPSG25831ToWGS84(coord) {
   return [lat * 180 / Math.PI, lng * 180 / Math.PI];
 }
 
+function geometryToLatLngs(geometry) {
+  if (geometry.type === 'Polygon') {
+    return geometry.coordinates.map(function(ring) {
+      return ring.map(convertEPSG25831ToWGS84);
+    });
+  }
+  if (geometry.type === 'MultiPolygon') {
+    return geometry.coordinates.map(function(polygon) {
+      return polygon.map(function(ring) {
+        return ring.map(convertEPSG25831ToWGS84);
+      });
+    });
+  }
+  return null;
+}
+
 function loadNeighborhoods() {
   return fetch(chrome.runtime.getURL('data/0301100100_UNITATS_ADM_POLIGONS.json'))
     .then(function(response) { return response.json(); })
@@ -275,17 +291,8 @@ function loadNeighborhoods() {
 
         if (!districtCode) return;
 
-        var convertedCoords;
-        if (geometry.type === 'MultiPolygon') {
-          convertedCoords = geometry.coordinates[0][0].map(convertEPSG25831ToWGS84);
-        } else if (geometry.type === 'Polygon') {
-          convertedCoords = geometry.coordinates[0].map(convertEPSG25831ToWGS84);
-        } else {
-          return;
-        }
-
         districtData[districtCode] = {
-          coordinates: convertedCoords
+          latLngs: geometryToLatLngs(geometry)
         };
       });
 
@@ -331,20 +338,15 @@ function loadNeighborhoods() {
           }
         }
 
-        var convertedCoords;
-        if (geometry.type === 'MultiPolygon') {
-          convertedCoords = geometry.coordinates[0][0].map(convertEPSG25831ToWGS84);
-        } else if (geometry.type === 'Polygon') {
-          convertedCoords = geometry.coordinates[0].map(convertEPSG25831ToWGS84);
-        } else {
-          return;
-        }
-
-        var flatCoords = convertedCoords.map(function(c) { return [c[1], c[0]]; });
+        var latLngs = geometryToLatLngs(geometry);
+        if (!latLngs) return;
+        var outerRing = geometry.type === 'MultiPolygon' ? latLngs[0][0] : latLngs[0];
+        var flatCoords = outerRing.map(function(c) { return [c[1], c[0]]; });
 
         neighborhoodData[name] = {
           color: color,
-          coordinates: convertedCoords,
+          coordinates: outerRing,
+          latLngs: latLngs,
           polygon: flatCoords,
           district: props.DISTRICTE || ''
         };
@@ -353,7 +355,7 @@ function loadNeighborhoods() {
 }
 
 function zoomToDistrict(districtCode) {
-  if (!districtData[districtCode]) return;
+  if (!districtData[districtCode] || !districtData[districtCode].latLngs) return;
 
   if (selectedDistrictLayer) {
     map.removeLayer(selectedDistrictLayer);
@@ -366,9 +368,8 @@ function zoomToDistrict(districtCode) {
   }
 
   var district = districtData[districtCode];
-  var polygonCoords = district.coordinates.map(function(c) { return [c[0], c[1]]; });
 
-  selectedDistrictLayer = L.polygon(polygonCoords, {
+  selectedDistrictLayer = L.polygon(district.latLngs, {
     color: '#000000',
     fillColor: 'transparent',
     fillOpacity: 0,
@@ -452,9 +453,7 @@ function zoomToNeighborhood(neighborhoodName) {
     selectedDistrictLayer = null;
   }
 
-  var polygonCoords = neighborhood.coordinates.map(function(c) { return [c[0], c[1]]; });
-
-  selectedNeighborhoodLayer = L.polygon(polygonCoords, {
+  selectedNeighborhoodLayer = L.polygon(neighborhood.latLngs || neighborhood.coordinates, {
     color: '#000000',
     fillColor: 'transparent',
     fillOpacity: 0,
@@ -593,8 +592,7 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     var weight = isSelected ? 4 : 2.5;
     var dashArray = isSelected ? null : '5, 5';
 
-    var polygonCoords = data.coordinates.map(function(c) { return [c[0], c[1]]; });
-    var polygon = L.polygon(polygonCoords, {
+    var polygon = L.polygon(data.latLngs || data.coordinates, {
       color: data.color,
       fillColor: data.color,
       fillOpacity: opacity,
@@ -750,12 +748,9 @@ function initMap(properties) {
     });
 
     var neighborhoods = Object.keys(neighborhoodData).sort();
-    var neighborhoodsToShow = neighborhoods.filter(function(name) {
-      return neighborhoodsWithProperties[name];
-    });
 
     var neighborhoodsByDistrict = {};
-    neighborhoodsToShow.forEach(function(name) {
+    neighborhoods.forEach(function(name) {
       var district = neighborhoodData[name].district || '';
       if (!neighborhoodsByDistrict[district]) {
         neighborhoodsByDistrict[district] = [];
