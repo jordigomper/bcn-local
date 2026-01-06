@@ -211,6 +211,10 @@
       text-transform: uppercase;
       letter-spacing: 0.3px;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
     .legend-district-header:first-child {
@@ -227,6 +231,28 @@
       background: rgba(229, 57, 53, 0.15);
       border-left-width: 4px;
       font-weight: 700;
+    }
+
+    .legend-district-header.hidden-district {
+      opacity: 0.6;
+    }
+
+    .district-name {
+      flex: 1;
+    }
+
+    .district-eye-icon {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      opacity: 0.6;
+    }
+
+    .district-eye-icon:hover {
+      opacity: 0.9;
     }
 
     .district-border {

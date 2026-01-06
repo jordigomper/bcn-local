@@ -161,6 +161,8 @@ var selectedDistrictLayer = null;
 var selectedNeighborhoodLayer = null;
 var currentDistrictView = null;
 var currentNeighborhoodView = null;
+var hiddenDistricts = {};
+const HIDDEN_DISTRICTS_KEY = 'facilitea_hidden_districts';
 
 var DISTRICT_NAMES = {
   '01': 'Ciutat Vella',
@@ -187,6 +189,28 @@ function getNeighborhood(lat, lng) {
 
 function getNeighborhoodColor(name) {
   return neighborhoodData[name] ? neighborhoodData[name].color : '#CCCCCC';
+}
+
+function getEyeIcon(isHidden) {
+  if (isHidden) {
+    return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+  }
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+}
+
+function saveHiddenDistricts() {
+  chrome.storage.local.set({ [HIDDEN_DISTRICTS_KEY]: hiddenDistricts });
+}
+
+function loadHiddenDistricts() {
+  return new Promise(function(resolve) {
+    chrome.storage.local.get([HIDDEN_DISTRICTS_KEY], function(result) {
+      if (result[HIDDEN_DISTRICTS_KEY]) {
+        hiddenDistricts = result[HIDDEN_DISTRICTS_KEY];
+      }
+      resolve();
+    });
+  });
 }
 
 function convertEPSG25831ToWGS84(coord) {
@@ -546,11 +570,19 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
   if (currentDistrictView) {
     for (var name in neighborhoodData) {
       if (neighborhoodData[name].district === currentDistrictView) {
+        if (hiddenDistricts[currentDistrictView]) {
+          continue;
+        }
         neighborhoodsToShow.push(name);
       }
     }
   } else {
-    neighborhoodsToShow = Object.keys(neighborhoodData);
+    for (var name in neighborhoodData) {
+      var district = neighborhoodData[name].district || '';
+      if (!hiddenDistricts[district]) {
+        neighborhoodsToShow.push(name);
+      }
+    }
   }
 
   for (var i = 0; i < neighborhoodsToShow.length; i++) {
@@ -596,8 +628,15 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     var coords = parseCoordinates(p.coordinates);
     if (!isInBarcelonaCity(coords.lat, coords.lng)) return false;
 
+    var neighborhood = getNeighborhood(coords.lat, coords.lng);
+    if (neighborhood && neighborhoodData[neighborhood]) {
+      var district = neighborhoodData[neighborhood].district || '';
+      if (hiddenDistricts[district]) {
+        return false;
+      }
+    }
+
     if (currentDistrictView) {
-      var neighborhood = getNeighborhood(coords.lat, coords.lng);
       if (!neighborhood || neighborhoodData[neighborhood].district !== currentDistrictView) {
         return false;
       }
@@ -609,12 +648,10 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     }
 
     if (selectedNeighborhood && selectedNeighborhood !== 'all') {
-      var neighborhood = getNeighborhood(coords.lat, coords.lng);
       if (neighborhood !== selectedNeighborhood) return false;
     }
 
     if (currentNeighborhoodView) {
-      var neighborhood = getNeighborhood(coords.lat, coords.lng);
       if (neighborhood !== currentNeighborhoodView) return false;
     }
 
@@ -696,6 +733,8 @@ function initMap(properties) {
   }).addTo(map);
 
   loadNeighborhoods().then(function() {
+    return loadHiddenDistricts();
+  }).then(function() {
     allProperties.forEach(function(p) {
       if (!p.neighborhood && p.coordinates) {
         var coords = parseCoordinates(p.coordinates);
@@ -727,42 +766,111 @@ function initMap(properties) {
     var neighborhoodSelect = document.getElementById('neighborhood-filter');
     var legend = document.getElementById('neighborhood-legend');
 
-    Object.keys(neighborhoodsByDistrict).sort().forEach(function(districtCode) {
+    function toggleDistrictVisibility(districtCode, event) {
+      event.stopPropagation();
+      if (hiddenDistricts[districtCode]) {
+        delete hiddenDistricts[districtCode];
+      } else {
+        hiddenDistricts[districtCode] = true;
+        if (currentDistrictView === districtCode) {
+          resetDistrictView();
+        } else if (currentNeighborhoodView) {
+          var district = neighborhoodData[currentNeighborhoodView] ? neighborhoodData[currentNeighborhoodView].district : null;
+          if (district === districtCode) {
+            resetDistrictView();
+          }
+        }
+      }
+      saveHiddenDistricts();
+      rebuildLegend();
+      updateMap(document.getElementById('postal-filter').value, document.getElementById('neighborhood-filter').value);
+    }
+
+    function createDistrictSection(districtCode, isHidden) {
       var districtName = DISTRICT_NAMES[districtCode] || 'Distrito ' + districtCode;
       var districtBarrios = neighborhoodsByDistrict[districtCode].sort();
 
       var districtHeader = document.createElement('div');
       districtHeader.className = 'legend-district-header';
+      if (isHidden) {
+        districtHeader.classList.add('hidden-district');
+      }
       districtHeader.dataset.district = districtCode;
-      districtHeader.textContent = districtName;
-      districtHeader.style.cursor = 'pointer';
-      districtHeader.addEventListener('click', function() {
-        zoomToDistrict(districtCode);
+
+      var headerText = document.createElement('span');
+      headerText.className = 'district-name';
+      headerText.textContent = districtName;
+      headerText.addEventListener('click', function() {
+        if (!isHidden) {
+          zoomToDistrict(districtCode);
+        }
       });
+
+      var eyeIcon = document.createElement('span');
+      eyeIcon.className = 'district-eye-icon';
+      eyeIcon.innerHTML = getEyeIcon(isHidden);
+      eyeIcon.addEventListener('click', function(e) {
+        toggleDistrictVisibility(districtCode, e);
+      });
+
+      districtHeader.appendChild(headerText);
+      districtHeader.appendChild(eyeIcon);
       legend.appendChild(districtHeader);
 
-      districtBarrios.forEach(function(name) {
-        var option = document.createElement('option');
-        option.value = name;
-        option.textContent = name;
-        option.style.backgroundColor = getNeighborhoodColor(name);
-        option.style.color = '#000';
-        neighborhoodSelect.appendChild(option);
+      if (!isHidden) {
+        districtBarrios.forEach(function(name) {
+          var option = document.createElement('option');
+          option.value = name;
+          option.textContent = name;
+          option.style.backgroundColor = getNeighborhoodColor(name);
+          option.style.color = '#000';
+          neighborhoodSelect.appendChild(option);
 
-        var legendItem = document.createElement('div');
-        legendItem.className = 'legend-item';
-        legendItem.dataset.neighborhood = name;
-        legendItem.innerHTML = '<span class="legend-color" style="background-color: ' + getNeighborhoodColor(name) + '"></span><span class="legend-name">' + name + '</span>';
-        legendItem.addEventListener('click', function(e) {
-          e.stopPropagation();
-          var clickedName = this.dataset.neighborhood;
-          console.log('Click en leyenda - Barrio:', clickedName);
-          zoomToNeighborhood(clickedName);
-          neighborhoodSelect.value = clickedName;
+          var legendItem = document.createElement('div');
+          legendItem.className = 'legend-item';
+          legendItem.dataset.neighborhood = name;
+          legendItem.innerHTML = '<span class="legend-color" style="background-color: ' + getNeighborhoodColor(name) + '"></span><span class="legend-name">' + name + '</span>';
+          legendItem.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var clickedName = this.dataset.neighborhood;
+            zoomToNeighborhood(clickedName);
+            neighborhoodSelect.value = clickedName;
+          });
+          legend.appendChild(legendItem);
         });
-        legend.appendChild(legendItem);
+      }
+    }
+
+    function rebuildLegend() {
+      legend.innerHTML = '';
+      var existingOptions = Array.from(neighborhoodSelect.querySelectorAll('option')).filter(function(opt) {
+        return opt.value !== 'all';
       });
-    });
+      existingOptions.forEach(function(opt) {
+        opt.remove();
+      });
+
+      var visibleDistricts = [];
+      var hiddenDistrictsList = [];
+
+      Object.keys(neighborhoodsByDistrict).sort().forEach(function(districtCode) {
+        if (hiddenDistricts[districtCode]) {
+          hiddenDistrictsList.push(districtCode);
+        } else {
+          visibleDistricts.push(districtCode);
+        }
+      });
+
+      visibleDistricts.forEach(function(districtCode) {
+        createDistrictSection(districtCode, false);
+      });
+
+      hiddenDistrictsList.forEach(function(districtCode) {
+        createDistrictSection(districtCode, true);
+      });
+    }
+
+    rebuildLegend();
 
     function applyFilters() {
       var postalValue = postalSelect.value;
