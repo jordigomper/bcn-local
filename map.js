@@ -163,6 +163,8 @@ var currentDistrictView = null;
 var currentNeighborhoodView = null;
 var hiddenDistricts = {};
 const HIDDEN_DISTRICTS_KEY = 'facilitea_hidden_districts';
+const EXTRARADIO_NORTH = 'EXTRARADIO_N';
+const EXTRARADIO_SOUTH = 'EXTRARADIO_S';
 
 var DISTRICT_NAMES = {
   '01': 'Ciutat Vella',
@@ -174,7 +176,9 @@ var DISTRICT_NAMES = {
   '07': 'Horta-Guinardó',
   '08': 'Nou Barris',
   '09': 'Sant Andreu',
-  '10': 'Sant Martí'
+  '10': 'Sant Martí',
+  'EXTRARADIO_N': 'EXTRARADIO NORTE',
+  'EXTRARADIO_S': 'EXTRARADIO SUR'
 };
 
 function getNeighborhood(lat, lng) {
@@ -276,6 +280,60 @@ function geometryToLatLngs(geometry) {
   return null;
 }
 
+function geometryToPolygonsLngLat(geometry) {
+  if (geometry.type === 'Polygon') {
+    return [geometry.coordinates[0].map(function(coord) {
+      var converted = convertEPSG25831ToWGS84(coord);
+      return [converted[1], converted[0]];
+    })];
+  }
+  if (geometry.type === 'MultiPolygon') {
+    return geometry.coordinates.map(function(polygon) {
+      return polygon[0].map(function(coord) {
+        var converted = convertEPSG25831ToWGS84(coord);
+        return [converted[1], converted[0]];
+      });
+    });
+  }
+  return null;
+}
+
+function getDistrictByPoint(lat, lng) {
+  var point = [lng, lat];
+  var districtCodes = Object.keys(districtData);
+  for (var i = 0; i < districtCodes.length; i++) {
+    var code = districtCodes[i];
+    var polygons = districtData[code].polygons;
+    if (!polygons) continue;
+    for (var j = 0; j < polygons.length; j++) {
+      if (pointInPolygon(point, polygons[j])) {
+        return code;
+      }
+    }
+  }
+  return null;
+}
+
+function assignPropertyDistrict(p) {
+  if (!p || !p.coordinates) return null;
+  var coords = parseCoordinates(p.coordinates);
+  var neighborhood = p.neighborhood || getNeighborhood(coords.lat, coords.lng);
+  if (neighborhood && neighborhoodData[neighborhood]) {
+    p.neighborhood = neighborhood;
+    p.district = neighborhoodData[neighborhood].district;
+    return p.district;
+  }
+
+  var district = getDistrictByPoint(coords.lat, coords.lng);
+  if (district) {
+    p.district = district;
+    return p.district;
+  }
+
+  p.district = coords.lat >= BCN_CENTER[0] ? EXTRARADIO_NORTH : EXTRARADIO_SOUTH;
+  return p.district;
+}
+
 function loadNeighborhoods() {
   return fetch(chrome.runtime.getURL('data/0301100100_UNITATS_ADM_POLIGONS.json'))
     .then(function(response) { return response.json(); })
@@ -292,7 +350,8 @@ function loadNeighborhoods() {
         if (!districtCode) return;
 
         districtData[districtCode] = {
-          latLngs: geometryToLatLngs(geometry)
+          latLngs: geometryToLatLngs(geometry),
+          polygons: geometryToPolygonsLngLat(geometry)
         };
       });
 
@@ -355,7 +414,8 @@ function loadNeighborhoods() {
 }
 
 function zoomToDistrict(districtCode) {
-  if (!districtData[districtCode] || !districtData[districtCode].latLngs) return;
+  var isExtra = districtCode === EXTRARADIO_NORTH || districtCode === EXTRARADIO_SOUTH;
+  if (!isExtra && (!districtData[districtCode] || !districtData[districtCode].latLngs)) return;
 
   if (selectedDistrictLayer) {
     map.removeLayer(selectedDistrictLayer);
@@ -367,25 +427,39 @@ function zoomToDistrict(districtCode) {
     selectedNeighborhoodLayer = null;
   }
 
-  var district = districtData[districtCode];
+  if (!isExtra) {
+    var district = districtData[districtCode];
+    selectedDistrictLayer = L.polygon(district.latLngs, {
+      color: '#000000',
+      fillColor: 'transparent',
+      fillOpacity: 0,
+      weight: 4,
+      opacity: 1,
+      className: 'district-border',
+      pane: 'overlayPane'
+    }).addTo(map);
 
-  selectedDistrictLayer = L.polygon(district.latLngs, {
-    color: '#000000',
-    fillColor: 'transparent',
-    fillOpacity: 0,
-    weight: 4,
-    opacity: 1,
-    className: 'district-border',
-    pane: 'overlayPane'
-  }).addTo(map);
+    selectedDistrictLayer.bringToFront();
 
-  selectedDistrictLayer.bringToFront();
-
-  var bounds = selectedDistrictLayer.getBounds();
-  map.fitBounds(bounds, {
-    padding: [100, 100],
-    maxZoom: 15
-  });
+    var bounds = selectedDistrictLayer.getBounds();
+    map.fitBounds(bounds, {
+      padding: [100, 100],
+      maxZoom: 15
+    });
+  } else {
+    var extraProps = allProperties.filter(function(p) {
+      return p.district === districtCode;
+    });
+    if (extraProps.length > 0) {
+      var bounds = L.latLngBounds(
+        extraProps.map(function(p) {
+          var coords = parseCoordinates(p.coordinates);
+          return [coords.lat, coords.lng];
+        })
+      );
+      map.fitBounds(bounds, { padding: [100, 100], maxZoom: 15 });
+    }
+  }
 
   currentDistrictView = districtCode;
   currentNeighborhoodView = null;
@@ -625,17 +699,13 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     if (!p.coordinates) return false;
     var coords = parseCoordinates(p.coordinates);
     if (!isInBarcelonaCity(coords.lat, coords.lng)) return false;
-
-    var neighborhood = getNeighborhood(coords.lat, coords.lng);
-    if (neighborhood && neighborhoodData[neighborhood]) {
-      var district = neighborhoodData[neighborhood].district || '';
-      if (hiddenDistricts[district]) {
-        return false;
-      }
+    var district = p.district || assignPropertyDistrict(p);
+    if (district && hiddenDistricts[district]) {
+      return false;
     }
 
     if (currentDistrictView) {
-      if (!neighborhood || neighborhoodData[neighborhood].district !== currentDistrictView) {
+      if (district !== currentDistrictView) {
         return false;
       }
     }
@@ -646,11 +716,13 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     }
 
     if (selectedNeighborhood && selectedNeighborhood !== 'all') {
+      var neighborhood = p.neighborhood || getNeighborhood(coords.lat, coords.lng);
       if (neighborhood !== selectedNeighborhood) return false;
     }
 
     if (currentNeighborhoodView) {
-      if (neighborhood !== currentNeighborhoodView) return false;
+      var currentNeighborhood = p.neighborhood || getNeighborhood(coords.lat, coords.lng);
+      if (currentNeighborhood !== currentNeighborhoodView) return false;
     }
 
     return true;
@@ -734,10 +806,7 @@ function initMap(properties) {
     return loadHiddenDistricts();
   }).then(function() {
     allProperties.forEach(function(p) {
-      if (!p.neighborhood && p.coordinates) {
-        var coords = parseCoordinates(p.coordinates);
-        p.neighborhood = getNeighborhood(coords.lat, coords.lng);
-      }
+      assignPropertyDistrict(p);
     });
 
     var neighborhoodsWithProperties = {};
@@ -756,6 +825,19 @@ function initMap(properties) {
         neighborhoodsByDistrict[district] = [];
       }
       neighborhoodsByDistrict[district].push(name);
+    });
+
+    var extraDistricts = {};
+    allProperties.forEach(function(p) {
+      if (p.district === EXTRARADIO_NORTH || p.district === EXTRARADIO_SOUTH) {
+        extraDistricts[p.district] = true;
+      }
+    });
+
+    Object.keys(extraDistricts).forEach(function(districtCode) {
+      if (!neighborhoodsByDistrict[districtCode]) {
+        neighborhoodsByDistrict[districtCode] = [];
+      }
     });
 
     var neighborhoodSelect = document.getElementById('neighborhood-filter');
