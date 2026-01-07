@@ -46,77 +46,6 @@
       align-items: center;
     }
 
-    .filter-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .filter-label {
-      font-size: 0.9rem;
-      color: #666;
-      font-weight: 500;
-    }
-
-    #postal-filter {
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.95);
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-radius: 20px;
-      color: #333;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.2s;
-    }
-
-    #postal-filter:hover {
-      background: rgba(255, 255, 255, 1);
-      border-color: rgba(229, 57, 53, 0.5);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    #postal-filter:focus {
-      border-color: #e53935;
-      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
-    }
-
-    #postal-filter option {
-      background: white;
-      color: #333;
-    }
-
-    #neighborhood-filter {
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.95);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      color: #333;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.2s;
-      min-width: 180px;
-    }
-
-    #neighborhood-filter:hover {
-      background: rgba(255, 255, 255, 1);
-      border-color: rgba(229, 57, 53, 0.5);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    #neighborhood-filter:focus {
-      border-color: #e53935;
-      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
-    }
-
-    #neighborhood-filter option {
-      padding: 8px;
-      background: white;
-      color: #333;
-    }
 
     .stat {
       display: flex;
@@ -420,16 +349,6 @@
   <div class="header">
     <h1>🏠 Facilitea Explorer</h1>
     <div class="stats">
-      <div class="filter-container">
-        <span class="filter-label">Código Postal:</span>
-        <select id="postal-filter">
-          <option value="all">Todos</option>
-        </select>
-        <span class="filter-label">Barrio:</span>
-        <select id="neighborhood-filter">
-          <option value="all">Todos</option>
-        </select>
-      </div>
       <div class="stat">
         <span class="stat-dot new"></span>
         <span class="stat-value" id="new-count">0</span>

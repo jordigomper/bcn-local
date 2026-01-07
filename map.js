@@ -478,16 +478,10 @@ function zoomToDistrict(districtCode) {
     item.classList.remove('active');
   });
 
-  var postalSelect = document.getElementById('postal-filter');
-  var neighborhoodSelect = document.getElementById('neighborhood-filter');
-  if (neighborhoodSelect) {
-    neighborhoodSelect.value = 'all';
-  }
+  var postalSelect = null;
 
   setTimeout(function() {
-    var postalValue = postalSelect ? postalSelect.value : 'all';
-    var neighborhoodValue = 'all';
-    updateMap(postalValue, neighborhoodValue);
+    updateMap('all', 'all');
 
     setTimeout(function() {
       if (selectedDistrictLayer) {
@@ -562,16 +556,10 @@ function zoomToNeighborhood(neighborhoodName) {
     header.classList.remove('active');
   });
 
-  var postalSelect = document.getElementById('postal-filter');
-  var neighborhoodSelect = document.getElementById('neighborhood-filter');
-  if (neighborhoodSelect) {
-    neighborhoodSelect.value = neighborhoodName;
-  }
+  var postalSelect = null;
 
   setTimeout(function() {
-    var postalValue = postalSelect ? postalSelect.value : 'all';
-    var neighborhoodValue = neighborhoodName;
-    updateMap(postalValue, neighborhoodValue);
+    updateMap('all', neighborhoodName);
 
     setTimeout(function() {
       if (selectedNeighborhoodLayer) {
@@ -602,16 +590,6 @@ function resetDistrictView() {
   legendItems.forEach(function(item) {
     item.classList.remove('active');
   });
-
-  var postalSelect = document.getElementById('postal-filter');
-  var neighborhoodSelect = document.getElementById('neighborhood-filter');
-
-  if (postalSelect) {
-    postalSelect.value = 'all';
-  }
-  if (neighborhoodSelect) {
-    neighborhoodSelect.value = 'all';
-  }
 
   updateMap('all', 'all');
 
@@ -779,22 +757,6 @@ function initMap(properties) {
     }
   });
 
-  var postalCodes = [];
-  allProperties.forEach(function(p) {
-    if (p.postalCode && postalCodes.indexOf(p.postalCode) === -1) {
-      postalCodes.push(p.postalCode);
-    }
-  });
-  postalCodes.sort();
-
-  var postalSelect = document.getElementById('postal-filter');
-  postalCodes.forEach(function(code) {
-    var option = document.createElement('option');
-    option.value = code;
-    option.textContent = code;
-    postalSelect.appendChild(option);
-  });
-
   map = L.map('map').setView(BCN_CENTER, BCN_ZOOM);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -840,7 +802,6 @@ function initMap(properties) {
       }
     });
 
-    var neighborhoodSelect = document.getElementById('neighborhood-filter');
     var legend = document.getElementById('neighborhood-legend');
 
     function toggleDistrictVisibility(districtCode, event) {
@@ -860,7 +821,7 @@ function initMap(properties) {
       }
       saveHiddenDistricts();
       rebuildLegend();
-      updateMap(document.getElementById('postal-filter').value, document.getElementById('neighborhood-filter').value);
+      updateMap('all', 'all');
     }
 
     function createDistrictSection(districtCode, isHidden) {
@@ -896,13 +857,6 @@ function initMap(properties) {
 
       if (!isHidden) {
         districtBarrios.forEach(function(name) {
-          var option = document.createElement('option');
-          option.value = name;
-          option.textContent = name;
-          option.style.backgroundColor = getNeighborhoodColor(name);
-          option.style.color = '#000';
-          neighborhoodSelect.appendChild(option);
-
           var legendItem = document.createElement('div');
           legendItem.className = 'legend-item';
           legendItem.dataset.neighborhood = name;
@@ -911,7 +865,6 @@ function initMap(properties) {
             e.stopPropagation();
             var clickedName = this.dataset.neighborhood;
             zoomToNeighborhood(clickedName);
-            neighborhoodSelect.value = clickedName;
           });
           legend.appendChild(legendItem);
         });
@@ -920,13 +873,6 @@ function initMap(properties) {
 
     function rebuildLegend() {
       legend.innerHTML = '';
-      var existingOptions = Array.from(neighborhoodSelect.querySelectorAll('option')).filter(function(opt) {
-        return opt.value !== 'all';
-      });
-      existingOptions.forEach(function(opt) {
-        opt.remove();
-      });
-
       var visibleDistricts = [];
       var hiddenDistrictsList = [];
 
@@ -948,36 +894,6 @@ function initMap(properties) {
     }
 
     rebuildLegend();
-
-    function applyFilters() {
-      var postalValue = postalSelect.value;
-      var neighborhoodValue = neighborhoodSelect.value;
-
-      if (neighborhoodValue && neighborhoodValue !== 'all') {
-        var color = getNeighborhoodColor(neighborhoodValue);
-        neighborhoodSelect.style.borderColor = color;
-        neighborhoodSelect.style.backgroundColor = color + '20';
-      } else {
-        neighborhoodSelect.style.borderColor = 'rgba(0, 0, 0, 0.1)';
-        neighborhoodSelect.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-      }
-
-      var legendItems = document.querySelectorAll('.legend-item');
-      legendItems.forEach(function(item) {
-        if (item.dataset.neighborhood === neighborhoodValue && !currentNeighborhoodView) {
-          item.style.background = 'rgba(229, 57, 53, 0.1)';
-          item.style.fontWeight = '600';
-        } else if (item.dataset.neighborhood !== currentNeighborhoodView) {
-          item.style.background = '';
-          item.style.fontWeight = '';
-        }
-      });
-
-      updateMap(postalValue, neighborhoodValue);
-    }
-
-    postalSelect.addEventListener('change', applyFilters);
-    neighborhoodSelect.addEventListener('change', applyFilters);
 
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && (currentDistrictView || currentNeighborhoodView)) {
