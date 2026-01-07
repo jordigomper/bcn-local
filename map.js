@@ -142,6 +142,54 @@ function fetchPropertyDetails(ref) {
     .catch(function() { return null; });
 }
 
+function formatViewedAt(viewedAt) {
+  if (!viewedAt) return '';
+  var date = new Date(viewedAt);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString('es-ES', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function persistViewedAt(property) {
+  if (!property || !property.id) return;
+  chrome.storage.local.get([STORAGE_KEY], function(result) {
+    var properties = result[STORAGE_KEY] || [];
+    var index = properties.findIndex(function(p) { return p.id === property.id; });
+    if (index !== -1) {
+      properties[index].viewed = true;
+      properties[index].viewedAt = property.viewedAt;
+      chrome.storage.local.set({ [STORAGE_KEY]: properties });
+    }
+  });
+}
+
+function updateStats(properties) {
+  var newCount = properties.filter(function(p) { return !p.viewed; }).length;
+  var viewedCount = properties.filter(function(p) { return p.viewed; }).length;
+  var newEl = document.getElementById('new-count');
+  var viewedEl = document.getElementById('viewed-count');
+  if (newEl) newEl.textContent = newCount;
+  if (viewedEl) viewedEl.textContent = viewedCount;
+}
+
+function buildPopupContent(property) {
+  var isNew = !property.viewed;
+  var viewedAtText = formatViewedAt(property.viewedAt);
+  var viewedAtHtml = viewedAtText ? '<div class="viewed-at">Visto: ' + viewedAtText + '</div>' : '';
+  return '<div class="custom-popup">' +
+    '<div class="price">' + formatPrice(property.list_selling_price_amount) + '</div>' +
+    '<div class="ref">Ref: ' + property.ref + '</div>' +
+    '<span class="status ' + (isNew ? 'new' : 'viewed') + '">' + (isNew ? '🆕 Nueva' : '✓ Vista') + '</span>' +
+    viewedAtHtml +
+    '<a class="link" href="https://faciliteacasa.com/vivienda/venta-piso-barcelona-' + property.ref + '" target="_blank">Ver propiedad</a>' +
+    '</div>';
+}
+
 function createMarkerIcon(isNew) {
   const color = isNew ? '#e53935' : '#4caf50';
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">' +
@@ -712,11 +760,7 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     return true;
   });
 
-  var newCount = filteredProperties.filter(function(p) { return !p.viewed; }).length;
-  var viewedCount = filteredProperties.filter(function(p) { return p.viewed; }).length;
-
-  document.getElementById('new-count').textContent = newCount;
-  document.getElementById('viewed-count').textContent = viewedCount;
+  updateStats(filteredProperties);
 
   filteredProperties.forEach(function(property) {
     var coords = parseCoordinates(property.coordinates);
@@ -732,14 +776,21 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
       }
     });
 
-    var popupContent = '<div class="custom-popup">' +
-      '<div class="price">' + formatPrice(property.list_selling_price_amount) + '</div>' +
-      '<div class="ref">Ref: ' + property.ref + '</div>' +
-      '<span class="status ' + (isNew ? 'new' : 'viewed') + '">' + (isNew ? '🆕 Nueva' : '✓ Vista') + '</span>' +
-      '<a class="link" href="https://faciliteacasa.com/vivienda/venta-piso-barcelona-' + property.ref + '" target="_blank">Ver propiedad</a>' +
-      '</div>';
-
-    marker.bindPopup(popupContent);
+    marker.bindPopup(buildPopupContent(property));
+    marker.on('popupopen', function(e) {
+      var popupEl = e.popup && e.popup.getElement ? e.popup.getElement() : null;
+      if (!popupEl) return;
+      var link = popupEl.querySelector('.link');
+      if (!link) return;
+      link.addEventListener('click', function() {
+        property.viewedAt = new Date().toISOString();
+        property.viewed = true;
+        persistViewedAt(property);
+        marker.setIcon(createMarkerIcon(false));
+        marker.setPopupContent(buildPopupContent(property));
+        updateStats(filteredProperties);
+      }, { once: true });
+    });
     markers.push(marker);
   });
 
