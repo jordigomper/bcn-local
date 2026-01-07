@@ -136,6 +136,12 @@ function formatPrice(price) {
   }).format(parseFloat(price));
 }
 
+function fetchPropertyDetails(ref) {
+  return fetch('https://faciliteacasa.com/api/property-public/map-details/' + ref)
+    .then(function(response) { return response.json(); })
+    .catch(function() { return null; });
+}
+
 function createMarkerIcon(isNew) {
   const color = isNew ? '#e53935' : '#4caf50';
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">' +
@@ -720,11 +726,17 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
       icon: createMarkerIcon(isNew)
     }).addTo(map);
 
+    marker.on('click', function() {
+      if (property.ref) {
+        fetchPropertyDetails(property.ref);
+      }
+    });
+
     var popupContent = '<div class="custom-popup">' +
       '<div class="price">' + formatPrice(property.list_selling_price_amount) + '</div>' +
       '<div class="ref">Ref: ' + property.ref + '</div>' +
       '<span class="status ' + (isNew ? 'new' : 'viewed') + '">' + (isNew ? '🆕 Nueva' : '✓ Vista') + '</span>' +
-      '<a class="link" href="https://faciliteacasa.com/viviendas/' + property.id + '" target="_blank">Ver propiedad</a>' +
+      '<a class="link" href="https://faciliteacasa.com/vivienda/venta-piso-barcelona-' + property.ref + '" target="_blank">Ver propiedad</a>' +
       '</div>';
 
     marker.bindPopup(popupContent);
