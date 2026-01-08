@@ -142,6 +142,83 @@ function fetchPropertyDetails(ref) {
     .catch(function() { return null; });
 }
 
+function fetchSportsData() {
+  if (sportsData) return Promise.resolve(sportsData);
+  return fetch(chrome.runtime.getURL('data/sport_service_simplified.json'))
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      sportsData = data || [];
+      return sportsData;
+    });
+}
+
+function buildSportsLayer() {
+  if (!sportsData || !sportsData.length) return null;
+  var layer = L.layerGroup();
+  sportsData.forEach(function(item) {
+    var loc = item.location;
+    if (!loc) return;
+    var lat = null;
+    var lng = null;
+    if (Array.isArray(loc) && loc.length >= 2) {
+      if (typeof loc[0] === 'number' && typeof loc[1] === 'number') {
+        if (Math.abs(loc[0]) <= 90 && Math.abs(loc[1]) <= 180) {
+          lat = loc[0];
+          lng = loc[1];
+        } else if (Math.abs(loc[1]) <= 90 && Math.abs(loc[0]) <= 180) {
+          lat = loc[1];
+          lng = loc[0];
+        }
+      }
+    } else if (loc.lat && (loc.lng || loc.lon)) {
+      lat = loc.lat;
+      lng = loc.lng || loc.lon;
+    } else if (loc.latitude && loc.longitude) {
+      lat = loc.latitude;
+      lng = loc.longitude;
+    }
+    if (lat === null || lng === null) return;
+    var marker = L.circleMarker([lat, lng], {
+      radius: 4,
+      color: '#1565c0',
+      weight: 1,
+      opacity: 0.6,
+      fillColor: '#64b5f6',
+      fillOpacity: 0.4
+    });
+    marker.bindTooltip(item.name || 'Servicio deportivo', {
+      permanent: false,
+      direction: 'top',
+      className: 'neighborhood-tooltip'
+    });
+    layer.addLayer(marker);
+  });
+  return layer;
+}
+
+function toggleSportsLayer() {
+  if (!map) return;
+  var button = document.getElementById('sports-toggle');
+  if (!sportsVisible) {
+    fetchSportsData().then(function() {
+      if (!sportsLayer) {
+        sportsLayer = buildSportsLayer();
+      }
+      if (sportsLayer) {
+        sportsLayer.addTo(map);
+        sportsVisible = true;
+        if (button) button.classList.add('active');
+      }
+    });
+  } else {
+    if (sportsLayer) {
+      map.removeLayer(sportsLayer);
+    }
+    sportsVisible = false;
+    if (button) button.classList.remove('active');
+  }
+}
+
 function formatViewedAt(viewedAt) {
   if (!viewedAt) return '';
   var date = new Date(viewedAt);
@@ -281,6 +358,9 @@ const HIDDEN_DISTRICTS_KEY = 'facilitea_hidden_districts';
 const EXTRARADIO_NORTH = 'EXTRARADIO_N';
 const EXTRARADIO_SOUTH = 'EXTRARADIO_S';
 var currentStatusFilter = 'all';
+var sportsLayer = null;
+var sportsVisible = false;
+var sportsData = null;
 
 var DISTRICT_NAMES = {
   '01': 'Ciutat Vella',
@@ -1072,6 +1152,11 @@ function initMap(properties) {
         updateMap('all', 'all');
       });
     });
+
+    var sportsToggle = document.getElementById('sports-toggle');
+    if (sportsToggle) {
+      sportsToggle.addEventListener('click', toggleSportsLayer);
+    }
   });
 }
 

@@ -46,6 +46,33 @@
       align-items: center;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-button {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid #e0e0e0;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-button:hover {
+      border-color: rgba(229, 57, 53, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .toggle-button.active {
+      border-color: #e53935;
+      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+    }
+
 
     .stat {
       display: flex;
@@ -429,6 +456,9 @@
         <span class="stat-dot liked"></span>
         <span class="stat-value" id="liked-count">0</span>
         <span class="stat-label">Guardadas</span>
+      </div>
+      <div class="header-actions">
+        <button id="sports-toggle" class="toggle-button" type="button">Servicios deportivos</button>
       </div>
     </div>
   </div>
