@@ -180,6 +180,18 @@ function persistFavorite(property) {
   });
 }
 
+function persistContactedAt(property) {
+  if (!property || !property.id) return;
+  chrome.storage.local.get([STORAGE_KEY], function(result) {
+    var properties = result[STORAGE_KEY] || [];
+    var index = properties.findIndex(function(p) { return p.id === property.id; });
+    if (index !== -1) {
+      properties[index].contactedAt = property.contactedAt;
+      chrome.storage.local.set({ [STORAGE_KEY]: properties });
+    }
+  });
+}
+
 function updateStats(properties) {
   var newCount = properties.filter(function(p) { return !p.viewed; }).length;
   var likedCount = properties.filter(function(p) { return p.liked; }).length;
@@ -209,19 +221,26 @@ function buildPopupContent(property) {
   var isNew = !property.viewed;
   var viewedAtText = formatViewedAt(property.viewedAt);
   var viewedAtHtml = viewedAtText ? '<div class="viewed-at">Visto: ' + viewedAtText + '</div>' : '';
+  var contactedAtText = formatViewedAt(property.contactedAt);
+  var contactedAtHtml = contactedAtText ? '<div class="viewed-at">Contactado: ' + contactedAtText + '</div>' : '';
   var likedLabel = property.liked ? 'Guardado' : 'Guardar';
   var likedClass = property.liked ? 'liked' : '';
+  var contactedLabel = property.contactedAt ? 'Contactado' : 'Contactar';
+  var contactedClass = property.contactedAt ? 'liked' : '';
   return '<div class="custom-popup">' +
     '<div class="price">' + formatPrice(property.list_selling_price_amount) + '</div>' +
     '<div class="ref">Ref: ' + property.ref + '</div>' +
-    '<span class="status ' + (isNew ? 'new' : 'viewed') + '">' + (isNew ? '🆕 Nueva' : '✓ Vista') + '</span>' +
+    (isNew ? '<span class="status new">🆕 Nueva</span>' : '') +
     viewedAtHtml +
+    contactedAtHtml +
     '<button class="like-button ' + likedClass + '" type="button">' + likedLabel + '</button>' +
+    '<button class="contact-button ' + contactedClass + '" type="button">' + contactedLabel + '</button>' +
     '<a class="link" href="https://faciliteacasa.com/vivienda/venta-piso-barcelona-' + property.ref + '" target="_blank">Ver propiedad</a>' +
     '</div>';
 }
 
 function getMarkerColor(property) {
+  if (property.contactedAt) return '#4caf50';
   if (property.liked) return '#4caf50';
   if (property.viewed) return '#ff9800';
   return '#e53935';
@@ -229,9 +248,14 @@ function getMarkerColor(property) {
 
 function createMarkerIcon(property) {
   const color = getMarkerColor(property);
+  const center = property.contactedAt
+    ? '<rect x="10.2" y="12.2" width="11.6" height="7.6" rx="1.2" ry="1.2" fill="#fff"/>' +
+      '<path d="M10.2 12.6 L16 16.6 L21.8 12.6" fill="none" stroke="#e53935" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<rect x="10.2" y="12.2" width="11.6" height="7.6" rx="1.2" ry="1.2" fill="none" stroke="#e53935" stroke-width="1.2"/>'
+    : '<circle fill="#fff" cx="16" cy="15" r="6"/>';
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">' +
     '<path fill="' + color + '" stroke="#fff" stroke-width="2" d="M16 1C8.268 1 2 7.268 2 15c0 10.5 14 25 14 25s14-14.5 14-25c0-7.732-6.268-14-14-14z"/>' +
-    '<circle fill="#fff" cx="16" cy="15" r="6"/>' +
+    center +
     '</svg>';
   return L.divIcon({
     html: svg,
@@ -823,6 +847,19 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
         likeButton.addEventListener('click', function() {
           property.liked = !property.liked;
           persistFavorite(property);
+          marker.setIcon(createMarkerIcon(property));
+          marker.setPopupContent(buildPopupContent(property));
+          updateStats(baseFilteredProperties);
+          if (!matchesStatusFilter(property)) {
+            updateMap('all', 'all');
+          }
+        }, { once: true });
+      }
+      var contactButton = popupEl.querySelector('.contact-button');
+      if (contactButton) {
+        contactButton.addEventListener('click', function() {
+          property.contactedAt = new Date().toISOString();
+          persistContactedAt(property);
           marker.setIcon(createMarkerIcon(property));
           marker.setPopupContent(buildPopupContent(property));
           updateStats(baseFilteredProperties);

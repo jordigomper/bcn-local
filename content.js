@@ -34,7 +34,8 @@
           ...item,
           viewed: existing.viewed,
           viewedAt: existing.viewedAt || null,
-          liked: !!existing.liked
+          liked: !!existing.liked,
+          contactedAt: existing.contactedAt || null
         };
       }
       newCount++;
@@ -42,7 +43,8 @@
         ...item,
         viewed: false,
         viewedAt: null,
-        liked: false
+        liked: false,
+        contactedAt: null
       };
     });
 
