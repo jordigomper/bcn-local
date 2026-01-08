@@ -30,11 +30,20 @@
       const existing = storedMap.get(item.id);
       if (existing) {
         updatedCount++;
-        return { ...item, viewed: existing.viewed };
-      } else {
-        newCount++;
-        return { ...item, viewed: false };
+        return {
+          ...item,
+          viewed: existing.viewed,
+          viewedAt: existing.viewedAt || null,
+          liked: !!existing.liked
+        };
       }
+      newCount++;
+      return {
+        ...item,
+        viewed: false,
+        viewedAt: null,
+        liked: false
+      };
     });
 
     stored.forEach(item => {

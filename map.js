@@ -168,30 +168,67 @@ function persistViewedAt(property) {
   });
 }
 
+function persistFavorite(property) {
+  if (!property || !property.id) return;
+  chrome.storage.local.get([STORAGE_KEY], function(result) {
+    var properties = result[STORAGE_KEY] || [];
+    var index = properties.findIndex(function(p) { return p.id === property.id; });
+    if (index !== -1) {
+      properties[index].liked = property.liked;
+      chrome.storage.local.set({ [STORAGE_KEY]: properties });
+    }
+  });
+}
+
 function updateStats(properties) {
   var newCount = properties.filter(function(p) { return !p.viewed; }).length;
-  var viewedCount = properties.filter(function(p) { return p.viewed; }).length;
+  var likedCount = properties.filter(function(p) { return p.liked; }).length;
+  var viewedCount = properties.filter(function(p) { return p.viewed && !p.liked; }).length;
   var newEl = document.getElementById('new-count');
   var viewedEl = document.getElementById('viewed-count');
+  var likedEl = document.getElementById('liked-count');
   if (newEl) newEl.textContent = newCount;
   if (viewedEl) viewedEl.textContent = viewedCount;
+  if (likedEl) likedEl.textContent = likedCount;
+}
+
+function matchesStatusFilter(property) {
+  if (currentStatusFilter === 'new') {
+    return !property.viewed;
+  }
+  if (currentStatusFilter === 'viewed') {
+    return property.viewed && !property.liked;
+  }
+  if (currentStatusFilter === 'liked') {
+    return property.liked;
+  }
+  return true;
 }
 
 function buildPopupContent(property) {
   var isNew = !property.viewed;
   var viewedAtText = formatViewedAt(property.viewedAt);
   var viewedAtHtml = viewedAtText ? '<div class="viewed-at">Visto: ' + viewedAtText + '</div>' : '';
+  var likedLabel = property.liked ? 'Guardado' : 'Guardar';
+  var likedClass = property.liked ? 'liked' : '';
   return '<div class="custom-popup">' +
     '<div class="price">' + formatPrice(property.list_selling_price_amount) + '</div>' +
     '<div class="ref">Ref: ' + property.ref + '</div>' +
     '<span class="status ' + (isNew ? 'new' : 'viewed') + '">' + (isNew ? '🆕 Nueva' : '✓ Vista') + '</span>' +
     viewedAtHtml +
+    '<button class="like-button ' + likedClass + '" type="button">' + likedLabel + '</button>' +
     '<a class="link" href="https://faciliteacasa.com/vivienda/venta-piso-barcelona-' + property.ref + '" target="_blank">Ver propiedad</a>' +
     '</div>';
 }
 
-function createMarkerIcon(isNew) {
-  const color = isNew ? '#e53935' : '#4caf50';
+function getMarkerColor(property) {
+  if (property.liked) return '#4caf50';
+  if (property.viewed) return '#ff9800';
+  return '#e53935';
+}
+
+function createMarkerIcon(property) {
+  const color = getMarkerColor(property);
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">' +
     '<path fill="' + color + '" stroke="#fff" stroke-width="2" d="M16 1C8.268 1 2 7.268 2 15c0 10.5 14 25 14 25s14-14.5 14-25c0-7.732-6.268-14-14-14z"/>' +
     '<circle fill="#fff" cx="16" cy="15" r="6"/>' +
@@ -219,6 +256,7 @@ var hiddenDistricts = {};
 const HIDDEN_DISTRICTS_KEY = 'facilitea_hidden_districts';
 const EXTRARADIO_NORTH = 'EXTRARADIO_N';
 const EXTRARADIO_SOUTH = 'EXTRARADIO_S';
+var currentStatusFilter = 'all';
 
 var DISTRICT_NAMES = {
   '01': 'Ciutat Vella',
@@ -727,7 +765,7 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     neighborhoodLayers.push(polygon);
   }
 
-  var filteredProperties = allProperties.filter(function(p) {
+  var baseFilteredProperties = allProperties.filter(function(p) {
     if (!p.coordinates) return false;
     var coords = parseCoordinates(p.coordinates);
     if (!isInBarcelonaCity(coords.lat, coords.lng)) return false;
@@ -760,14 +798,14 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     return true;
   });
 
-  updateStats(filteredProperties);
+  updateStats(baseFilteredProperties);
+
+  var filteredProperties = baseFilteredProperties.filter(matchesStatusFilter);
 
   filteredProperties.forEach(function(property) {
     var coords = parseCoordinates(property.coordinates);
-    var isNew = !property.viewed;
-
     var marker = L.marker([coords.lat, coords.lng], {
-      icon: createMarkerIcon(isNew)
+      icon: createMarkerIcon(property)
     }).addTo(map);
 
     marker.on('click', function() {
@@ -780,15 +818,31 @@ function updateMap(selectedPostalCode, selectedNeighborhood) {
     marker.on('popupopen', function(e) {
       var popupEl = e.popup && e.popup.getElement ? e.popup.getElement() : null;
       if (!popupEl) return;
+      var likeButton = popupEl.querySelector('.like-button');
+      if (likeButton) {
+        likeButton.addEventListener('click', function() {
+          property.liked = !property.liked;
+          persistFavorite(property);
+          marker.setIcon(createMarkerIcon(property));
+          marker.setPopupContent(buildPopupContent(property));
+          updateStats(baseFilteredProperties);
+          if (!matchesStatusFilter(property)) {
+            updateMap('all', 'all');
+          }
+        }, { once: true });
+      }
       var link = popupEl.querySelector('.link');
       if (!link) return;
       link.addEventListener('click', function() {
         property.viewedAt = new Date().toISOString();
         property.viewed = true;
         persistViewedAt(property);
-        marker.setIcon(createMarkerIcon(false));
+        marker.setIcon(createMarkerIcon(property));
         marker.setPopupContent(buildPopupContent(property));
-        updateStats(filteredProperties);
+        updateStats(baseFilteredProperties);
+        if (!matchesStatusFilter(property)) {
+          updateMap('all', 'all');
+        }
       }, { once: true });
     });
     markers.push(marker);
@@ -965,6 +1019,22 @@ function initMap(properties) {
     });
 
     updateMap('all', 'all');
+
+    var statFilters = document.querySelectorAll('.stat.filterable');
+    statFilters.forEach(function(stat) {
+      stat.addEventListener('click', function() {
+        var nextFilter = this.dataset.filter;
+        currentStatusFilter = currentStatusFilter === nextFilter ? 'all' : nextFilter;
+        statFilters.forEach(function(el) {
+          if (currentStatusFilter !== 'all' && el.dataset.filter === currentStatusFilter) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        });
+        updateMap('all', 'all');
+      });
+    });
   });
 }
 

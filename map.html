@@ -58,6 +58,21 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
+    .stat.filterable {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .stat.filterable:hover {
+      border-color: rgba(229, 57, 53, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat.active {
+      border-color: #e53935;
+      box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+    }
+
     .stat-dot {
       width: 12px;
       height: 12px;
@@ -65,7 +80,8 @@
     }
 
     .stat-dot.new { background: #e53935; }
-    .stat-dot.viewed { background: #4caf50; }
+    .stat-dot.viewed { background: #ff9800; }
+    .stat-dot.liked { background: #4caf50; }
 
     .stat-value {
       font-weight: 700;
@@ -321,6 +337,31 @@
       background: #c62828;
     }
 
+    .like-button {
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .like-button:hover {
+      border-color: #e53935;
+      color: #e53935;
+    }
+
+    .like-button.liked {
+      border-color: #e53935;
+      background: rgba(229, 57, 53, 0.1);
+      color: #e53935;
+      font-weight: 600;
+    }
+
     .leaflet-popup-content-wrapper {
       border-radius: 12px;
       box-shadow: 0 3px 14px rgba(0, 0, 0, 0.2);
@@ -349,15 +390,20 @@
   <div class="header">
     <h1>🏠 Facilitea Explorer</h1>
     <div class="stats">
-      <div class="stat">
+      <div class="stat filterable" data-filter="new">
         <span class="stat-dot new"></span>
         <span class="stat-value" id="new-count">0</span>
         <span class="stat-label">Nuevas</span>
       </div>
-      <div class="stat">
+      <div class="stat filterable" data-filter="viewed">
         <span class="stat-dot viewed"></span>
         <span class="stat-value" id="viewed-count">0</span>
         <span class="stat-label">Vistas</span>
+      </div>
+      <div class="stat filterable" data-filter="liked">
+        <span class="stat-dot liked"></span>
+        <span class="stat-value" id="liked-count">0</span>
+        <span class="stat-label">Guardadas</span>
       </div>
     </div>
   </div>
