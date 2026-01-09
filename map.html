@@ -73,6 +73,48 @@
       box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
     }
 
+    .transport-legend {
+      margin: 8px 8px 12px;
+      padding: 8px;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .transport-legend.hidden {
+      display: none;
+    }
+
+    .transport-legend-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+
+    .transport-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: #555;
+      padding: 3px 2px;
+    }
+
+    .transport-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.35);
+    }
+
+    .transport-dot.bicing { background: #64b5f6; }
+    .transport-dot.metro-tren { background: #ba68c8; }
+    .transport-dot.bus { background: #ffb74d; }
+    .transport-dot.gasolinera { background: #bdbdbd; }
+
 
     .stat {
       display: flex;
@@ -433,6 +475,29 @@
       border: none;
     }
 
+    .transport-popup {
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    .transport-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .transport-type {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .transport-address,
+    .transport-lines {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
     .neighborhood-polygon {
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
@@ -458,12 +523,20 @@
         <span class="stat-label">Guardadas</span>
       </div>
       <div class="header-actions">
+        <button id="transport-toggle" class="toggle-button" type="button">Transporte público</button>
         <button id="sports-toggle" class="toggle-button" type="button">Servicios deportivos</button>
       </div>
     </div>
   </div>
 
   <div class="legend-container">
+    <div id="transport-legend" class="transport-legend hidden">
+      <div class="transport-legend-title">Transporte público</div>
+      <div class="transport-legend-item"><span class="transport-dot bicing"></span>Bicing</div>
+      <div class="transport-legend-item"><span class="transport-dot metro-tren"></span>Metro/Tren</div>
+      <div class="transport-legend-item"><span class="transport-dot bus"></span>Bus</div>
+      <div class="transport-legend-item"><span class="transport-dot gasolinera"></span>Gasolineras</div>
+    </div>
     <div class="legend-title">Barrios</div>
     <div id="neighborhood-legend"></div>
   </div>

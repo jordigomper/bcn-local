@@ -152,6 +152,147 @@ function fetchSportsData() {
     });
 }
 
+function fetchTransportData() {
+  if (transportData) return Promise.resolve(transportData);
+  return fetch(chrome.runtime.getURL('data/transporte_publico_origin.json'))
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      transportData = data || [];
+      return transportData;
+    });
+}
+
+function getTransportCategory(item) {
+  var types = item && item.types ? item.types : [];
+  if (types.indexOf('gasolinera') !== -1) return 'gasolinera';
+  if (types.indexOf('bicing') !== -1) return 'bicing';
+  if (types.indexOf('metro') !== -1 || types.indexOf('tren') !== -1 || types.indexOf('tramvia') !== -1) {
+    return 'metro_tren';
+  }
+  if (types.indexOf('bus') !== -1) return 'bus';
+  return 'metro_tren';
+}
+
+function getTransportLabel(category) {
+  if (category === 'bicing') return 'Bicing';
+  if (category === 'bus') return 'Bus';
+  if (category === 'gasolinera') return 'Gasolinera';
+  return 'Metro/Tren';
+}
+
+function formatTransportAddress(address) {
+  if (!address) return '';
+  var parts = [];
+  if (address.street) {
+    parts.push(address.street + (address.street_number ? ' ' + address.street_number : ''));
+  }
+  if (address.neighborhood) parts.push(address.neighborhood);
+  if (address.district) parts.push(address.district);
+  if (address.zip_code) parts.push(address.zip_code);
+  return parts.join(' · ');
+}
+
+function buildTransportPopup(item, label) {
+  var title = item.name || label;
+  var typesLabel = (item.types || []).map(function(type) {
+    if (type === 'bicing') return 'Bicing';
+    if (type === 'bus') return 'Bus';
+    if (type === 'metro') return 'Metro';
+    if (type === 'tren') return 'Tren';
+    if (type === 'tramvia') return 'Tranvía';
+    if (type === 'gasolinera') return 'Gasolinera';
+    return type;
+  }).join(', ');
+  var address = formatTransportAddress(item.address);
+  var lines = item.lines && item.lines.length ? '<div class="transport-lines">Líneas: ' + item.lines.join(', ') + '</div>' : '';
+  return '<div class="transport-popup">' +
+    '<div class="transport-title">' + title + '</div>' +
+    (typesLabel ? '<div class="transport-type">' + typesLabel + '</div>' : '') +
+    (address ? '<div class="transport-address">' + address + '</div>' : '') +
+    lines +
+    '</div>';
+}
+
+function buildTransportIcon(category) {
+  if (category === 'bicing') {
+    var bicingSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">' +
+      '<circle cx="9" cy="9" r="7.5" fill="#ffffff" stroke="#000000" stroke-width="1.5" />' +
+      '<text x="9" y="12" text-anchor="end" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="#d32f2f">b</text>' +
+      '<text x="9" y="12" text-anchor="start" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="#000000">g</text>' +
+      '</svg>';
+    return L.divIcon({
+      className: 'transport-icon',
+      html: bicingSvg,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+  }
+  var configs = {
+    metro_tren: { color: '#6a1b9a', bg: '#f3e5f5', text: 'M' },
+    gasolinera: { color: '#424242', bg: '#eeeeee', text: 'G' }
+  };
+  var cfg = configs[category] || configs.metro_tren;
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">' +
+    '<circle cx="9" cy="9" r="7.5" fill="' + cfg.bg + '" stroke="' + cfg.color + '" stroke-width="1.5" />' +
+    '<text x="9" y="12" text-anchor="middle" font-size="9" font-family="Arial, sans-serif" fill="' + cfg.color + '">' + cfg.text + '</text>' +
+    '</svg>';
+  return L.divIcon({
+    className: 'transport-icon',
+    html: svg,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9]
+  });
+}
+
+function buildTransportLayer() {
+  if (!transportData || !transportData.length) return null;
+  var layer = L.layerGroup();
+  transportData.forEach(function(item) {
+    var loc = item.location;
+    if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return;
+    var category = getTransportCategory(item);
+    var label = getTransportLabel(category);
+    if (category === 'bus') return;
+    var marker = L.marker([loc.lat, loc.lng], {
+      icon: buildTransportIcon(category)
+    });
+    marker.bindTooltip(item.name || label, {
+      permanent: false,
+      direction: 'top',
+      className: 'neighborhood-tooltip'
+    });
+    marker.bindPopup(buildTransportPopup(item, label));
+    layer.addLayer(marker);
+  });
+  return layer;
+}
+
+function toggleTransportLayer() {
+  if (!map) return;
+  var button = document.getElementById('transport-toggle');
+  var legend = document.getElementById('transport-legend');
+  if (!transportVisible) {
+    fetchTransportData().then(function() {
+      if (!transportLayer) {
+        transportLayer = buildTransportLayer();
+      }
+      if (transportLayer) {
+        transportLayer.addTo(map);
+        transportVisible = true;
+        if (button) button.classList.add('active');
+        if (legend) legend.classList.remove('hidden');
+      }
+    });
+  } else {
+    if (transportLayer) {
+      map.removeLayer(transportLayer);
+    }
+    transportVisible = false;
+    if (button) button.classList.remove('active');
+    if (legend) legend.classList.add('hidden');
+  }
+}
+
 function buildSportsLayer() {
   if (!sportsData || !sportsData.length) return null;
   var layer = L.layerGroup();
@@ -361,6 +502,9 @@ var currentStatusFilter = 'all';
 var sportsLayer = null;
 var sportsVisible = false;
 var sportsData = null;
+var transportLayer = null;
+var transportVisible = false;
+var transportData = null;
 
 var DISTRICT_NAMES = {
   '01': 'Ciutat Vella',
@@ -993,9 +1137,15 @@ function initMap(properties) {
 
   map = L.map('map').setView(BCN_CENTER, BCN_ZOOM);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     maxZoom: 19
+  }).addTo(map);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+    attribution: '',
+    maxZoom: 19,
+    pane: 'overlayPane'
   }).addTo(map);
 
   loadNeighborhoods().then(function() {
@@ -1156,6 +1306,11 @@ function initMap(properties) {
     var sportsToggle = document.getElementById('sports-toggle');
     if (sportsToggle) {
       sportsToggle.addEventListener('click', toggleSportsLayer);
+    }
+
+    var transportToggle = document.getElementById('transport-toggle');
+    if (transportToggle) {
+      transportToggle.addEventListener('click', toggleTransportLayer);
     }
   });
 }
