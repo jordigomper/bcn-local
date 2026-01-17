@@ -29,6 +29,18 @@ var gtfsData = {
 var sportsLayer = null;
 var sportsVisible = false;
 var sportsData = null;
+var districtFilteredTransportLayer = null;
+var districtFilteredMetroRoutesLayer = null;
+var districtFilteredMetroStopsLayer = null;
+var neighborhoodFilteredMetroRoutesLayer = null;
+var neighborhoodFilteredMetroStopsLayer = null;
+var neighborhoodFilteredBusRoutesLayer = null;
+var neighborhoodFilteredBusStopsLayer = null;
+var neighborhoodFilteredBicingLayer = null;
+var neighborhoodFilteredSportsLayer = null;
+var bicingLayer = null;
+var bicingVisible = false;
+var bicingData = null;
 
 function getInitialView() {
   var center = BCN_CENTER;
@@ -47,6 +59,18 @@ function pointInPolygon(point, polygon) {
     var xi = polygon[i][0], yi = polygon[i][1];
     var xj = polygon[j][0], yj = polygon[j][1];
     var intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function pointInPolygonLatLng(point, polygon) {
+  var lat = point[0], lng = point[1];
+  var inside = false;
+  for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    var lati = polygon[i][0], lngi = polygon[i][1];
+    var latj = polygon[j][0], lngj = polygon[j][1];
+    var intersect = ((lati > lat) !== (latj > lat)) && (lng < (lngj - lngi) * (lat - lati) / (latj - lati) + lngi);
     if (intersect) inside = !inside;
   }
   return inside;
@@ -350,6 +374,371 @@ function buildSportsLayer() {
   return layer;
 }
 
+function clearDistrictFilteredLayers() {
+  if (districtFilteredTransportLayer) {
+    map.removeLayer(districtFilteredTransportLayer);
+    districtFilteredTransportLayer = null;
+  }
+  if (districtFilteredMetroRoutesLayer) {
+    map.removeLayer(districtFilteredMetroRoutesLayer);
+    districtFilteredMetroRoutesLayer = null;
+  }
+  if (districtFilteredMetroStopsLayer) {
+    map.removeLayer(districtFilteredMetroStopsLayer);
+    districtFilteredMetroStopsLayer = null;
+  }
+}
+
+function clearNeighborhoodFilteredLayers() {
+  if (neighborhoodFilteredMetroRoutesLayer) {
+    map.removeLayer(neighborhoodFilteredMetroRoutesLayer);
+    neighborhoodFilteredMetroRoutesLayer = null;
+  }
+  if (neighborhoodFilteredMetroStopsLayer) {
+    map.removeLayer(neighborhoodFilteredMetroStopsLayer);
+    neighborhoodFilteredMetroStopsLayer = null;
+  }
+  if (neighborhoodFilteredBusRoutesLayer) {
+    map.removeLayer(neighborhoodFilteredBusRoutesLayer);
+    neighborhoodFilteredBusRoutesLayer = null;
+  }
+  if (neighborhoodFilteredBusStopsLayer) {
+    map.removeLayer(neighborhoodFilteredBusStopsLayer);
+    neighborhoodFilteredBusStopsLayer = null;
+  }
+  if (neighborhoodFilteredBicingLayer) {
+    map.removeLayer(neighborhoodFilteredBicingLayer);
+    neighborhoodFilteredBicingLayer = null;
+  }
+  if (neighborhoodFilteredSportsLayer) {
+    map.removeLayer(neighborhoodFilteredSportsLayer);
+    neighborhoodFilteredSportsLayer = null;
+  }
+}
+
+function showDistrictFilteredData(districtPolygon) {
+  if (!districtPolygon || !Array.isArray(districtPolygon) || districtPolygon.length === 0) return;
+
+  clearDistrictFilteredLayers();
+
+  var outerRing = Array.isArray(districtPolygon[0][0]) ? districtPolygon[0] : districtPolygon;
+
+  Promise.all([
+    loadPort('transport').then(function(data) { return data || []; }).catch(function() { return []; }),
+    loadGTFSData().catch(function() { return null; })
+  ]).then(function(results) {
+    var transportData = results[0];
+    var gtfs = results[1];
+
+    var filteredGasolineras = transportData.filter(function(item) {
+      if (item.category !== 'gasolinera') return false;
+      var loc = item.location;
+      if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return false;
+      return pointInPolygonLatLng([loc.lat, loc.lng], outerRing);
+    });
+
+    if (filteredGasolineras.length > 0) {
+      districtFilteredTransportLayer = L.layerGroup();
+      filteredGasolineras.forEach(function(item) {
+        var marker = L.marker([item.location.lat, item.location.lng], {
+          icon: buildTransportIcon(item.category)
+        });
+        marker.bindTooltip(item.name || 'Gasolinera', {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        districtFilteredTransportLayer.addLayer(marker);
+      });
+      districtFilteredTransportLayer.addTo(map);
+    }
+
+    if (gtfs && gtfs.metroRoutes && gtfs.metroStops) {
+      var currentZoom = map ? map.getZoom() : 13;
+      var weight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+
+      districtFilteredMetroRoutesLayer = L.layerGroup();
+      districtFilteredMetroStopsLayer = L.layerGroup();
+
+      var filteredRouteIds = new Set();
+
+      gtfs.metroRoutes.forEach(function(route) {
+        var routeInArea = false;
+        var sampleSize = Math.min(route.path.length, 50);
+        var step = Math.max(1, Math.floor(route.path.length / sampleSize));
+        for (var i = 0; i < route.path.length; i += step) {
+          if (pointInPolygonLatLng(route.path[i], outerRing)) {
+            routeInArea = true;
+            filteredRouteIds.add(route.routeId);
+            break;
+          }
+        }
+        if (routeInArea) {
+          var polyline = L.polyline(route.path, {
+            color: route.color,
+            weight: weight,
+            opacity: 0.8
+          });
+          polyline._gtfsWeight = weight;
+          polyline._gtfsRouteType = route.type;
+          polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+            permanent: false,
+            direction: 'top',
+            className: 'neighborhood-tooltip'
+          });
+          districtFilteredMetroRoutesLayer.addLayer(polyline);
+        }
+      });
+
+      gtfs.metroStops.forEach(function(stop) {
+        if (pointInPolygonLatLng([stop.lat, stop.lng], outerRing)) {
+          var routeType = getStopRouteType(stop.id, gtfs.metroRoutes);
+          var marker = L.marker([stop.lat, stop.lng], {
+            icon: buildStopIcon(routeType)
+          });
+          marker.bindTooltip(stop.name, {
+            permanent: false,
+            direction: 'top',
+            className: 'neighborhood-tooltip'
+          });
+          districtFilteredMetroStopsLayer.addLayer(marker);
+        }
+      });
+
+      if (districtFilteredMetroRoutesLayer.getLayers().length > 0) {
+        districtFilteredMetroRoutesLayer.addTo(map);
+      }
+      if (districtFilteredMetroStopsLayer.getLayers().length > 0) {
+        districtFilteredMetroStopsLayer.addTo(map);
+      }
+    }
+  });
+}
+
+function showNeighborhoodFilteredData(neighborhoodPolygon) {
+  if (!neighborhoodPolygon || !Array.isArray(neighborhoodPolygon) || neighborhoodPolygon.length === 0) return;
+
+  clearNeighborhoodFilteredLayers();
+
+  var outerRing = Array.isArray(neighborhoodPolygon[0][0]) ? neighborhoodPolygon[0] : neighborhoodPolygon;
+
+  Promise.all([
+    loadGTFSData().catch(function() { return null; }),
+    fetch('data/transport_public/bicing.json').then(function(r) { return r.json(); }).catch(function() { return []; }),
+    loadPort('sports').then(function(data) { return data || []; }).catch(function() { return []; })
+  ]).then(function(results) {
+    var gtfs = results[0];
+    var bicingData = results[1];
+    var sportsData = results[2];
+
+    if (gtfs) {
+      var currentZoom = map ? map.getZoom() : 13;
+      var weight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+
+      neighborhoodFilteredMetroRoutesLayer = L.layerGroup();
+      neighborhoodFilteredMetroStopsLayer = L.layerGroup();
+      neighborhoodFilteredBusRoutesLayer = L.layerGroup();
+      neighborhoodFilteredBusStopsLayer = L.layerGroup();
+
+      if (gtfs.metroRoutes) {
+        gtfs.metroRoutes.forEach(function(route) {
+          var routeInArea = false;
+          var sampleSize = Math.min(route.path.length, 50);
+          var step = Math.max(1, Math.floor(route.path.length / sampleSize));
+          for (var i = 0; i < route.path.length; i += step) {
+            if (pointInPolygonLatLng(route.path[i], outerRing)) {
+              routeInArea = true;
+              break;
+            }
+          }
+          if (routeInArea) {
+            var polyline = L.polyline(route.path, {
+              color: route.color,
+              weight: weight,
+              opacity: 0.8
+            });
+            polyline._gtfsWeight = weight;
+            polyline._gtfsRouteType = route.type;
+            polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+              permanent: false,
+              direction: 'top',
+              className: 'neighborhood-tooltip'
+            });
+            neighborhoodFilteredMetroRoutesLayer.addLayer(polyline);
+          }
+        });
+      }
+
+      if (gtfs.busRoutes) {
+        gtfs.busRoutes.forEach(function(route) {
+          var routeInArea = false;
+          var sampleSize = Math.min(route.path.length, 50);
+          var step = Math.max(1, Math.floor(route.path.length / sampleSize));
+          for (var i = 0; i < route.path.length; i += step) {
+            if (pointInPolygonLatLng(route.path[i], outerRing)) {
+              routeInArea = true;
+              break;
+            }
+          }
+          if (routeInArea) {
+            var polyline = L.polyline(route.path, {
+              color: route.color,
+              weight: weight,
+              opacity: 0.8
+            });
+            polyline._gtfsWeight = weight;
+            polyline._gtfsRouteType = route.type;
+            polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+              permanent: false,
+              direction: 'top',
+              className: 'neighborhood-tooltip'
+            });
+            neighborhoodFilteredBusRoutesLayer.addLayer(polyline);
+          }
+        });
+      }
+
+      if (gtfs.metroStops) {
+        gtfs.metroStops.forEach(function(stop) {
+          if (pointInPolygonLatLng([stop.lat, stop.lng], outerRing)) {
+            var routeType = getStopRouteType(stop.id, gtfs.metroRoutes);
+            var marker = L.marker([stop.lat, stop.lng], {
+              icon: buildStopIcon(routeType)
+            });
+            marker.bindTooltip(stop.name, {
+              permanent: false,
+              direction: 'top',
+              className: 'neighborhood-tooltip'
+            });
+            neighborhoodFilteredMetroStopsLayer.addLayer(marker);
+          }
+        });
+      }
+
+      if (gtfs.busStops) {
+        gtfs.busStops.forEach(function(stop) {
+          if (pointInPolygonLatLng([stop.lat, stop.lng], outerRing)) {
+            var marker = L.marker([stop.lat, stop.lng], {
+              icon: buildStopIcon('3')
+            });
+            marker.bindTooltip(stop.name, {
+              permanent: false,
+              direction: 'top',
+              className: 'neighborhood-tooltip'
+            });
+            neighborhoodFilteredBusStopsLayer.addLayer(marker);
+          }
+        });
+      }
+
+      if (neighborhoodFilteredMetroRoutesLayer.getLayers().length > 0) {
+        neighborhoodFilteredMetroRoutesLayer.addTo(map);
+      }
+      if (neighborhoodFilteredMetroStopsLayer.getLayers().length > 0) {
+        neighborhoodFilteredMetroStopsLayer.addTo(map);
+      }
+      if (neighborhoodFilteredBusRoutesLayer.getLayers().length > 0) {
+        neighborhoodFilteredBusRoutesLayer.addTo(map);
+      }
+      if (neighborhoodFilteredBusStopsLayer.getLayers().length > 0) {
+        if (map.getZoom() >= 15) {
+          neighborhoodFilteredBusStopsLayer.addTo(map);
+        }
+      }
+    }
+
+    var filteredBicing = bicingData.filter(function(item) {
+      var loc = item.location;
+      if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return false;
+      return pointInPolygonLatLng([loc.lat, loc.lng], outerRing);
+    });
+
+    if (filteredBicing.length > 0) {
+      neighborhoodFilteredBicingLayer = L.layerGroup();
+      filteredBicing.forEach(function(item) {
+        var marker = L.marker([item.location.lat, item.location.lng], {
+          icon: buildTransportIcon('bicing')
+        });
+        marker.bindTooltip(item.name || 'Bicing', {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        neighborhoodFilteredBicingLayer.addLayer(marker);
+      });
+      neighborhoodFilteredBicingLayer.addTo(map);
+    }
+
+    var filteredSports = sportsData.filter(function(item) {
+      var loc = item.location;
+      if (!loc) return false;
+      var lat = null;
+      var lng = null;
+      if (Array.isArray(loc) && loc.length >= 2) {
+        if (typeof loc[0] === 'number' && typeof loc[1] === 'number') {
+          if (Math.abs(loc[0]) <= 90 && Math.abs(loc[1]) <= 180) {
+            lat = loc[0];
+            lng = loc[1];
+          } else if (Math.abs(loc[1]) <= 90 && Math.abs(loc[0]) <= 180) {
+            lat = loc[1];
+            lng = loc[0];
+          }
+        }
+      } else if (loc.lat && (loc.lng || loc.lon)) {
+        lat = loc.lat;
+        lng = loc.lng || loc.lon;
+      } else if (loc.latitude && loc.longitude) {
+        lat = loc.latitude;
+        lng = loc.longitude;
+      }
+      if (lat === null || lng === null) return false;
+      return pointInPolygonLatLng([lat, lng], outerRing);
+    });
+
+    if (filteredSports.length > 0) {
+      neighborhoodFilteredSportsLayer = L.layerGroup();
+      filteredSports.forEach(function(item) {
+        var loc = item.location;
+        var lat = null;
+        var lng = null;
+        if (Array.isArray(loc) && loc.length >= 2) {
+          if (typeof loc[0] === 'number' && typeof loc[1] === 'number') {
+            if (Math.abs(loc[0]) <= 90 && Math.abs(loc[1]) <= 180) {
+              lat = loc[0];
+              lng = loc[1];
+            } else if (Math.abs(loc[1]) <= 90 && Math.abs(loc[0]) <= 180) {
+              lat = loc[1];
+              lng = loc[0];
+            }
+          }
+        } else if (loc.lat && (loc.lng || loc.lon)) {
+          lat = loc.lat;
+          lng = loc.lng || loc.lon;
+        } else if (loc.latitude && loc.longitude) {
+          lat = loc.latitude;
+          lng = loc.longitude;
+        }
+        if (lat === null || lng === null) return;
+        var marker = L.circleMarker([lat, lng], {
+          radius: 4,
+          color: '#1565c0',
+          weight: 1,
+          opacity: 0.6,
+          fillColor: '#64b5f6',
+          fillOpacity: 0.4
+        });
+        marker.bindTooltip(item.name || 'Servicio deportivo', {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        neighborhoodFilteredSportsLayer.addLayer(marker);
+      });
+      neighborhoodFilteredSportsLayer.addTo(map);
+    }
+  });
+}
+
 function toggleTransportLayer() {
   if (!map) return;
   var button = document.getElementById('transport-toggle');
@@ -364,6 +753,9 @@ function toggleTransportLayer() {
         transportLayer = buildTransportLayer();
       }
       if (transportLayer) {
+        if (districtFilteredTransportLayer) {
+          map.removeLayer(districtFilteredTransportLayer);
+        }
         transportLayer.addTo(map);
         transportVisible = true;
         if (button) button.classList.add('active');
@@ -377,6 +769,64 @@ function toggleTransportLayer() {
     transportVisible = false;
     if (button) button.classList.remove('active');
     if (legend) legend.classList.add('hidden');
+
+    if (currentDistrictView && districtData[currentDistrictView]) {
+      showDistrictFilteredData(districtData[currentDistrictView].latLngs);
+    }
+  }
+}
+
+function toggleBicingLayer() {
+  if (!map) return;
+  var button = document.getElementById('bicing-toggle');
+  if (!bicingVisible) {
+    var load = bicingData ? Promise.resolve(bicingData) : fetch('data/transport_public/bicing.json').then(function(r) { return r.json(); }).then(function(data) {
+      bicingData = data;
+      return bicingData;
+    });
+    load.then(function() {
+      if (currentNeighborhoodView && neighborhoodFilteredBicingLayer) {
+        neighborhoodFilteredBicingLayer.addTo(map);
+        bicingVisible = true;
+        if (button) button.classList.add('active');
+      } else {
+        if (!bicingLayer) {
+          bicingLayer = L.layerGroup();
+          bicingData.forEach(function(item) {
+            var loc = item.location;
+            if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return;
+            var marker = L.marker([loc.lat, loc.lng], {
+              icon: buildTransportIcon('bicing')
+            });
+            marker.bindTooltip(item.name || 'Bicing', {
+              permanent: false,
+              direction: 'top',
+              className: 'neighborhood-tooltip'
+            });
+            bicingLayer.addLayer(marker);
+          });
+        }
+        if (neighborhoodFilteredBicingLayer) {
+          map.removeLayer(neighborhoodFilteredBicingLayer);
+        }
+        bicingLayer.addTo(map);
+        bicingVisible = true;
+        if (button) button.classList.add('active');
+      }
+    });
+  } else {
+    if (bicingLayer) {
+      map.removeLayer(bicingLayer);
+    }
+    if (neighborhoodFilteredBicingLayer) {
+      map.removeLayer(neighborhoodFilteredBicingLayer);
+    }
+    bicingVisible = false;
+    if (button) button.classList.remove('active');
+
+    if (currentNeighborhoodView && neighborhoodData[currentNeighborhoodView]) {
+      showNeighborhoodFilteredData(neighborhoodData[currentNeighborhoodView].latLngs || neighborhoodData[currentNeighborhoodView].coordinates);
+    }
   }
 }
 
@@ -389,10 +839,17 @@ function toggleSportsLayer() {
       return sportsData;
     });
     load.then(function() {
-      if (!sportsLayer) {
-        sportsLayer = buildSportsLayer();
-      }
-      if (sportsLayer) {
+      if (currentNeighborhoodView && neighborhoodFilteredSportsLayer) {
+        neighborhoodFilteredSportsLayer.addTo(map);
+        sportsVisible = true;
+        if (button) button.classList.add('active');
+      } else {
+        if (!sportsLayer) {
+          sportsLayer = buildSportsLayer();
+        }
+        if (neighborhoodFilteredSportsLayer) {
+          map.removeLayer(neighborhoodFilteredSportsLayer);
+        }
         sportsLayer.addTo(map);
         sportsVisible = true;
         if (button) button.classList.add('active');
@@ -402,8 +859,15 @@ function toggleSportsLayer() {
     if (sportsLayer) {
       map.removeLayer(sportsLayer);
     }
+    if (neighborhoodFilteredSportsLayer) {
+      map.removeLayer(neighborhoodFilteredSportsLayer);
+    }
     sportsVisible = false;
     if (button) button.classList.remove('active');
+
+    if (currentNeighborhoodView && neighborhoodData[currentNeighborhoodView]) {
+      showNeighborhoodFilteredData(neighborhoodData[currentNeighborhoodView].latLngs || neighborhoodData[currentNeighborhoodView].coordinates);
+    }
   }
 }
 
@@ -459,6 +923,101 @@ function getRouteTypeName(routeType) {
   return types[routeType] || 'Transporte';
 }
 
+function buildStopIcon(routeType) {
+  var filterId = 'shadow-' + routeType + '-' + Math.random().toString(36).substr(2, 9);
+
+  if (routeType === '0') {
+    // Tranvía: rombo relieve verde, fondo blanco, letra T verde
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">' +
+      '<defs>' +
+      '<filter id="' + filterId + '">' +
+      '<feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#2E7D32" flood-opacity="0.5"/>' +
+      '</filter>' +
+      '</defs>' +
+      '<polygon points="10,3 17,10 10,17 3,10" fill="#FFFFFF" stroke="#4CAF50" stroke-width="2" filter="url(#' + filterId + ')"/>' +
+      '<text x="10" y="14" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial, sans-serif" fill="#4CAF50">T</text>' +
+      '</svg>';
+    return L.divIcon({
+      className: 'transport-stop-icon',
+      html: svg,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+  } else if (routeType === '1' || routeType === '2') {
+    // Metro/Tren: rombo relieve rojo, fondo blanco, letra M en negro
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">' +
+      '<defs>' +
+      '<filter id="' + filterId + '">' +
+      '<feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#C62828" flood-opacity="0.5"/>' +
+      '</filter>' +
+      '</defs>' +
+      '<polygon points="10,3 17,10 10,17 3,10" fill="#FFFFFF" stroke="#F44336" stroke-width="2" filter="url(#' + filterId + ')"/>' +
+      '<text x="10" y="14" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial, sans-serif" fill="#000000">M</text>' +
+      '</svg>';
+    return L.divIcon({
+      className: 'transport-stop-icon',
+      html: svg,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+  } else if (routeType === '3') {
+    // Bus: cuadrado puntas redondeadas relieve negro, fondo blanco, BUS en negro
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">' +
+      '<defs>' +
+      '<filter id="' + filterId + '">' +
+      '<feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#212121" flood-opacity="0.5"/>' +
+      '</filter>' +
+      '</defs>' +
+      '<rect x="4" y="4" width="12" height="12" rx="2" ry="2" fill="#FFFFFF" stroke="#424242" stroke-width="2" filter="url(#' + filterId + ')"/>' +
+      '<text x="10" y="13" text-anchor="middle" font-size="6" font-weight="bold" font-family="Arial, sans-serif" fill="#000000">BUS</text>' +
+      '</svg>';
+    return L.divIcon({
+      className: 'transport-stop-icon',
+      html: svg,
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+  }
+
+  // Default: metro
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">' +
+    '<defs>' +
+    '<filter id="' + filterId + '">' +
+    '<feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#C62828" flood-opacity="0.5"/>' +
+    '</filter>' +
+    '</defs>' +
+    '<polygon points="10,3 17,10 10,17 3,10" fill="#FFFFFF" stroke="#F44336" stroke-width="2" filter="url(#' + filterId + ')"/>' +
+    '<text x="10" y="14" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial, sans-serif" fill="#000000">M</text>' +
+    '</svg>';
+  return L.divIcon({
+    className: 'transport-stop-icon',
+    html: svg,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10]
+  });
+}
+
+function getStopRouteType(stopId, routes) {
+  if (!stopId || !routes) {
+    return '1';
+  }
+
+  var stopParts = stopId.split('.');
+  if (stopParts.length < 2) {
+    return '1';
+  }
+
+  var routePrefix = stopParts[0] + '.' + stopParts[1];
+
+  for (var i = 0; i < routes.length; i++) {
+    if (routes[i].routeId && routes[i].routeId.startsWith(routePrefix)) {
+      return routes[i].type || '1';
+    }
+  }
+
+  return '1';
+}
+
 function buildGTFSTransportLayer() {
   if (!gtfsData.metroRoutes || !gtfsData.busRoutes) return null;
 
@@ -508,13 +1067,9 @@ function buildGTFSTransportLayer() {
 
   if (gtfsData.metroStops) {
     gtfsData.metroStops.forEach(function(stop) {
-      var marker = L.circleMarker([stop.lat, stop.lng], {
-        radius: 5,
-        fillColor: '#ff6b6b',
-        color: '#fff',
-        weight: 2,
-        opacity: 0.9,
-        fillOpacity: 0.8
+      var routeType = getStopRouteType(stop.id, gtfsData.metroRoutes);
+      var marker = L.marker([stop.lat, stop.lng], {
+        icon: buildStopIcon(routeType)
       });
       marker.bindTooltip(stop.name, {
         permanent: false,
@@ -527,13 +1082,8 @@ function buildGTFSTransportLayer() {
 
   if (gtfsData.busStops) {
     gtfsData.busStops.forEach(function(stop) {
-      var marker = L.circleMarker([stop.lat, stop.lng], {
-        radius: 5,
-        fillColor: '#ff6b6b',
-        color: '#fff',
-        weight: 2,
-        opacity: 0.9,
-        fillOpacity: 0.8
+      var marker = L.marker([stop.lat, stop.lng], {
+        icon: buildStopIcon('3')
       });
       marker.bindTooltip(stop.name, {
         permanent: false,
@@ -559,10 +1109,10 @@ function buildGTFSTransportLayer() {
 function updateGTFSStopsVisibility() {
   if (!map) return;
   var currentZoom = map.getZoom();
-  var shouldShow = currentZoom >= 15;
+  var shouldShowBus = currentZoom >= 15;
 
   if (gtfsStopsLayer) {
-    if (shouldShow && gtfsTransportVisible) {
+    if (gtfsTransportVisible) {
       if (!map.hasLayer(gtfsStopsLayer)) {
         gtfsStopsLayer.addTo(map);
       }
@@ -574,13 +1124,49 @@ function updateGTFSStopsVisibility() {
   }
 
   if (gtfsBusStopsLayer) {
-    if (shouldShow && gtfsBusVisible) {
+    if (shouldShowBus && gtfsBusVisible) {
       if (!map.hasLayer(gtfsBusStopsLayer)) {
         gtfsBusStopsLayer.addTo(map);
       }
     } else {
       if (map.hasLayer(gtfsBusStopsLayer)) {
         map.removeLayer(gtfsBusStopsLayer);
+      }
+    }
+  }
+
+  if (districtFilteredMetroStopsLayer) {
+    if (currentDistrictView && !gtfsTransportVisible) {
+      if (!map.hasLayer(districtFilteredMetroStopsLayer)) {
+        districtFilteredMetroStopsLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(districtFilteredMetroStopsLayer)) {
+        map.removeLayer(districtFilteredMetroStopsLayer);
+      }
+    }
+  }
+
+  if (neighborhoodFilteredMetroStopsLayer) {
+    if (currentNeighborhoodView) {
+      if (!map.hasLayer(neighborhoodFilteredMetroStopsLayer)) {
+        neighborhoodFilteredMetroStopsLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(neighborhoodFilteredMetroStopsLayer)) {
+        map.removeLayer(neighborhoodFilteredMetroStopsLayer);
+      }
+    }
+  }
+
+  if (neighborhoodFilteredBusStopsLayer) {
+    if (shouldShowBus && currentNeighborhoodView) {
+      if (!map.hasLayer(neighborhoodFilteredBusStopsLayer)) {
+        neighborhoodFilteredBusStopsLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(neighborhoodFilteredBusStopsLayer)) {
+        map.removeLayer(neighborhoodFilteredBusStopsLayer);
       }
     }
   }
@@ -612,6 +1198,39 @@ function updateGTFSLinesWeight() {
       }
     });
   }
+
+  if (districtFilteredMetroRoutesLayer && !gtfsTransportVisible) {
+    districtFilteredMetroRoutesLayer.eachLayer(function(layer) {
+      if (layer instanceof L.Polyline) {
+        if (layer._gtfsWeight !== newWeight) {
+          layer.setStyle({ weight: newWeight });
+          layer._gtfsWeight = newWeight;
+        }
+      }
+    });
+  }
+
+  if (neighborhoodFilteredMetroRoutesLayer) {
+    neighborhoodFilteredMetroRoutesLayer.eachLayer(function(layer) {
+      if (layer instanceof L.Polyline) {
+        if (layer._gtfsWeight !== newWeight) {
+          layer.setStyle({ weight: newWeight });
+          layer._gtfsWeight = newWeight;
+        }
+      }
+    });
+  }
+
+  if (neighborhoodFilteredBusRoutesLayer) {
+    neighborhoodFilteredBusRoutesLayer.eachLayer(function(layer) {
+      if (layer instanceof L.Polyline) {
+        if (layer._gtfsWeight !== newWeight) {
+          layer.setStyle({ weight: newWeight });
+          layer._gtfsWeight = newWeight;
+        }
+      }
+    });
+  }
 }
 
 function toggleGTFSMetroLayer() {
@@ -632,9 +1251,18 @@ function toggleGTFSMetroLayer() {
           }
         }
         if (gtfsTransportLayer) {
+          if (districtFilteredMetroRoutesLayer) {
+            map.removeLayer(districtFilteredMetroRoutesLayer);
+          }
+          if (districtFilteredMetroStopsLayer) {
+            map.removeLayer(districtFilteredMetroStopsLayer);
+          }
           gtfsTransportLayer.addTo(map);
-          updateGTFSStopsVisibility();
           gtfsTransportVisible = true;
+          if (gtfsStopsLayer) {
+            gtfsStopsLayer.addTo(map);
+          }
+          updateGTFSStopsVisibility();
           if (button) button.classList.add('active');
         }
       } catch (error) {
@@ -652,6 +1280,10 @@ function toggleGTFSMetroLayer() {
     }
     gtfsTransportVisible = false;
     if (button) button.classList.remove('active');
+
+    if (currentDistrictView && districtData[currentDistrictView]) {
+      showDistrictFilteredData(districtData[currentDistrictView].latLngs);
+    }
   }
 }
 
@@ -794,6 +1426,8 @@ function zoomToDistrict(districtCode) {
 
   renderNeighborhoods();
 
+  showDistrictFilteredData(district.latLngs);
+
   setTimeout(function() {
     if (selectedDistrictLayer) {
       selectedDistrictLayer.bringToFront();
@@ -812,6 +1446,27 @@ function zoomToNeighborhood(neighborhoodName) {
   if (selectedDistrictLayer) {
     map.removeLayer(selectedDistrictLayer);
     selectedDistrictLayer = null;
+  }
+
+  clearDistrictFilteredLayers();
+
+  if (gtfsTransportLayer) {
+    map.removeLayer(gtfsTransportLayer);
+  }
+  if (gtfsStopsLayer) {
+    map.removeLayer(gtfsStopsLayer);
+  }
+  if (gtfsBusLayer) {
+    map.removeLayer(gtfsBusLayer);
+  }
+  if (gtfsBusStopsLayer) {
+    map.removeLayer(gtfsBusStopsLayer);
+  }
+  if (bicingLayer) {
+    map.removeLayer(bicingLayer);
+  }
+  if (sportsLayer) {
+    map.removeLayer(sportsLayer);
   }
 
   selectedNeighborhoodLayer = L.polygon(neighborhood.latLngs || neighborhood.coordinates, {
@@ -851,6 +1506,20 @@ function zoomToNeighborhood(neighborhoodName) {
 
   renderNeighborhoods();
 
+  showNeighborhoodFilteredData(neighborhood.latLngs || neighborhood.coordinates);
+
+  var bicingButton = document.getElementById('bicing-toggle');
+  if (bicingButton && !bicingVisible) {
+    bicingVisible = true;
+    bicingButton.classList.add('active');
+  }
+
+  var sportsButton = document.getElementById('sports-toggle');
+  if (sportsButton && !sportsVisible) {
+    sportsVisible = true;
+    sportsButton.classList.add('active');
+  }
+
   setTimeout(function() {
     if (selectedNeighborhoodLayer) {
       selectedNeighborhoodLayer.bringToFront();
@@ -869,6 +1538,9 @@ function resetDistrictView() {
   }
   currentDistrictView = null;
   currentNeighborhoodView = null;
+
+  clearDistrictFilteredLayers();
+  clearNeighborhoodFilteredLayers();
 
   var headers = document.querySelectorAll('.legend-district-header');
   headers.forEach(function(header) {
@@ -909,6 +1581,9 @@ function initMap() {
     if (gtfsTransportVisible || gtfsBusVisible) {
       updateGTFSStopsVisibility();
       updateGTFSLinesWeight();
+    } else if (currentDistrictView || currentNeighborhoodView) {
+      updateGTFSStopsVisibility();
+      updateGTFSLinesWeight();
     }
   });
 
@@ -938,6 +1613,11 @@ function initMap() {
   var sportsToggle = document.getElementById('sports-toggle');
   if (sportsToggle) {
     sportsToggle.addEventListener('click', toggleSportsLayer);
+  }
+
+  var bicingToggle = document.getElementById('bicing-toggle');
+  if (bicingToggle) {
+    bicingToggle.addEventListener('click', toggleBicingLayer);
   }
 
   var transportToggle = document.getElementById('transport-toggle');
