@@ -1,0 +1,1406 @@
+[
+  {
+    "id": 99400180982,
+    "name": "Estació de Servei Petrocat *Ciutat d'Asunción",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.44248741441349,
+      "lng": 2.1995816419088463
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de la Ciutat d'Asunción",
+      "street_number": "69",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990128227,
+    "name": "Estació de Servei Moeve *Urgell - Paris",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39011173081793,
+      "lng": 2.1477780974132075
+    },
+    "lines": [],
+    "address": {
+      "street": "Comte d'Urgell",
+      "street_number": "219*221",
+      "zip_code": "08036",
+      "district": "Eixample",
+      "neighborhood": "l'Antiga Esquerra de l'Eixample",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990171985,
+    "name": "Estació de Servei Galp *Horta",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.42967132019107,
+      "lng": 2.1614173084888417
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer del Tajo",
+      "street_number": "28 - 34",
+      "zip_code": "08032",
+      "district": "Horta-Guinardó",
+      "neighborhood": "Horta",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990112696,
+    "name": "Estació de Servei Sacasa S.A.",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.43597207646549,
+      "lng": 2.2013331516891768
+    },
+    "lines": [],
+    "address": {
+      "street": "Sant Adrià",
+      "street_number": "81",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990073362,
+    "name": "Estació de Servei Favencia Julia S.A",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.445490449928776,
+      "lng": 2.179105349056451
+    },
+    "lines": [],
+    "address": {
+      "street": "Via Júlia",
+      "street_number": "207 - 209",
+      "zip_code": "08042",
+      "district": "Nou Barris",
+      "neighborhood": "Verdun",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990229997,
+    "name": "Estació de Servei Galp *Maragall",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41586674740227,
+      "lng": 2.180213691074698
+    },
+    "lines": [],
+    "address": {
+      "street": "Rbla Volart",
+      "street_number": "2",
+      "zip_code": "08041",
+      "district": "Horta-Guinardó",
+      "neighborhood": "el Guinardó",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 92184090217,
+    "name": "Estació de Servei Repsol *Valldaura",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.43935063711829,
+      "lng": 2.1612079409142364
+    },
+    "lines": [],
+    "address": {
+      "street": "Pg Valldaura",
+      "street_number": "106",
+      "zip_code": "08042",
+      "district": "Horta-Guinardó",
+      "neighborhood": "Horta",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400742394,
+    "name": "Estació de Servei Repsol  *Legalitat",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.40872485635768,
+      "lng": 2.1617750360949763
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de la Legalitat",
+      "street_number": "57 - 63",
+      "zip_code": "08024",
+      "district": "Gràcia",
+      "neighborhood": "el Camp d'en Grassot i Gràcia Nova",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990119298,
+    "name": "Estació de Servei Avinguda Sarrià",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.392549873882736,
+      "lng": 2.132443653130336
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Sarrià",
+      "street_number": "126",
+      "zip_code": "08017",
+      "district": "Sarrià-Sant Gervasi",
+      "neighborhood": "les Tres Torres",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990113215,
+    "name": "Estació de Servei Sant Andreu",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.44380915074964,
+      "lng": 2.188318269492917
+    },
+    "lines": [],
+    "address": {
+      "street": "Gran de Sant Andreu",
+      "street_number": "513",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "Sant Andreu",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990270724,
+    "name": "Estació de Servei Moeve *Clot",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41456286247904,
+      "lng": 2.190578596287613
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer del Clot",
+      "street_number": "181",
+      "zip_code": "08027",
+      "district": "Sant Martí",
+      "neighborhood": "el Clot",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990099813,
+    "name": "Estació de Servei Turó Park - M Automocion",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41086894910172,
+      "lng": 2.1989967023328694
+    },
+    "lines": [],
+    "address": {
+      "street": "C Perú",
+      "street_number": "171",
+      "zip_code": "08018",
+      "district": "Sant Martí",
+      "neighborhood": "Provençals del Poblenou",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99152114116,
+    "name": "Assortidor Casanova",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.38306605795713,
+      "lng": 2.1617321952590913
+    },
+    "lines": [],
+    "address": {
+      "street": "Casanova",
+      "street_number": "23",
+      "zip_code": "08011",
+      "district": "Eixample",
+      "neighborhood": "Sant Antoni",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 92086032826,
+    "name": "Estació de Servei Santander",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.43252578170758,
+      "lng": 2.2056590835521086
+    },
+    "lines": [],
+    "address": {
+      "street": "C Santander",
+      "street_number": "91",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 92086032390,
+    "name": "Estació de Servei",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.415032286394016,
+      "lng": 2.1805136168824455
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de Maragall",
+      "street_number": "33 - 35",
+      "zip_code": "08041",
+      "district": "Sant Martí",
+      "neighborhood": "el Camp de l'Arpa del Clot",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990351593,
+    "name": "Estació de Servei Meroil Energy Express *Galileu",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.3818267088789,
+      "lng": 2.133327665824854
+    },
+    "lines": [],
+    "address": {
+      "street": "Galileu",
+      "street_number": "210",
+      "zip_code": "08028",
+      "district": "Les Corts",
+      "neighborhood": "les Corts",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990481339,
+    "name": "Benzinera Barcinova 98",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39990856320112,
+      "lng": 2.19863872937715
+    },
+    "lines": [],
+    "address": {
+      "street": "C Pujades",
+      "street_number": "154",
+      "zip_code": "08005",
+      "district": "Sant Martí",
+      "neighborhood": "el Poblenou",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990089999,
+    "name": "Estació de Servei Moianès",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.37187507265493,
+      "lng": 2.1425355118811833
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer del Moianès",
+      "street_number": "34",
+      "zip_code": "08014",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "Hostafrancs",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990401634,
+    "name": "Estació de Servei Repsol * Av Mare Deu Montserrat",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41497316210168,
+      "lng": 2.165643245686939
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Mare Déu de Montserrat",
+      "street_number": "87",
+      "zip_code": "08024",
+      "district": "Horta-Guinardó",
+      "neighborhood": "Can Baró",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400298270,
+    "name": "Benzinera",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.430884305854235,
+      "lng": 2.160593939140989
+    },
+    "lines": [],
+    "address": {
+      "street": "Plaça d'Eivissa",
+      "street_number": "12",
+      "zip_code": "08032",
+      "district": "Horta-Guinardó",
+      "neighborhood": "Horta",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990238103,
+    "name": "Estació de Servei Ballenoil *Craywinckel",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.412242501669986,
+      "lng": 2.1398284832598398
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Craywinckel",
+      "street_number": "1",
+      "zip_code": "08022",
+      "district": "Sarrià-Sant Gervasi",
+      "neighborhood": "el Putxet i el Farró",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 98096132919,
+    "name": "Estació de Servei Repsol  *Nus Trinitat",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.446547485391,
+      "lng": 2.193536290171907
+    },
+    "lines": [],
+    "address": {
+      "street": "Pg Santa Coloma",
+      "street_number": "71*73",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "Sant Andreu",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 92086010594,
+    "name": "Estació de Servei Moeve *Av Paral·lel",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.37484803511647,
+      "lng": 2.1547603103516146
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Paral.lel",
+      "street_number": "179",
+      "zip_code": "08004",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "el Poble-sec",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990356872,
+    "name": "Estació de Servei Galp *Pg Vall Hebron",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41965015697506,
+      "lng": 2.140032546630262
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de la Vall d'Hebron",
+      "street_number": "72 - 74",
+      "zip_code": "08023",
+      "district": "Gràcia",
+      "neighborhood": "Vallcarca i els Penitents",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400180983,
+    "name": "Estació de Servei Repsol *Passeig Guayaquil",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.442960203115305,
+      "lng": 2.206120944998159
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de Guayaquil",
+      "street_number": "25 - 27",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990535297,
+    "name": "Estació de Servei Moeve Estació del Nord",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39273452163835,
+      "lng": 2.180887943754833
+    },
+    "lines": [],
+    "address": {
+      "street": "Roger de Flor",
+      "street_number": "58",
+      "zip_code": "08013",
+      "district": "Eixample",
+      "neighborhood": "el Fort Pienc",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990014121,
+    "name": "Estació de Servei BP Almogávars",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39931883501849,
+      "lng": 2.1928837444772586
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer dels Almogàvers",
+      "street_number": "159 - 161",
+      "zip_code": "08018",
+      "district": "Sant Martí",
+      "neighborhood": "el Parc i la Llacuna del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742302,
+    "name": "Estació de Servei Galp *Pg Zona Franca",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.355233843720754,
+      "lng": 2.142311890695771
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de la Zona Franca",
+      "street_number": "75 - 81",
+      "zip_code": "08038",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742307,
+    "name": "Estació de Servei Ballenoil *Ciutat d'Asunción",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.437284731118,
+      "lng": 2.2009271165858095
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de la Ciutat d'Asunción",
+      "street_number": "12B",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742320,
+    "name": "Estació de Servei Meroil *Av Meridiana",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.4475648043227,
+      "lng": 2.1882506209972
+    },
+    "lines": [],
+    "address": {
+      "street": "Avinguda Meridiana",
+      "street_number": "666",
+      "zip_code": "08033",
+      "district": "Sant Andreu",
+      "neighborhood": "la Trinitat Vella",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 92168166533,
+    "name": "Estació de Servei Favència",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.44349816299026,
+      "lng": 2.1708628387230773
+    },
+    "lines": [],
+    "address": {
+      "street": "Via Favència",
+      "street_number": "119 - 121",
+      "zip_code": "08042",
+      "district": "Nou Barris",
+      "neighborhood": "Canyelles",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 92086032825,
+    "name": "Estació de Servei Arrabassada",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.430436962336046,
+      "lng": 2.128847815553079
+    },
+    "lines": [],
+    "address": {
+      "street": "Carretera de Sant Cugat",
+      "street_number": "190 - 198",
+      "zip_code": "08035",
+      "district": "Horta-Guinardó",
+      "neighborhood": "Sant Genís dels Agudells",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990167065,
+    "name": "Estació de Servei BP Dani",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.3860550164403,
+      "lng": 2.1296204590539527
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Joan Güell",
+      "street_number": "203",
+      "zip_code": "08028",
+      "district": "Les Corts",
+      "neighborhood": "les Corts",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 98096132428,
+    "name": "Estació de Servei Repsol   *Nus Collserola",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41626907720655,
+      "lng": 2.136205056367458
+    },
+    "lines": [],
+    "address": {
+      "street": "C Collserola",
+      "street_number": "2",
+      "zip_code": "08035",
+      "district": "Gràcia",
+      "neighborhood": "Vallcarca i els Penitents",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99014130459,
+    "name": "Estació de Servei Repsol *Zona Franca",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.35313368022258,
+      "lng": 2.14383386025509
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de la Zona Franca",
+      "street_number": "35",
+      "zip_code": "08038",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99015092941,
+    "name": "Estació de Servei Aditi y Gas 2018",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.35566741098527,
+      "lng": 2.1425678516569646
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de la Zona Franca",
+      "street_number": "82 - 84",
+      "zip_code": "08038",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina de Port",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990332595,
+    "name": "Estació de Servei Moeve *Pedralbes",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39269599560134,
+      "lng": 2.111486130409106
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Esplugues",
+      "street_number": "103",
+      "zip_code": "08034",
+      "district": "Les Corts",
+      "neighborhood": "Pedralbes",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990105162,
+    "name": "Estació de Servei Tamoil *Pujades",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.406636217399324,
+      "lng": 2.207055800187666
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Pujades",
+      "street_number": "309",
+      "zip_code": "08019",
+      "district": "Sant Martí",
+      "neighborhood": "Diagonal Mar i el Front Marítim del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990537679,
+    "name": "Estació de Servei Galp *Plaça Cerdà",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.36306490028813,
+      "lng": 2.1366567104614647
+    },
+    "lines": [],
+    "address": {
+      "street": "Pg Zona Franca",
+      "street_number": "221*239",
+      "zip_code": "08038",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina de Port",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990694762,
+    "name": "Estació de Servei Galp *Bac de Roda",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.40615453631707,
+      "lng": 2.2061504404993886
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Bac de Roda",
+      "street_number": "66 - 70",
+      "zip_code": "08019",
+      "district": "Sant Martí",
+      "neighborhood": "Diagonal Mar i el Front Marítim del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990493147,
+    "name": "Estació de Servei B-Oil",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.409536805280396,
+      "lng": 2.201667029590425
+    },
+    "lines": [],
+    "address": {
+      "street": "C Bac de Roda",
+      "street_number": "130*134",
+      "zip_code": "08020",
+      "district": "Sant Martí",
+      "neighborhood": "Provençals del Poblenou",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990035361,
+    "name": "Estació de Servei Moeve Aragó-Casanova",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.38627079308905,
+      "lng": 2.157491265250293
+    },
+    "lines": [],
+    "address": {
+      "street": "Casanova",
+      "street_number": "89",
+      "zip_code": "08011",
+      "district": "Eixample",
+      "neighborhood": "l'Antiga Esquerra de l'Eixample",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990084520,
+    "name": "Estació de Servei Galp *Paral.lel",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.37520690867954,
+      "lng": 2.161337577856162
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Paral.lel",
+      "street_number": "132",
+      "zip_code": "08015",
+      "district": "Eixample",
+      "neighborhood": "Sant Antoni",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400742487,
+    "name": "Estació de Servei Shell *Zona Franca",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.324445209923056,
+      "lng": 2.133222686425836
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer A Zona Franca",
+      "street_number": "3",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742490,
+    "name": "Benzinera Confortauto",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.3371287025344,
+      "lng": 2.1277326966416767
+    },
+    "lines": [],
+    "address": {
+      "street": "Avinguda Número 3",
+      "street_number": "1",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400269189,
+    "name": "Estació de servei Ballenoil*Lope de Vega",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.4059205915122,
+      "lng": 2.2013971595928963
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Lope de Vega",
+      "street_number": "139",
+      "zip_code": "08005",
+      "district": "Sant Martí",
+      "neighborhood": "el Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990340813,
+    "name": "Estació de Servei Repsol *Vila Olímpica",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39281096543382,
+      "lng": 2.2044347247832268
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Litoral",
+      "street_number": "49",
+      "zip_code": "08005",
+      "district": "Sant Martí",
+      "neighborhood": "el Poblenou",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990049154,
+    "name": "Estació de Servei Pi i Molist S.A.",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.43473223448779,
+      "lng": 2.172561583380084
+    },
+    "lines": [],
+    "address": {
+      "street": "Doctor Pi i Molist",
+      "street_number": "110",
+      "zip_code": "08016",
+      "district": "Nou Barris",
+      "neighborhood": "Porta",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400742382,
+    "name": "Estació de Servei Repsol  *Meridiana",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.4220111852788,
+      "lng": 2.186467927376136
+    },
+    "lines": [],
+    "address": {
+      "street": "Avinguda Meridiana",
+      "street_number": "267 - 269",
+      "zip_code": "08027",
+      "district": "Sant Andreu",
+      "neighborhood": "la Sagrera",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742303,
+    "name": "Benzinera Petroprix",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.400095502347334,
+      "lng": 2.193778635493416
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Badajoz",
+      "street_number": "108 - 110",
+      "zip_code": "08018",
+      "district": "Sant Martí",
+      "neighborhood": "el Parc i la Llacuna del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742309,
+    "name": "Estació de Servei Tamoil *Tucumán",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.44512080863504,
+      "lng": 2.199681248244335
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Tucumán",
+      "street_number": "2",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742312,
+    "name": "Estació de Servei Premiun Energy La Sagrera",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.4278084243994,
+      "lng": 2.2027107607107914
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Santander",
+      "street_number": "50 - 56",
+      "zip_code": "08020",
+      "district": "Sant Martí",
+      "neighborhood": "la Verneda i la Pau",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742323,
+    "name": "Estació de Servei Gardenoil",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.392260721104236,
+      "lng": 2.1215865405010126
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer d'Eduardo Conde",
+      "street_number": "11",
+      "zip_code": "08034",
+      "district": "Sarrià-Sant Gervasi",
+      "neighborhood": "Sarrià",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742326,
+    "name": "Estació de Servei Galp *Almogàvers",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.394275696336074,
+      "lng": 2.186422334429699
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer dels Almogàvers",
+      "street_number": "66",
+      "zip_code": "08018",
+      "district": "Sant Martí",
+      "neighborhood": "el Parc i la Llacuna del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 75990002794,
+    "name": "Estació de servei Moeve Mitre S.A.",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.40249867799454,
+      "lng": 2.137815459240403
+    },
+    "lines": [],
+    "address": {
+      "street": "Ronda del General Mitre",
+      "street_number": "128",
+      "zip_code": "08021",
+      "district": "Sarrià-Sant Gervasi",
+      "neighborhood": "Sant Gervasi - Galvany",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400091983,
+    "name": "Aparcament Benzinera Repsol Balmes",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.40174582785476,
+      "lng": 2.1468909058813868
+    },
+    "lines": [],
+    "address": {
+      "street": "C Balmes",
+      "street_number": "288",
+      "zip_code": "08006",
+      "district": "Sarrià-Sant Gervasi",
+      "neighborhood": "el Putxet i el Farró",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990033081,
+    "name": "Estació de Servei Moeve *Bon Pastor",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.442887904565666,
+      "lng": 2.20304515446737
+    },
+    "lines": [],
+    "address": {
+      "street": "Caracas",
+      "street_number": "24",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990286648,
+    "name": "Estació de Servei Repsol *Av Bogatell",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39269163958494,
+      "lng": 2.1929463581129687
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Bogatell",
+      "street_number": "49",
+      "zip_code": "08005",
+      "district": "Sant Martí",
+      "neighborhood": "la Vila Olímpica del Poblenou",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 75990166564,
+    "name": "Estació de Servei Esparga",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39660649413887,
+      "lng": 2.1751185943732128
+    },
+    "lines": [],
+    "address": {
+      "street": "Diputació",
+      "street_number": "371",
+      "zip_code": "08013",
+      "district": "Eixample",
+      "neighborhood": "la Dreta de l'Eixample",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400742353,
+    "name": "Estació de Servei Egara *Av Rio de Janeiro",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.436271287779554,
+      "lng": 2.1800092630356565
+    },
+    "lines": [],
+    "address": {
+      "street": "Avinguda de Rio de Janeiro",
+      "street_number": "59X",
+      "zip_code": "08016",
+      "district": "Nou Barris",
+      "neighborhood": "Porta",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742479,
+    "name": "Benzinera Nieves",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.336009297902876,
+      "lng": 2.1311779939600477
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer 29 del BZ (No Oficial)",
+      "street_number": "50 - 62",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742494,
+    "name": "Estació de Servei La Tortuga",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.332823566603246,
+      "lng": 2.116278153275923
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer Major de Mercabarna",
+      "street_number": "26",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742484,
+    "name": "Estació de Servei Galp *Zona Franca",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.328470679689666,
+      "lng": 2.143347055518316
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer Y Zona Franca",
+      "street_number": "31 - 33",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742329,
+    "name": "Estació  de Servei Premoil",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.41775575097407,
+      "lng": 2.209750301757544
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Pere IV",
+      "street_number": "558",
+      "zip_code": "08019",
+      "district": "Sant Martí",
+      "neighborhood": "el Besòs i el Maresme",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742383,
+    "name": "Estació de Servei Shell *Iradier",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.40727961955082,
+      "lng": 2.1225477610122727
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer d'Iradier",
+      "street_number": "45",
+      "zip_code": "08017",
+      "district": "Sarrià-Sant Gervasi",
+      "neighborhood": "Sant Gervasi - la Bonanova",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742310,
+    "name": "Estació  de Servei Evolution Oil",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.397328415671225,
+      "lng": 2.1930936434449455
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Pere IV",
+      "street_number": "79",
+      "zip_code": "08018",
+      "district": "Sant Martí",
+      "neighborhood": "el Parc i la Llacuna del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742333,
+    "name": "Estació de Servei RACC",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.3812581976707,
+      "lng": 2.114433331315618
+    },
+    "lines": [],
+    "address": {
+      "street": "Avinguda del Doctor Marañón",
+      "street_number": "17",
+      "zip_code": "08028",
+      "district": "Les Corts",
+      "neighborhood": "la Maternitat i Sant Ramon",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99014125622,
+    "name": "Estació  de Servei Pere IV",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.413215215023556,
+      "lng": 2.205887016806977
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Pere IV",
+      "street_number": "440 - 446",
+      "zip_code": "08019",
+      "district": "Sant Martí",
+      "neighborhood": "Provençals del Poblenou",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99018085550,
+    "name": "Estació de Servei Mercabarna",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.32239739708992,
+      "lng": 2.128850019929806
+    },
+    "lines": [],
+    "address": {
+      "street": "Número 6 Zona Franca",
+      "street_number": "51",
+      "zip_code": "08004",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400742351,
+    "name": "Estació de Servei Repsol *Santander",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.43298161297002,
+      "lng": 2.2068324994242974
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de Santander",
+      "street_number": "100 - 104",
+      "zip_code": "08030",
+      "district": "Sant Andreu",
+      "neighborhood": "el Bon Pastor",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742381,
+    "name": "Estació de Servei Repsol  *València",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.40512920641091,
+      "lng": 2.179697492701108
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de València",
+      "street_number": "503",
+      "zip_code": "08013",
+      "district": "Eixample",
+      "neighborhood": "la Sagrada Família",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742388,
+    "name": "Estació de Servei Moeve *Diputació",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.37718442027312,
+      "lng": 2.149300864073908
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer de la Diputació",
+      "street_number": "9",
+      "zip_code": "08015",
+      "district": "Eixample",
+      "neighborhood": "la Nova Esquerra de l'Eixample",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 97028181326,
+    "name": "Benzinera Repsol",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.38272320377204,
+      "lng": 2.106545786941998
+    },
+    "lines": [],
+    "address": {
+      "street": "Av Diagonal",
+      "street_number": "687",
+      "zip_code": "08028",
+      "district": "Les Corts",
+      "neighborhood": "la Maternitat i Sant Ramon",
+      "city": "BARCELONA"
+    }
+  },
+  {
+    "id": 99400742345,
+    "name": "Estació de Servei Moeve *Pg. Valldaura",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.43841368585109,
+      "lng": 2.172559210043702
+    },
+    "lines": [],
+    "address": {
+      "street": "Passeig de Valldaura",
+      "street_number": "210 - 212",
+      "zip_code": "08042",
+      "district": "Nou Barris",
+      "neighborhood": "la Guineueta",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742476,
+    "name": "Gm Fuel Stations Zona Franca",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.336009297902876,
+      "lng": 2.1311779939600477
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer 29 del BZ (No Oficial)",
+      "street_number": "50 - 62",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400742482,
+    "name": "Benzinera Petrozal",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.322706576452426,
+      "lng": 2.134476416869202
+    },
+    "lines": [],
+    "address": {
+      "street": "Passatge de Moçambic",
+      "street_number": "2",
+      "zip_code": "08040",
+      "district": "Sants-Montjuïc",
+      "neighborhood": "la Marina del Prat Vermell",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400765125,
+    "name": "Estació de Servei Ballenoil *Clot",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.405830200186564,
+      "lng": 2.1873265141400893
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer del Clot",
+      "street_number": "2",
+      "zip_code": "08018",
+      "district": "Sant Martí",
+      "neighborhood": "el Clot",
+      "city": "Barcelona"
+    }
+  },
+  {
+    "id": 99400765142,
+    "name": "Estació  de Servei Q8 Taulat",
+    "category": "gasolinera",
+    "location": {
+      "lat": 41.39612165108762,
+      "lng": 2.201283623136248
+    },
+    "lines": [],
+    "address": {
+      "street": "Carrer del Taulat",
+      "street_number": "15",
+      "zip_code": "08005",
+      "district": "Sant Martí",
+      "neighborhood": "el Poblenou",
+      "city": "Barcelona"
+    }
+  }
+]

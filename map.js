@@ -14,6 +14,18 @@ var HIDDEN_DISTRICTS_KEY = 'bcn_hidden_districts';
 var transportLayer = null;
 var transportVisible = false;
 var transportData = null;
+var gtfsTransportLayer = null;
+var gtfsStopsLayer = null;
+var gtfsBusLayer = null;
+var gtfsBusStopsLayer = null;
+var gtfsTransportVisible = false;
+var gtfsBusVisible = false;
+var gtfsData = {
+  metroRoutes: null,
+  busRoutes: null,
+  metroStops: null,
+  busStops: null
+};
 var sportsLayer = null;
 var sportsVisible = false;
 var sportsData = null;
@@ -174,7 +186,9 @@ function geometryToPolygonsLngLat(geometry) {
 function loadPort(name) {
   var ports = {
     admin: function() { return fetch('data/barcelona_admin.json').then(function(r) { return r.json(); }); },
-    transport: function() { return fetch('data/transport_public.json').then(function(r) { return r.json(); }); },
+    transport: function() {
+      return fetch('data/transport_public/gasolineras.json').then(function(r) { return r.json(); });
+    },
     sports: function() { return fetch('data/sports_services.json').then(function(r) { return r.json(); }); }
   };
   var adapters = {
@@ -276,6 +290,7 @@ function buildTransportLayer() {
   if (!transportData || !transportData.length) return null;
   var layer = L.layerGroup();
   transportData.forEach(function(item) {
+    if (item.category !== 'gasolinera') return;
     var loc = item.location;
     if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return;
     var marker = L.marker([loc.lat, loc.lng], {
@@ -388,6 +403,295 @@ function toggleSportsLayer() {
       map.removeLayer(sportsLayer);
     }
     sportsVisible = false;
+    if (button) button.classList.remove('active');
+  }
+}
+
+function loadGTFSData() {
+  if (gtfsData.metroRoutes && gtfsData.busRoutes && gtfsData.metroStops && gtfsData.busStops) {
+    return Promise.resolve(gtfsData);
+  }
+  return Promise.all([
+    fetch('data/transport_public/metro_routes.json').then(function(r) { return r.json(); }).then(function(data) {
+      gtfsData.metroRoutes = data;
+      return data;
+    }).catch(function(err) {
+      console.error('Error cargando metro_routes.json:', err);
+      return [];
+    }),
+    fetch('data/transport_public/bus_routes.json').then(function(r) { return r.json(); }).then(function(data) {
+      gtfsData.busRoutes = data;
+      return data;
+    }).catch(function(err) {
+      console.error('Error cargando bus_routes.json:', err);
+      return [];
+    }),
+    fetch('data/transport_public/metro_stops.json').then(function(r) { return r.json(); }).then(function(data) {
+      gtfsData.metroStops = data;
+      return data;
+    }).catch(function(err) {
+      console.error('Error cargando metro_stops.json:', err);
+      return [];
+    }),
+    fetch('data/transport_public/bus_stops.json').then(function(r) { return r.json(); }).then(function(data) {
+      gtfsData.busStops = data;
+      return data;
+    }).catch(function(err) {
+      console.error('Error cargando bus_stops.json:', err);
+      return [];
+    })
+  ]).then(function() {
+    return gtfsData;
+  });
+}
+
+function getRouteTypeName(routeType) {
+  var types = {
+    '0': 'Tranvía',
+    '1': 'Metro',
+    '2': 'Tren',
+    '3': 'Bus',
+    '4': 'Ferry',
+    '5': 'Teleférico',
+    '6': 'Gondola',
+    '7': 'Funicular'
+  };
+  return types[routeType] || 'Transporte';
+}
+
+function buildGTFSTransportLayer() {
+  if (!gtfsData.metroRoutes || !gtfsData.busRoutes) return null;
+
+  var metroRoutesLayer = L.layerGroup();
+  var metroStopsLayer = L.layerGroup();
+  var busRoutesLayer = L.layerGroup();
+  var busStopsLayer = L.layerGroup();
+
+  var currentZoom = map ? map.getZoom() : 13;
+  var weight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+
+  if (gtfsData.metroRoutes) {
+    gtfsData.metroRoutes.forEach(function(route) {
+      var polyline = L.polyline(route.path, {
+        color: route.color,
+        weight: weight,
+        opacity: 0.8
+      });
+      polyline._gtfsWeight = weight;
+      polyline._gtfsRouteType = route.type;
+      polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+        permanent: false,
+        direction: 'top',
+        className: 'neighborhood-tooltip'
+      });
+      metroRoutesLayer.addLayer(polyline);
+    });
+  }
+
+  if (gtfsData.busRoutes) {
+    gtfsData.busRoutes.forEach(function(route) {
+      var polyline = L.polyline(route.path, {
+        color: route.color,
+        weight: weight,
+        opacity: 0.8
+      });
+      polyline._gtfsWeight = weight;
+      polyline._gtfsRouteType = route.type;
+      polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+        permanent: false,
+        direction: 'top',
+        className: 'neighborhood-tooltip'
+      });
+      busRoutesLayer.addLayer(polyline);
+    });
+  }
+
+  if (gtfsData.metroStops) {
+    gtfsData.metroStops.forEach(function(stop) {
+      var marker = L.circleMarker([stop.lat, stop.lng], {
+        radius: 5,
+        fillColor: '#ff6b6b',
+        color: '#fff',
+        weight: 2,
+        opacity: 0.9,
+        fillOpacity: 0.8
+      });
+      marker.bindTooltip(stop.name, {
+        permanent: false,
+        direction: 'top',
+        className: 'neighborhood-tooltip'
+      });
+      metroStopsLayer.addLayer(marker);
+    });
+  }
+
+  if (gtfsData.busStops) {
+    gtfsData.busStops.forEach(function(stop) {
+      var marker = L.circleMarker([stop.lat, stop.lng], {
+        radius: 5,
+        fillColor: '#ff6b6b',
+        color: '#fff',
+        weight: 2,
+        opacity: 0.9,
+        fillOpacity: 0.8
+      });
+      marker.bindTooltip(stop.name, {
+        permanent: false,
+        direction: 'top',
+        className: 'neighborhood-tooltip'
+      });
+      busStopsLayer.addLayer(marker);
+    });
+  }
+
+  return {
+    metro: {
+      routes: metroRoutesLayer,
+      stops: metroStopsLayer
+    },
+    bus: {
+      routes: busRoutesLayer,
+      stops: busStopsLayer
+    }
+  };
+}
+
+function updateGTFSStopsVisibility() {
+  if (!map) return;
+  var currentZoom = map.getZoom();
+  var shouldShow = currentZoom >= 15;
+
+  if (gtfsStopsLayer) {
+    if (shouldShow && gtfsTransportVisible) {
+      if (!map.hasLayer(gtfsStopsLayer)) {
+        gtfsStopsLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(gtfsStopsLayer)) {
+        map.removeLayer(gtfsStopsLayer);
+      }
+    }
+  }
+
+  if (gtfsBusStopsLayer) {
+    if (shouldShow && gtfsBusVisible) {
+      if (!map.hasLayer(gtfsBusStopsLayer)) {
+        gtfsBusStopsLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(gtfsBusStopsLayer)) {
+        map.removeLayer(gtfsBusStopsLayer);
+      }
+    }
+  }
+}
+
+function updateGTFSLinesWeight() {
+  if (!map) return;
+  var currentZoom = map.getZoom();
+  var newWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+
+  if (gtfsTransportLayer) {
+    gtfsTransportLayer.eachLayer(function(layer) {
+      if (layer instanceof L.Polyline) {
+        if (layer._gtfsWeight !== newWeight) {
+          layer.setStyle({ weight: newWeight });
+          layer._gtfsWeight = newWeight;
+        }
+      }
+    });
+  }
+
+  if (gtfsBusLayer) {
+    gtfsBusLayer.eachLayer(function(layer) {
+      if (layer instanceof L.Polyline) {
+        if (layer._gtfsWeight !== newWeight) {
+          layer.setStyle({ weight: newWeight });
+          layer._gtfsWeight = newWeight;
+        }
+      }
+    });
+  }
+}
+
+function toggleGTFSMetroLayer() {
+  if (!map) return;
+  var button = document.getElementById('gtfs-metro-toggle');
+  if (!gtfsTransportVisible) {
+    loadGTFSData().then(function() {
+      try {
+        if (!gtfsTransportLayer || !gtfsStopsLayer) {
+          var layers = buildGTFSTransportLayer();
+          if (layers && layers.metro) {
+            gtfsTransportLayer = layers.metro.routes;
+            gtfsStopsLayer = layers.metro.stops;
+            if (layers.bus) {
+              gtfsBusLayer = layers.bus.routes;
+              gtfsBusStopsLayer = layers.bus.stops;
+            }
+          }
+        }
+        if (gtfsTransportLayer) {
+          gtfsTransportLayer.addTo(map);
+          updateGTFSStopsVisibility();
+          gtfsTransportVisible = true;
+          if (button) button.classList.add('active');
+        }
+      } catch (error) {
+        console.error('Error construyendo capa metro:', error);
+      }
+    }).catch(function(error) {
+      console.error('Error cargando datos GTFS:', error);
+    });
+  } else {
+    if (gtfsTransportLayer) {
+      map.removeLayer(gtfsTransportLayer);
+    }
+    if (gtfsStopsLayer) {
+      map.removeLayer(gtfsStopsLayer);
+    }
+    gtfsTransportVisible = false;
+    if (button) button.classList.remove('active');
+  }
+}
+
+function toggleGTFSBusLayer() {
+  if (!map) return;
+  var button = document.getElementById('gtfs-bus-toggle');
+  if (!gtfsBusVisible) {
+    loadGTFSData().then(function() {
+      try {
+        if (!gtfsBusLayer || !gtfsBusStopsLayer) {
+          var layers = buildGTFSTransportLayer();
+          if (layers && layers.bus) {
+            gtfsBusLayer = layers.bus.routes;
+            gtfsBusStopsLayer = layers.bus.stops;
+            if (layers.metro) {
+              gtfsTransportLayer = layers.metro.routes;
+              gtfsStopsLayer = layers.metro.stops;
+            }
+          }
+        }
+        if (gtfsBusLayer) {
+          gtfsBusLayer.addTo(map);
+          updateGTFSStopsVisibility();
+          gtfsBusVisible = true;
+          if (button) button.classList.add('active');
+        }
+      } catch (error) {
+        console.error('Error construyendo capa bus:', error);
+      }
+    }).catch(function(error) {
+      console.error('Error cargando datos GTFS:', error);
+    });
+  } else {
+    if (gtfsBusLayer) {
+      map.removeLayer(gtfsBusLayer);
+    }
+    if (gtfsBusStopsLayer) {
+      map.removeLayer(gtfsBusStopsLayer);
+    }
+    gtfsBusVisible = false;
     if (button) button.classList.remove('active');
   }
 }
@@ -602,6 +906,10 @@ function initMap() {
 
   map.on('zoomend', function() {
     console.log('Zoom actualizado:', map.getZoom());
+    if (gtfsTransportVisible || gtfsBusVisible) {
+      updateGTFSStopsVisibility();
+      updateGTFSLinesWeight();
+    }
   });
 
   map.on('moveend', function() {
@@ -635,6 +943,16 @@ function initMap() {
   var transportToggle = document.getElementById('transport-toggle');
   if (transportToggle) {
     transportToggle.addEventListener('click', toggleTransportLayer);
+  }
+
+  var gtfsMetroToggle = document.getElementById('gtfs-metro-toggle');
+  if (gtfsMetroToggle) {
+    gtfsMetroToggle.addEventListener('click', toggleGTFSMetroLayer);
+  }
+
+  var gtfsBusToggle = document.getElementById('gtfs-bus-toggle');
+  if (gtfsBusToggle) {
+    gtfsBusToggle.addEventListener('click', toggleGTFSBusLayer);
   }
 }
 
