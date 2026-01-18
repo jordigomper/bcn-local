@@ -118,10 +118,22 @@ function createElementsFromData(data) {
 
   if (data.sports) {
     data.sports.forEach(function(item) {
-      if (item.type === 'marker') {
-        var element = ElementFactory.createSingle(item, SportsElement);
-        if (element) elements.push(element);
-      }
+      if (!item.location || !item.location.lat || !item.location.lon) return;
+      
+      var transformedItem = {
+        id: item.id ? String(item.id) : 'sports_' + Math.random().toString(36).substr(2, 9),
+        type: 'marker',
+        coordinates: [item.location.lat, item.location.lon],
+        metadata: {
+          name: item.name || 'Servicio deportivo',
+          category: 'sports',
+          district: item.address ? item.address.district : null,
+          neighborhood: item.address ? item.address.neighborhood : null
+        }
+      };
+      
+      var element = ElementFactory.createSingle(transformedItem, SportsElement);
+      if (element) elements.push(element);
     });
   }
 

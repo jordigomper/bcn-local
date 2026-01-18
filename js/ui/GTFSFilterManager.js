@@ -1,0 +1,320 @@
+class GTFSFilterManager {
+  constructor(map, neighborhoodManager) {
+    this.map = map;
+    this.neighborhoodManager = neighborhoodManager;
+    this.gtfsTransportLayer = null;
+    this.gtfsStopsLayer = null;
+    this.gtfsBusLayer = null;
+    this.gtfsBusStopsLayer = null;
+    this.gtfsTransportVisible = false;
+    this.gtfsBusVisible = false;
+    this.gtfsData = {
+      metroRoutes: null,
+      busRoutes: null,
+      metroStops: null,
+      busStops: null
+    };
+    
+    this.setupZoomListener();
+  }
+
+  setupZoomListener() {
+    var self = this;
+    if (this.map && this.map.leafletMap) {
+      this.map.leafletMap.on('zoomend', function() {
+        if (self.gtfsTransportVisible || self.gtfsBusVisible) {
+          self.updateGTFSStopsVisibility();
+          self.updateGTFSLinesWeight();
+        }
+      });
+    }
+  }
+
+  loadGTFSData() {
+    if (this.gtfsData.metroRoutes && this.gtfsData.busRoutes && this.gtfsData.metroStops && this.gtfsData.busStops) {
+      return Promise.resolve(this.gtfsData);
+    }
+    var self = this;
+    return Promise.all([
+      fetch('data/transport_public/metro_routes.json').then(function(r) { return r.json(); }).then(function(data) {
+        self.gtfsData.metroRoutes = data;
+        return data;
+      }).catch(function(err) {
+        console.error('Error cargando metro_routes.json:', err);
+        return [];
+      }),
+      fetch('data/transport_public/bus_routes.json').then(function(r) { return r.json(); }).then(function(data) {
+        self.gtfsData.busRoutes = data;
+        return data;
+      }).catch(function(err) {
+        console.error('Error cargando bus_routes.json:', err);
+        return [];
+      }),
+      fetch('data/transport_public/metro_stops.json').then(function(r) { return r.json(); }).then(function(data) {
+        self.gtfsData.metroStops = data;
+        return data;
+      }).catch(function(err) {
+        console.error('Error cargando metro_stops.json:', err);
+        return [];
+      }),
+      fetch('data/transport_public/bus_stops.json').then(function(r) { return r.json(); }).then(function(data) {
+        self.gtfsData.busStops = data;
+        return data;
+      }).catch(function(err) {
+        console.error('Error cargando bus_stops.json:', err);
+        return [];
+      })
+    ]).then(function() {
+      return self.gtfsData;
+    });
+  }
+
+  buildGTFSTransportLayer() {
+    if (!this.gtfsData.metroRoutes || !this.gtfsData.busRoutes) return null;
+
+    var metroRoutesLayer = L.layerGroup();
+    var metroStopsLayer = L.layerGroup();
+    var busRoutesLayer = L.layerGroup();
+    var busStopsLayer = L.layerGroup();
+
+    var currentZoom = this.map && this.map.leafletMap ? this.map.leafletMap.getZoom() : 13;
+    var weight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+
+    if (this.gtfsData.metroRoutes) {
+      this.gtfsData.metroRoutes.forEach(function(route) {
+        if (!route.coordinates || route.type !== 'polyline') return;
+        var meta = route.metadata || {};
+        var polyline = L.polyline(route.coordinates, {
+          color: meta.color || '#000000',
+          weight: weight,
+          opacity: 0.8
+        });
+        polyline._gtfsWeight = weight;
+        polyline._gtfsRouteType = meta.routeType || '1';
+        polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '1'), {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        metroRoutesLayer.addLayer(polyline);
+      });
+    }
+
+    if (this.gtfsData.busRoutes) {
+      this.gtfsData.busRoutes.forEach(function(route) {
+        if (!route.coordinates || route.type !== 'polyline') return;
+        var meta = route.metadata || {};
+        var polyline = L.polyline(route.coordinates, {
+          color: meta.color || '#000000',
+          weight: weight,
+          opacity: 0.8
+        });
+        polyline._gtfsWeight = weight;
+        polyline._gtfsRouteType = meta.routeType || '3';
+        polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '3'), {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        busRoutesLayer.addLayer(polyline);
+      });
+    }
+
+    if (this.gtfsData.metroStops) {
+      this.gtfsData.metroStops.forEach(function(stop) {
+        if (!stop.coordinates || stop.type !== 'marker') return;
+        var coords = stop.coordinates;
+        if (!Array.isArray(coords) || coords.length < 2) return;
+        var meta = stop.metadata || {};
+        var routeType = getStopRouteType(stop.id, this.gtfsData.metroRoutes);
+        var marker = L.marker([coords[0], coords[1]], {
+          icon: buildStopIcon(routeType)
+        });
+        marker.bindTooltip(meta.name || 'Parada', {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        metroStopsLayer.addLayer(marker);
+      }.bind(this));
+    }
+
+    if (this.gtfsData.busStops) {
+      this.gtfsData.busStops.forEach(function(stop) {
+        if (!stop.coordinates || stop.type !== 'marker') return;
+        var coords = stop.coordinates;
+        if (!Array.isArray(coords) || coords.length < 2) return;
+        var meta = stop.metadata || {};
+        var marker = L.marker([coords[0], coords[1]], {
+          icon: buildStopIcon('3')
+        });
+        marker.bindTooltip(meta.name || 'Parada', {
+          permanent: false,
+          direction: 'top',
+          className: 'neighborhood-tooltip'
+        });
+        busStopsLayer.addLayer(marker);
+      });
+    }
+
+    return {
+      metro: {
+        routes: metroRoutesLayer,
+        stops: metroStopsLayer
+      },
+      bus: {
+        routes: busRoutesLayer,
+        stops: busStopsLayer
+      }
+    };
+  }
+
+  updateGTFSStopsVisibility() {
+    if (!this.map || !this.map.leafletMap) return;
+    var currentZoom = this.map.leafletMap.getZoom();
+    var shouldShowBus = currentZoom >= 15;
+
+    if (this.gtfsStopsLayer) {
+      if (this.gtfsTransportVisible) {
+        if (!this.map.leafletMap.hasLayer(this.gtfsStopsLayer)) {
+          this.gtfsStopsLayer.addTo(this.map.leafletMap);
+        }
+      } else {
+        if (this.map.leafletMap.hasLayer(this.gtfsStopsLayer)) {
+          this.map.leafletMap.removeLayer(this.gtfsStopsLayer);
+        }
+      }
+    }
+
+    if (this.gtfsBusStopsLayer) {
+      if (shouldShowBus && this.gtfsBusVisible) {
+        if (!this.map.leafletMap.hasLayer(this.gtfsBusStopsLayer)) {
+          this.gtfsBusStopsLayer.addTo(this.map.leafletMap);
+        }
+      } else {
+        if (this.map.leafletMap.hasLayer(this.gtfsBusStopsLayer)) {
+          this.map.leafletMap.removeLayer(this.gtfsBusStopsLayer);
+        }
+      }
+    }
+
+  }
+
+  updateGTFSLinesWeight() {
+    if (!this.map || !this.map.leafletMap) return;
+    var currentZoom = this.map.leafletMap.getZoom();
+    var newWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+
+    if (this.gtfsTransportLayer) {
+      this.gtfsTransportLayer.eachLayer(function(layer) {
+        if (layer instanceof L.Polyline) {
+          if (layer._gtfsWeight !== newWeight) {
+            layer.setStyle({ weight: newWeight });
+            layer._gtfsWeight = newWeight;
+          }
+        }
+      });
+    }
+
+    if (this.gtfsBusLayer) {
+      this.gtfsBusLayer.eachLayer(function(layer) {
+        if (layer instanceof L.Polyline) {
+          if (layer._gtfsWeight !== newWeight) {
+            layer.setStyle({ weight: newWeight });
+            layer._gtfsWeight = newWeight;
+          }
+        }
+      });
+    }
+
+  }
+
+  toggleGTFSMetroLayer() {
+    if (!this.map || !this.map.leafletMap) return;
+    var button = document.getElementById('gtfs-metro-toggle');
+    var self = this;
+    
+    if (!this.gtfsTransportVisible) {
+      this.loadGTFSData().then(function() {
+        try {
+          if (!self.gtfsTransportLayer || !self.gtfsStopsLayer) {
+            var layers = self.buildGTFSTransportLayer();
+            if (layers && layers.metro) {
+              self.gtfsTransportLayer = layers.metro.routes;
+              self.gtfsStopsLayer = layers.metro.stops;
+              if (layers.bus) {
+                self.gtfsBusLayer = layers.bus.routes;
+                self.gtfsBusStopsLayer = layers.bus.stops;
+              }
+            }
+          }
+          if (self.gtfsTransportLayer) {
+            self.gtfsTransportLayer.addTo(self.map.leafletMap);
+            self.gtfsTransportVisible = true;
+            if (self.gtfsStopsLayer) {
+              self.gtfsStopsLayer.addTo(self.map.leafletMap);
+            }
+            self.updateGTFSStopsVisibility();
+            if (button) button.classList.add('active');
+          }
+        } catch (error) {
+          console.error('Error construyendo capa metro:', error);
+        }
+      }).catch(function(error) {
+        console.error('Error cargando datos GTFS:', error);
+      });
+    } else {
+      if (this.gtfsTransportLayer) {
+        this.map.leafletMap.removeLayer(this.gtfsTransportLayer);
+      }
+      if (this.gtfsStopsLayer) {
+        this.map.leafletMap.removeLayer(this.gtfsStopsLayer);
+      }
+      this.gtfsTransportVisible = false;
+      if (button) button.classList.remove('active');
+    }
+  }
+
+  toggleGTFSBusLayer() {
+    if (!this.map || !this.map.leafletMap) return;
+    var button = document.getElementById('gtfs-bus-toggle');
+    var self = this;
+    
+    if (!this.gtfsBusVisible) {
+      this.loadGTFSData().then(function() {
+        try {
+          if (!self.gtfsBusLayer || !self.gtfsBusStopsLayer) {
+            var layers = self.buildGTFSTransportLayer();
+            if (layers && layers.bus) {
+              self.gtfsBusLayer = layers.bus.routes;
+              self.gtfsBusStopsLayer = layers.bus.stops;
+              if (layers.metro) {
+                self.gtfsTransportLayer = layers.metro.routes;
+                self.gtfsStopsLayer = layers.metro.stops;
+              }
+            }
+          }
+          if (self.gtfsBusLayer) {
+            self.gtfsBusLayer.addTo(self.map.leafletMap);
+            self.updateGTFSStopsVisibility();
+            self.gtfsBusVisible = true;
+            if (button) button.classList.add('active');
+          }
+        } catch (error) {
+          console.error('Error construyendo capa bus:', error);
+        }
+      }).catch(function(error) {
+        console.error('Error cargando datos GTFS:', error);
+      });
+    } else {
+      if (this.gtfsBusLayer) {
+        this.map.leafletMap.removeLayer(this.gtfsBusLayer);
+      }
+      if (this.gtfsBusStopsLayer) {
+        this.map.leafletMap.removeLayer(this.gtfsBusStopsLayer);
+      }
+      this.gtfsBusVisible = false;
+      if (button) button.classList.remove('active');
+    }
+  }
+}
