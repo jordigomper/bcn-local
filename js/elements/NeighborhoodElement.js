@@ -116,11 +116,7 @@ class NeighborhoodElement extends MapElement {
 
     var neighborhoodsToShow = [];
     for (var nName in neighborhoodData) {
-      var nData = neighborhoodData[nName];
-      var nDistrict = nData.district || '';
-      if (!neighborhoodManager.hiddenDistricts[nDistrict]) {
-        neighborhoodsToShow.push(nName);
-      }
+      neighborhoodsToShow.push(nName);
     }
 
     neighborhoodsToShow.forEach(function(nName) {

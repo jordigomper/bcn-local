@@ -2,13 +2,11 @@ class NeighborhoodManager {
   constructor(map, registry) {
     this.map = map;
     this.registry = registry;
-    this.hiddenDistricts = {};
     this.districtData = {};
     this.neighborhoodData = {};
     this.currentDistrictView = null;
     this.currentNeighborhoodView = null;
 
-    this.loadHiddenDistricts();
     this.setupZoomListener();
   }
 
@@ -20,29 +18,10 @@ class NeighborhoodManager {
     });
   }
 
-  loadHiddenDistricts() {
-    var raw = localStorage.getItem('bcn_hidden_districts');
-    if (raw) {
-      try {
-        this.hiddenDistricts = JSON.parse(raw) || {};
-      } catch (e) {
-        this.hiddenDistricts = {};
-      }
-    }
-  }
-
-  saveHiddenDistricts() {
-    localStorage.setItem('bcn_hidden_districts', JSON.stringify(this.hiddenDistricts));
-  }
-
   renderNeighborhoods() {
     var neighborhoodsToShow = [];
     for (var name in this.neighborhoodData) {
-      var neighborhood = this.neighborhoodData[name];
-      var district = neighborhood.district || '';
-      if (this.hiddenDistricts[district] === false) {
-        neighborhoodsToShow.push(name);
-      }
+      neighborhoodsToShow.push(name);
     }
 
     var self = this;
@@ -57,14 +36,7 @@ class NeighborhoodManager {
     this.map.addPersistentElements(neighborhoodsToShow);
   }
 
-  toggleDistrictVisibility(districtCode) {
-    if (this.hiddenDistricts[districtCode] === false) {
-      this.hiddenDistricts[districtCode] = true;
-    } else {
-      this.hiddenDistricts[districtCode] = false;
-    }
-    this.saveHiddenDistricts();
-    this.renderNeighborhoods();
+  toggleDistrictVisibility() {
   }
 
   updateTransportLinesWeight() {

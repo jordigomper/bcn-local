@@ -90,11 +90,7 @@ class DistrictElement extends MapElement {
 
     var neighborhoodsToShow = [];
     for (var nName in neighborhoodManager.neighborhoodData) {
-      var nData = neighborhoodManager.neighborhoodData[nName];
-      var nDistrict = nData.district || '';
-      if (!neighborhoodManager.hiddenDistricts[nDistrict]) {
-        neighborhoodsToShow.push(nName);
-      }
+      neighborhoodsToShow.push(nName);
     }
 
     neighborhoodsToShow.forEach(function(nName) {
