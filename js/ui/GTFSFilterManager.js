@@ -78,7 +78,9 @@ class GTFSFilterManager {
     var busStopsLayer = L.layerGroup();
 
     var currentZoom = this.map && this.map.leafletMap ? this.map.leafletMap.getZoom() : 13;
-    var weight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+    var baseWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+    var metroWeight = baseWeight;
+    var busWeight = baseWeight / 2;
 
     if (this.gtfsData.metroRoutes) {
       this.gtfsData.metroRoutes.forEach(function(route) {
@@ -86,10 +88,10 @@ class GTFSFilterManager {
         var meta = route.metadata || {};
         var polyline = L.polyline(route.coordinates, {
           color: meta.color || '#000000',
-          weight: weight,
+          weight: metroWeight,
           opacity: 0.8
         });
-        polyline._gtfsWeight = weight;
+        polyline._gtfsWeight = metroWeight;
         polyline._gtfsRouteType = meta.routeType || '1';
         polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '1'), {
           permanent: false,
@@ -106,10 +108,10 @@ class GTFSFilterManager {
         var meta = route.metadata || {};
         var polyline = L.polyline(route.coordinates, {
           color: meta.color || '#000000',
-          weight: weight,
+          weight: busWeight,
           opacity: 0.8
         });
-        polyline._gtfsWeight = weight;
+        polyline._gtfsWeight = busWeight;
         polyline._gtfsRouteType = meta.routeType || '3';
         polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '3'), {
           permanent: false,
@@ -203,14 +205,16 @@ class GTFSFilterManager {
   updateGTFSLinesWeight() {
     if (!this.map || !this.map.leafletMap) return;
     var currentZoom = this.map.leafletMap.getZoom();
-    var newWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+    var baseWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+    var newMetroWeight = baseWeight;
+    var newBusWeight = baseWeight / 2;
 
     if (this.gtfsTransportLayer) {
       this.gtfsTransportLayer.eachLayer(function(layer) {
         if (layer instanceof L.Polyline) {
-          if (layer._gtfsWeight !== newWeight) {
-            layer.setStyle({ weight: newWeight });
-            layer._gtfsWeight = newWeight;
+          if (layer._gtfsWeight !== newMetroWeight) {
+            layer.setStyle({ weight: newMetroWeight });
+            layer._gtfsWeight = newMetroWeight;
           }
         }
       });
@@ -219,9 +223,9 @@ class GTFSFilterManager {
     if (this.gtfsBusLayer) {
       this.gtfsBusLayer.eachLayer(function(layer) {
         if (layer instanceof L.Polyline) {
-          if (layer._gtfsWeight !== newWeight) {
-            layer.setStyle({ weight: newWeight });
-            layer._gtfsWeight = newWeight;
+          if (layer._gtfsWeight !== newBusWeight) {
+            layer.setStyle({ weight: newBusWeight });
+            layer._gtfsWeight = newBusWeight;
           }
         }
       });

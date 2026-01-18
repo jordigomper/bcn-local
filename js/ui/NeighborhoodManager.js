@@ -65,11 +65,15 @@ class NeighborhoodManager {
 
   updateTransportLinesWeight() {
     var zoom = this.map.getZoom();
-    var newWeight = (zoom >= 12.5 && zoom <= 14.5) ? 2 : 4;
+    var baseWeight = (zoom >= 12.5 && zoom <= 14.5) ? 2 : 4;
     var self = this;
 
     this.map.getAllElements().forEach(function(element) {
       if (element.type === 'polyline' && element.leafletLayer) {
+        var routeType = element.metadata ? element.metadata.routeType : null;
+        var isBus = routeType === '3' || (element.metadata && element.metadata.category === 'bus_route');
+        var newWeight = isBus ? baseWeight / 2 : baseWeight;
+        
         if (element.leafletLayer._gtfsWeight !== newWeight) {
           element.leafletLayer.setStyle({ weight: newWeight });
           element.leafletLayer._gtfsWeight = newWeight;

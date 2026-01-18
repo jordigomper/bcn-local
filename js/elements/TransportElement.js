@@ -38,7 +38,10 @@ class TransportElement extends MapElement {
 
   createPolyline() {
     var currentZoom = window.mapInstance ? window.mapInstance.getZoom() : 13;
-    var weight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+    var baseWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
+    var routeType = this.metadata.routeType || '1';
+    var isBus = routeType === '3' || this.metadata.category === 'bus_route';
+    var weight = isBus ? baseWeight / 2 : baseWeight;
     var color = this.metadata.color || '#000000';
 
     var polyline = L.polyline(this.coordinates, {
