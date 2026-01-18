@@ -59,13 +59,19 @@ class SelectionLegendManager {
     var self = this;
     setTimeout(function() {
       if (!self.resetButton || !self.container) return;
-      var legendHeight = self.container.offsetHeight || 500;
+      
+      var containerRect = self.container.getBoundingClientRect();
+      var windowHeight = window.innerHeight;
+      var legendTop = containerRect.top;
       var buttonHeight = self.resetButton.offsetHeight || 40;
-      var bottomPosition = 20 + legendHeight + 10;
+      
+      var bottomPosition = windowHeight - legendTop + 10;
+      
       if (self.resetButton) {
         self.resetButton.style.bottom = bottomPosition + 'px';
+        self.resetButton.style.right = '20px';
       }
-    }, 100);
+    }, 150);
   }
 
   render() {
@@ -163,7 +169,10 @@ class SelectionLegendManager {
     if (lines.length > 0) {
       linesHtml = '<div class="selection-legend-lines">';
       lines.forEach(function(line) {
-        linesHtml += '<span class="selection-legend-line">' + line + '</span>';
+        var lineName = line.name || line;
+        var lineColor = line.color || '#333';
+        var style = 'background: ' + lineColor + '; color: #fff; border-color: ' + lineColor + ';';
+        linesHtml += '<span class="selection-legend-line" style="' + style + '">' + lineName + '</span>';
       });
       linesHtml += '</div>';
     }
@@ -258,14 +267,22 @@ class SelectionLegendManager {
             if (routeName.length > 15) {
               displayName = routeName.substring(0, 12) + '...';
             }
-            lines.push(displayName);
+            var routeColor = meta.color || '#333';
+            lines.push({
+              name: displayName,
+              color: routeColor
+            });
             seenNames[routeName] = true;
           }
         }
       }
     });
     
-    return lines.sort();
+    lines.sort(function(a, b) {
+      return a.name.localeCompare(b.name);
+    });
+    
+    return lines;
   }
 
   updateTranslations() {
