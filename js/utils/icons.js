@@ -245,40 +245,63 @@ function getStopsForRoutes(routes, allStops) {
     var routeId = route.id;
     
     if (routeName) {
-      routeNames[routeName] = true;
+      routeNames[routeName] = route;
     }
     if (routeId) {
-      routeIds[routeId] = true;
+      routeIds[routeId] = route;
     }
   });
 
   var matchingStops = [];
   var seenStopIds = {};
+  var threshold = 0.002;
   
   allStops.forEach(function(stop) {
     if (seenStopIds[stop.id]) return;
+    if (!stop.coordinates || !Array.isArray(stop.coordinates) || stop.coordinates.length < 2) return;
     
-    var stopRouteNames = stop.metadata && stop.metadata.routeNames ? stop.metadata.routeNames : [];
+    var stopLat = stop.coordinates[0];
+    var stopLng = stop.coordinates[1];
     var stopMatches = false;
+    var stopRouteNames = stop.metadata && stop.metadata.routeNames ? stop.metadata.routeNames : [];
     
-    for (var i = 0; i < stopRouteNames.length; i++) {
-      if (routeNames[stopRouteNames[i]]) {
-        stopMatches = true;
-        break;
+    for (var j = 0; j < routes.length; j++) {
+      var route = routes[j];
+      if (!route.coordinates || !Array.isArray(route.coordinates)) continue;
+      
+      var routeName = (route.metadata && route.metadata.name) || route.id;
+      var hasMatchingName = false;
+      
+      for (var i = 0; i < stopRouteNames.length; i++) {
+        if (routeName === stopRouteNames[i]) {
+          hasMatchingName = true;
+          break;
+        }
       }
-    }
-    
-    if (!stopMatches && stop.id) {
-      var stopParts = stop.id.split('.');
-      if (stopParts.length >= 2) {
-        for (var j = 0; j < routes.length; j++) {
-          var route = routes[j];
-          var routeId = route.id || '';
-          if (routeId && stop.id.startsWith(routeId.split('.').slice(0, 2).join('.'))) {
-            stopMatches = true;
+      
+      if (!hasMatchingName) continue;
+      
+      var routePassesNear = false;
+      var sampleSize = Math.min(route.coordinates.length, 100);
+      var step = Math.max(1, Math.floor(route.coordinates.length / sampleSize));
+      
+      for (var k = 0; k < route.coordinates.length; k += step) {
+        var coord = route.coordinates[k];
+        if (Array.isArray(coord) && coord.length >= 2) {
+          var lat = coord[0];
+          var lng = coord[1];
+          var latDiff = Math.abs(lat - stopLat);
+          var lngDiff = Math.abs(lng - stopLng);
+          if (latDiff < threshold && lngDiff < threshold) {
+            routePassesNear = true;
             break;
           }
         }
+      }
+      
+      if (routePassesNear) {
+        stopMatches = true;
+        break;
       }
     }
     

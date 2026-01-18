@@ -59,14 +59,12 @@ class NeighborhoodManager {
   }
 
   updateStopsVisibility() {
-    var zoom = this.map.getZoom();
-    var shouldShowBus = zoom >= 15;
     var self = this;
 
     this.map.getAllElements().forEach(function(element) {
       if (element.type === 'marker' && element.metadata && element.metadata.category === 'bus_stop') {
         if (element.leafletLayer) {
-          if (shouldShowBus && element.state.visible) {
+          if (element.state.visible) {
             if (!self.map.leafletMap.hasLayer(element.leafletLayer)) {
               element.leafletLayer.addTo(self.map.leafletMap);
             }

@@ -484,9 +484,7 @@ function setupEventListeners() {
 
   document.getElementById('gtfs-bus-toggle').addEventListener('click', function() {
     filterManager.toggleFilter('bus_route');
-    if (mapInstance.getZoom() >= 15) {
-      filterManager.toggleFilter('bus_stop');
-    }
+    filterManager.toggleFilter('bus_stop');
     this.classList.toggle('active');
   });
 

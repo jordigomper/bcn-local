@@ -177,8 +177,6 @@ class GTFSFilterManager {
 
   updateGTFSStopsVisibility() {
     if (!this.map || !this.map.leafletMap) return;
-    var currentZoom = this.map.leafletMap.getZoom();
-    var shouldShowBus = currentZoom >= 15;
 
     if (this.gtfsStopsLayer) {
       if (this.gtfsTransportVisible) {
@@ -193,7 +191,7 @@ class GTFSFilterManager {
     }
 
     if (this.gtfsBusStopsLayer) {
-      if (shouldShowBus && this.gtfsBusVisible) {
+      if (this.gtfsBusVisible) {
         if (!this.map.leafletMap.hasLayer(this.gtfsBusStopsLayer)) {
           this.gtfsBusStopsLayer.addTo(this.map.leafletMap);
         }
