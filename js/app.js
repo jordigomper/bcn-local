@@ -1,7 +1,7 @@
 var mapInstance = null;
 var elementRegistry = null;
 var filterManager = null;
-var legendManager = null;
+var districtsListManager = null;
 
 function loadJSON(url) {
   return fetch(url).then(r => r.json());
@@ -322,9 +322,9 @@ function resetMapView() {
 
   mapInstance.clear();
 
-  if (mapInstance.legendManager) {
-    mapInstance.legendManager.setActiveDistrict(null);
-    mapInstance.legendManager.setActiveNeighborhood(null);
+  if (mapInstance.districtsListManager) {
+    mapInstance.districtsListManager.setActiveDistrict(null);
+    mapInstance.districtsListManager.setActiveNeighborhood(null);
   }
 
   if (mapInstance.neighborhoodManager) {
@@ -360,8 +360,8 @@ function initApp() {
   filterManager = new FilterManager(mapInstance, elementRegistry);
   mapInstance.filterManager = filterManager;
 
-  legendManager = new LegendManager('neighborhood-legend');
-  mapInstance.legendManager = legendManager;
+  districtsListManager = new DistrictsListManager('districts-list');
+  mapInstance.districtsListManager = districtsListManager;
 
   loadData().then(function(data) {
     var result = createElementsFromData(data);
@@ -374,7 +374,7 @@ function initApp() {
     neighborhoodManager.neighborhoodData = result.neighborhoods;
     mapInstance.neighborhoodManager = neighborhoodManager;
 
-    legendManager.rebuild(result.districts, result.neighborhoods);
+    districtsListManager.rebuild(result.districts, result.neighborhoods);
     neighborhoodManager.renderNeighborhoods();
 
     setupEventListeners();

@@ -1,11 +1,12 @@
 var I18n = {
   currentLanguage: 'es',
-  
+
   translations: {
     es: {
       appName: 'BCN Local',
       appTitle: 'BCN Local - Barcelona Native Mobility',
       languageSelector: 'Idioma',
+      districtsList: 'Lista de distritos',
       metroTren: 'Metro/Tren',
       buses: 'Buses',
       gasolineras: 'Gasolineras',
@@ -33,6 +34,7 @@ var I18n = {
       appName: 'BCN Local',
       appTitle: 'BCN Local - Barcelona Native Mobility',
       languageSelector: 'Idioma',
+      districtsList: 'Llista de districtes',
       metroTren: 'Metro/Tren',
       buses: 'Busos',
       gasolineras: 'Gasolineres',
@@ -60,6 +62,7 @@ var I18n = {
       appName: 'BCN Local',
       appTitle: 'BCN Local - Barcelona Native Mobility',
       languageSelector: 'Language',
+      districtsList: 'Districts list',
       metroTren: 'Metro/Train',
       buses: 'Buses',
       gasolineras: 'Gas Stations',
@@ -84,11 +87,11 @@ var I18n = {
       transporte: 'Transport'
     }
   },
-  
+
   t: function(key) {
     return this.translations[this.currentLanguage][key] || key;
   },
-  
+
   setLanguage: function(lang) {
     if (this.translations[lang]) {
       this.currentLanguage = lang;
@@ -96,7 +99,7 @@ var I18n = {
       this.updateUI();
     }
   },
-  
+
   init: function() {
     var savedLang = localStorage.getItem('bcn_local_language');
     if (savedLang && this.translations[savedLang]) {
@@ -113,7 +116,7 @@ var I18n = {
     }
     this.updateUI();
   },
-  
+
   updateUI: function() {
     if (typeof window.updateTranslations === 'function') {
       window.updateTranslations();

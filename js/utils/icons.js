@@ -123,7 +123,7 @@ function getRouteTypeName(routeType) {
     };
     return types[routeType] || 'Transporte';
   }
-  
+
   var typeKeys = {
     '0': 'tranvia',
     '1': 'metro',
@@ -134,7 +134,7 @@ function getRouteTypeName(routeType) {
     '6': 'gondola',
     '7': 'funicular'
   };
-  
+
   var key = typeKeys[routeType] || 'transporte';
   return window.I18n.t(key);
 }

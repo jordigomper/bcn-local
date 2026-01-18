@@ -1,4 +1,4 @@
-class LegendManager {
+class DistrictsListManager {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     this.districts = {};
@@ -48,8 +48,6 @@ class LegendManager {
   }
 
   attachEventListeners() {
-    var self = this;
-
     var districtHeaders = this.container.querySelectorAll('.district-name');
     districtHeaders.forEach(function(header) {
       header.addEventListener('click', function() {
@@ -136,5 +134,4 @@ class LegendManager {
       }
     }
   }
-
 }

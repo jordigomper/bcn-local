@@ -133,8 +133,8 @@ class NeighborhoodElement extends MapElement {
 
     map.renderElements(filteredIds);
 
-    if (map.legendManager) {
-      map.legendManager.setActiveNeighborhood(name);
+    if (map.districtsListManager) {
+      map.districtsListManager.setActiveNeighborhood(name);
     }
 
     if (window.updateResetButtonVisibility) {

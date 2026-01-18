@@ -3,7 +3,7 @@ class AppMap extends Map {
     super(containerId, options);
     this.registry = new ElementRegistry();
     this.filterManager = null;
-    this.legendManager = null;
+    this.districtsListManager = null;
     this.neighborhoodManager = null;
   }
 

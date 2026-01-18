@@ -107,8 +107,8 @@ class DistrictElement extends MapElement {
 
     map.renderElements(filteredIds);
 
-    if (map.legendManager) {
-      map.legendManager.setActiveDistrict(this.id);
+    if (map.districtsListManager) {
+      map.districtsListManager.setActiveDistrict(this.id);
     }
 
     if (window.updateResetButtonVisibility) {
