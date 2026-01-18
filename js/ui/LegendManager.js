@@ -100,14 +100,41 @@ class LegendManager {
   }
 
   setActiveNeighborhood(neighborhoodName) {
+    var headers = document.querySelectorAll('.legend-district-header');
+    headers.forEach(function(header) {
+      header.classList.remove('active');
+    });
+
     var items = document.querySelectorAll('.legend-item');
+    var activeItem = null;
     items.forEach(function(item) {
       if (item.dataset.neighborhood === neighborhoodName) {
         item.classList.add('active');
+        activeItem = item;
       } else {
         item.classList.remove('active');
       }
     });
+
+    if (activeItem && this.container) {
+      var self = this;
+      var neighborhood = this.neighborhoods[neighborhoodName];
+      if (neighborhood && neighborhood.district) {
+        setTimeout(function() {
+          var districtHeader = self.container.querySelector('.legend-district-header .district-name[data-district="' + neighborhood.district + '"]');
+          if (districtHeader) {
+            var districtHeaderElement = districtHeader.closest('.legend-district-header');
+            if (districtHeaderElement) {
+              districtHeaderElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest'
+              });
+            }
+          }
+        }, 50);
+      }
+    }
   }
 
 }
