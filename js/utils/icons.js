@@ -127,3 +127,73 @@ function getStopRouteType(stopId, routes) {
 
   return '1';
 }
+
+function getStopRouteNames(stopId, routes, stopCoordinates) {
+  if (!stopId || !routes || !Array.isArray(routes)) {
+    return [];
+  }
+
+  var stopParts = stopId.split('.');
+  if (stopParts.length < 2) {
+    return [];
+  }
+
+  var routeNames = [];
+  var seenNames = {};
+
+  if (stopParts.length === 2) {
+    var firstDigit = stopParts[1] && stopParts[1].length > 0 ? stopParts[1][0] : '1';
+    var routePrefix = stopParts[0] + '.' + firstDigit;
+    
+    for (var i = 0; i < routes.length; i++) {
+      var route = routes[i];
+      var routeId = route.id || route.routeId;
+      if (routeId && routeId.startsWith(routePrefix + '.')) {
+        var meta = route.metadata || {};
+        var routeName = meta.name || routeId;
+        if (routeName && !seenNames[routeName]) {
+          routeNames.push(routeName);
+          seenNames[routeName] = true;
+        }
+      }
+    }
+  } else if (stopParts.length === 3 && stopCoordinates) {
+    var stopLat = stopCoordinates[0];
+    var stopLng = stopCoordinates[1];
+    var threshold = 0.001;
+    
+    for (var i = 0; i < routes.length; i++) {
+      var route = routes[i];
+      if (!route.coordinates || !Array.isArray(route.coordinates)) continue;
+      
+      var routePassesNear = false;
+      var sampleSize = Math.min(route.coordinates.length, 100);
+      var step = Math.max(1, Math.floor(route.coordinates.length / sampleSize));
+      
+      for (var j = 0; j < route.coordinates.length; j += step) {
+        var coord = route.coordinates[j];
+        if (Array.isArray(coord) && coord.length >= 2) {
+          var lat = coord[0];
+          var lng = coord[1];
+          var latDiff = Math.abs(lat - stopLat);
+          var lngDiff = Math.abs(lng - stopLng);
+          if (latDiff < threshold && lngDiff < threshold) {
+            routePassesNear = true;
+            break;
+          }
+        }
+      }
+      
+      if (routePassesNear) {
+        var meta = route.metadata || {};
+        var routeName = meta.name || route.id;
+        if (routeName && !seenNames[routeName]) {
+          routeNames.push(routeName);
+          seenNames[routeName] = true;
+        }
+      }
+    }
+  }
+
+  return routeNames.sort();
+}

@@ -204,8 +204,10 @@ function createElementsFromData(data) {
       if (item.type === 'marker') {
         var routes = data.metroRoutes || [];
         var routeType = getStopRouteType(item.id, routes);
+        var routeNames = getStopRouteNames(item.id, routes, item.coordinates);
         var meta = item.metadata || {};
         meta.routeType = routeType;
+        meta.routeNames = routeNames;
         item.metadata = meta;
         var element = ElementFactory.createSingle(item, StopElement);
         if (element) elements.push(element);
@@ -225,8 +227,11 @@ function createElementsFromData(data) {
   if (data.busStops) {
     data.busStops.forEach(function(item) {
       if (item.type === 'marker') {
+        var routes = data.busRoutes || [];
+        var routeNames = getStopRouteNames(item.id, routes, item.coordinates);
         var meta = item.metadata || {};
         meta.routeType = '3';
+        meta.routeNames = routeNames;
         item.metadata = meta;
         var element = ElementFactory.createSingle(item, StopElement);
         if (element) elements.push(element);

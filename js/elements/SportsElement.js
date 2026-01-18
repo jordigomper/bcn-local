@@ -4,13 +4,15 @@ class SportsElement extends MapElement {
   }
 
   createLeafletLayer() {
+    var hasUrl = this.metadata && this.metadata.url;
+    
     var marker = L.circleMarker(this.coordinates, {
-      radius: 4,
-      color: '#1565c0',
-      weight: 1,
-      opacity: 0.6,
-      fillColor: '#64b5f6',
-      fillOpacity: 0.4
+      radius: hasUrl ? 5 : 4,
+      color: hasUrl ? '#1976D2' : '#1565c0',
+      weight: hasUrl ? 2 : 1,
+      opacity: 0.8,
+      fillColor: hasUrl ? '#42A5F5' : '#64b5f6',
+      fillOpacity: hasUrl ? 0.6 : 0.4
     });
 
     var self = this;
@@ -39,6 +41,13 @@ class SportsElement extends MapElement {
   }
 
   getTooltip() {
-    return this.metadata.name || 'Servicio deportivo';
+    var name = this.metadata.name || 'Servicio deportivo';
+    var hasUrl = this.metadata && this.metadata.url;
+    
+    if (hasUrl) {
+      return name + '<br><small style="color: #2196F3;">Haz click para ir a la web</small>';
+    }
+    
+    return name;
   }
 }
