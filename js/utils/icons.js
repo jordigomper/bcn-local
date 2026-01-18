@@ -110,17 +110,33 @@ function buildTransportIcon(category) {
 }
 
 function getRouteTypeName(routeType) {
-  var types = {
-    '0': 'Tranvía',
-    '1': 'Metro',
-    '2': 'Tren',
-    '3': 'Bus',
-    '4': 'Ferry',
-    '5': 'Teleférico',
-    '6': 'Gondola',
-    '7': 'Funicular'
+  if (!window.I18n) {
+    var types = {
+      '0': 'Tranvía',
+      '1': 'Metro',
+      '2': 'Tren',
+      '3': 'Bus',
+      '4': 'Ferry',
+      '5': 'Teleférico',
+      '6': 'Gondola',
+      '7': 'Funicular'
+    };
+    return types[routeType] || 'Transporte';
+  }
+  
+  var typeKeys = {
+    '0': 'tranvia',
+    '1': 'metro',
+    '2': 'tren',
+    '3': 'bus',
+    '4': 'ferry',
+    '5': 'teleferico',
+    '6': 'gondola',
+    '7': 'funicular'
   };
-  return types[routeType] || 'Transporte';
+  
+  var key = typeKeys[routeType] || 'transporte';
+  return window.I18n.t(key);
 }
 
 function getStopRouteType(stopId, routes) {

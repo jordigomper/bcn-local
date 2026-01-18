@@ -112,11 +112,13 @@ class StopElement extends MapElement {
   }
 
   getTooltip() {
-    var name = this.metadata.name || 'Parada';
+    var defaultName = window.I18n ? window.I18n.t('parada') : 'Parada';
+    var name = this.metadata.name || defaultName;
     var routeNames = this.metadata.routeNames || [];
 
     if (routeNames.length > 0) {
-      return name + '<br><small>Líneas: ' + routeNames.join(', ') + '</small>';
+      var lineasText = window.I18n ? window.I18n.t('lineas') : 'Líneas';
+      return name + '<br><small>' + lineasText + ': ' + routeNames.join(', ') + '</small>';
     }
 
     return name;

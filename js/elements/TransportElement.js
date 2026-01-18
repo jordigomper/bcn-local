@@ -54,7 +54,8 @@ class TransportElement extends MapElement {
     polyline._gtfsRouteType = this.metadata.routeType || '1';
     polyline.transportElement = this;
 
-    var routeName = this.metadata.name || 'Ruta';
+    var defaultRoute = window.I18n ? window.I18n.t('ruta') : 'Ruta';
+    var routeName = this.metadata.name || defaultRoute;
     var routeType = getRouteTypeName(this.metadata.routeType || '1');
     polyline.bindTooltip(routeName + ' - ' + routeType, {
       permanent: false,

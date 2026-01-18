@@ -172,12 +172,13 @@ function createElementsFromData(data) {
 
       if (!hasAllowed || hasExcluded) return;
 
+      var defaultSports = window.I18n ? window.I18n.t('servicioDeportivo') : 'Servicio deportivo';
       var transformedItem = {
         id: item.id ? String(item.id) : 'sports_' + Math.random().toString(36).substr(2, 9),
         type: 'marker',
         coordinates: [item.location.lat, item.location.lon],
         metadata: {
-          name: item.name || 'Servicio deportivo',
+          name: item.name || defaultSports,
           category: 'sports',
           district: item.address ? item.address.district : null,
           neighborhood: item.address ? item.address.neighborhood : null,
@@ -348,6 +349,10 @@ function resetMapView() {
 }
 
 function initApp() {
+  if (window.I18n) {
+    window.I18n.init();
+  }
+
   mapInstance = new AppMap('map');
   window.mapInstance = mapInstance;
 
@@ -396,7 +401,37 @@ function initApp() {
   });
 }
 
+function updateTranslations() {
+  var elements = document.querySelectorAll('[data-i18n]');
+  elements.forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (key && window.I18n) {
+      el.textContent = window.I18n.t(key);
+    }
+  });
+
+  var titleElements = document.querySelectorAll('[data-i18n-title]');
+  titleElements.forEach(function(el) {
+    var key = el.getAttribute('data-i18n-title');
+    if (key && window.I18n) {
+      el.setAttribute('title', window.I18n.t(key));
+    }
+  });
+}
+
+window.updateTranslations = updateTranslations;
+
 function setupEventListeners() {
+  var languageSelector = document.getElementById('language-selector');
+  if (languageSelector) {
+    languageSelector.value = window.I18n ? window.I18n.currentLanguage : 'es';
+    languageSelector.addEventListener('change', function() {
+      if (window.I18n) {
+        window.I18n.setLanguage(this.value);
+      }
+    });
+  }
+
   document.getElementById('gtfs-metro-toggle').addEventListener('click', function() {
     filterManager.toggleFilter('metro_route');
     filterManager.toggleFilter('metro_stop');

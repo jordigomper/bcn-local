@@ -132,7 +132,8 @@ class GTFSFilterManager {
         var marker = L.marker([coords[0], coords[1]], {
           icon: buildStopIcon(routeType)
         });
-        marker.bindTooltip(meta.name || 'Parada', {
+        var defaultStop = window.I18n ? window.I18n.t('parada') : 'Parada';
+        marker.bindTooltip(meta.name || defaultStop, {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
@@ -150,7 +151,8 @@ class GTFSFilterManager {
         var marker = L.marker([coords[0], coords[1]], {
           icon: buildStopIcon('3')
         });
-        marker.bindTooltip(meta.name || 'Parada', {
+        var defaultStop = window.I18n ? window.I18n.t('parada') : 'Parada';
+        marker.bindTooltip(meta.name || defaultStop, {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
