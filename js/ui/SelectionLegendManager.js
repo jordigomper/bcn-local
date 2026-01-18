@@ -5,6 +5,7 @@ class SelectionLegendManager {
     this.content = document.getElementById('selection-legend-content');
     this.resetButton = document.getElementById('selection-legend-reset-button');
     this.currentView = null;
+    this.selectedRoute = null;
     this.setupResetButton();
   }
 
@@ -24,6 +25,7 @@ class SelectionLegendManager {
     
     if (!view || (!view.district && !view.neighborhood)) {
       this.hide();
+      this.selectedRoute = null;
       return;
     }
 
@@ -104,12 +106,183 @@ class SelectionLegendManager {
 
     this.content.innerHTML = html;
     this.updateTranslations();
+    this.setupLineClickHandlers();
     
     if (this.resetButton) {
       setTimeout(function() {
         this.updateResetButtonPosition();
       }.bind(this), 200);
     }
+  }
+
+  setupLineClickHandlers() {
+    var self = this;
+    var lineElements = this.content.querySelectorAll('.selection-legend-line');
+    
+    lineElements.forEach(function(lineEl) {
+      lineEl.style.cursor = 'pointer';
+      lineEl.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var routeName = this.getAttribute('data-route-name');
+        var routeType = this.getAttribute('data-route-type');
+        
+        if (self.selectedRoute && self.selectedRoute.name === routeName && self.selectedRoute.routeType === routeType) {
+          self.selectedRoute = null;
+          self.restoreOriginalView();
+        } else {
+          self.selectedRoute = {
+            name: routeName,
+            routeType: routeType
+          };
+          self.filterByRoute(routeName, routeType);
+        }
+        self.render();
+      });
+    });
+  }
+
+  restoreOriginalView() {
+    if (!this.map) return;
+    
+    var registry = this.map.getRegistry ? this.map.getRegistry() : null;
+    if (!registry) return;
+    
+    var allElements = registry.getAllElements();
+    var self = this;
+    
+    allElements.forEach(function(element) {
+      if (element.type === 'polyline' && element.leafletLayer) {
+        var meta = element.metadata || {};
+        var elementRouteType = meta.routeType;
+        var isTransportRoute = meta.category === 'metro_route' || meta.category === 'bus_route' || 
+                              meta.category === 'tram_route' || elementRouteType;
+        
+        if (isTransportRoute) {
+          element.leafletLayer.setStyle({ opacity: 0.8 });
+        }
+      } else if (element.type === 'marker' && element.leafletLayer) {
+        var meta = element.metadata || {};
+        var elementRouteType = meta.routeType;
+        var isTransportStop = meta.category === 'metro_stop' || meta.category === 'bus_stop' || 
+                             meta.category === 'tram_stop' || elementRouteType;
+        
+        if (isTransportStop) {
+          element.leafletLayer.setOpacity(1.0);
+        }
+      }
+    });
+    
+    if (this.currentView) {
+      var neighborhoodManager = this.map.neighborhoodManager;
+      if (neighborhoodManager) {
+        if (this.currentView.district) {
+          var districtElement = registry.get(this.currentView.district);
+          if (districtElement && districtElement.onClick) {
+            districtElement.onClick(this.map);
+          }
+        } else if (this.currentView.neighborhood) {
+          var neighborhoodElement = registry.get(this.currentView.neighborhood);
+          if (neighborhoodElement && neighborhoodElement.onClick) {
+            neighborhoodElement.onClick(this.map);
+          }
+        }
+      }
+    }
+  }
+
+  filterByRoute(routeName, routeType) {
+    if (!this.map) return;
+    
+    var registry = this.map.getRegistry ? this.map.getRegistry() : null;
+    if (!registry) return;
+    
+    var allElements = registry.getAllElements();
+    var self = this;
+    
+    allElements.forEach(function(element) {
+      if (element.type === 'polyline' && element.leafletLayer) {
+        var meta = element.metadata || {};
+        var elementRouteType = meta.routeType;
+        var elementRouteName = meta.name || element.id;
+        var isTransportRoute = meta.category === 'metro_route' || meta.category === 'bus_route' || 
+                              meta.category === 'tram_route' || elementRouteType;
+        
+        if (isTransportRoute) {
+          var isMatch = false;
+          
+          if (routeType === '1' || routeType === '2') {
+            isMatch = (elementRouteType === '1' || elementRouteType === '2' || meta.category === 'metro_route') && 
+                       elementRouteName === routeName;
+          } else if (routeType === '3') {
+            isMatch = (elementRouteType === '3' || meta.category === 'bus_route') && 
+                       elementRouteName === routeName;
+          } else if (routeType === '0') {
+            isMatch = (elementRouteType === '0' || meta.category === 'tram_route') && 
+                       elementRouteName === routeName;
+          }
+          
+          if (isMatch) {
+            element.leafletLayer.setStyle({ opacity: 0.9 });
+            element.leafletLayer.bringToFront();
+          } else {
+            var sameType = false;
+            if (routeType === '1' || routeType === '2') {
+              sameType = (elementRouteType === '1' || elementRouteType === '2' || meta.category === 'metro_route');
+            } else if (routeType === '3') {
+              sameType = (elementRouteType === '3' || meta.category === 'bus_route');
+            } else if (routeType === '0') {
+              sameType = (elementRouteType === '0' || meta.category === 'tram_route');
+            }
+            
+            if (sameType) {
+              element.leafletLayer.setStyle({ opacity: 0.2 });
+            }
+          }
+        }
+      } else if (element.type === 'marker' && element.leafletLayer) {
+        var meta = element.metadata || {};
+        var stopRouteNames = meta.routeNames || [];
+        var elementRouteType = meta.routeType;
+        var isTransportStop = meta.category === 'metro_stop' || meta.category === 'bus_stop' || 
+                             meta.category === 'tram_stop' || elementRouteType;
+        
+        if (isTransportStop) {
+          var stopMatches = false;
+          for (var i = 0; i < stopRouteNames.length; i++) {
+            if (stopRouteNames[i] === routeName) {
+              if (routeType === '1' || routeType === '2') {
+                stopMatches = (elementRouteType === '1' || elementRouteType === '2' || meta.category === 'metro_stop');
+              } else if (routeType === '3') {
+                stopMatches = (elementRouteType === '3' || meta.category === 'bus_stop');
+              } else if (routeType === '0') {
+                stopMatches = (elementRouteType === '0' || meta.category === 'tram_stop');
+              }
+              break;
+            }
+          }
+          
+          if (stopMatches) {
+            element.leafletLayer.setOpacity(1.0);
+            if (element.leafletLayer.bringToFront) {
+              element.leafletLayer.bringToFront();
+            }
+          } else {
+            var sameType = false;
+            if (routeType === '1' || routeType === '2') {
+              sameType = (elementRouteType === '1' || elementRouteType === '2' || meta.category === 'metro_stop');
+            } else if (routeType === '3') {
+              sameType = (elementRouteType === '3' || meta.category === 'bus_stop');
+            } else if (routeType === '0') {
+              sameType = (elementRouteType === '0' || meta.category === 'tram_stop');
+            }
+            
+            if (sameType) {
+              element.leafletLayer.setOpacity(0.2);
+            }
+          }
+        }
+      }
+    });
   }
 
   hasCategoryElements(visibleElements, category) {
@@ -167,12 +340,19 @@ class SelectionLegendManager {
 
     var linesHtml = '';
     if (lines.length > 0) {
+      var self = this;
       linesHtml = '<div class="selection-legend-lines">';
       lines.forEach(function(line) {
         var lineName = line.name || line;
+        var displayName = line.displayName || lineName;
         var lineColor = line.color || '#333';
+        var isSelected = self.selectedRoute && self.selectedRoute.name === lineName && self.selectedRoute.routeType === routeType;
         var style = 'background: ' + lineColor + '; color: #fff; border-color: ' + lineColor + ';';
-        linesHtml += '<span class="selection-legend-line" style="' + style + '">' + lineName + '</span>';
+        if (isSelected) {
+          style += ' box-shadow: 0 0 0 2px rgba(0,0,0,0.3); font-weight: 600;';
+        }
+        var dataAttr = 'data-route-name="' + lineName + '" data-route-type="' + (routeType || '') + '"';
+        linesHtml += '<span class="selection-legend-line' + (isSelected ? ' selected' : '') + '" style="' + style + '" ' + dataAttr + '>' + displayName + '</span>';
       });
       linesHtml += '</div>';
     }
@@ -264,12 +444,14 @@ class SelectionLegendManager {
           var routeName = meta.name || element.id;
           if (routeName && !seenNames[routeName]) {
             var displayName = routeName;
+            var fullName = routeName;
             if (routeName.length > 15) {
               displayName = routeName.substring(0, 12) + '...';
             }
             var routeColor = meta.color || '#333';
             lines.push({
-              name: displayName,
+              name: fullName,
+              displayName: displayName,
               color: routeColor
             });
             seenNames[routeName] = true;

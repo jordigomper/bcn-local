@@ -334,6 +334,7 @@ function resetMapView() {
   }
 
   if (mapInstance.selectionLegendManager) {
+    mapInstance.selectionLegendManager.selectedRoute = null;
     mapInstance.selectionLegendManager.update(null);
   }
 
