@@ -97,6 +97,13 @@ class DistrictElement extends MapElement {
     if (map.updateLegend) {
       map.updateLegend(this.id, null);
     }
+    
+    if (window.updateResetButtonVisibility) {
+      window.updateResetButtonVisibility();
+      setTimeout(function() {
+        window.updateResetButtonVisibility();
+      }, 200);
+    }
   }
 
   getTooltip() {

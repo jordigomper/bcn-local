@@ -3,6 +3,8 @@ class Map {
     this.containerId = containerId;
     this.center = options.center || [41.392328443726626, 2.1352100372314458];
     this.zoom = options.zoom || 13;
+    this.initialCenter = this.center;
+    this.initialZoom = this.zoom;
     this.leafletMap = null;
     this.elements = new window.Map();
     this.renderedElements = new window.Set();
@@ -31,8 +33,8 @@ class Map {
   }
 
   getInitialView() {
-    var center = this.center;
-    var zoom = this.zoom;
+    var center = this.initialCenter;
+    var zoom = this.initialZoom;
     if (window.innerWidth === 1920 && window.innerHeight === 1080) {
       center = [41.384803698683925, 2.140244417823851];
       zoom = 12.5;

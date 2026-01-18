@@ -281,6 +281,72 @@ function hslToHex(h, s, l) {
   }).join('');
 }
 
+function updateResetButtonVisibility() {
+  var resetButton = document.getElementById('reset-view-button');
+  if (!resetButton) return;
+  if (!mapInstance) return;
+  
+  var hasSelection = false;
+  if (mapInstance.neighborhoodManager) {
+    var view = mapInstance.neighborhoodManager.getCurrentView();
+    if (view) {
+      hasSelection = !!(view.district || view.neighborhood);
+    }
+  }
+  
+  resetButton.style.display = hasSelection ? 'flex' : 'none';
+}
+
+function resetMapView() {
+  if (!mapInstance || !mapInstance.leafletMap) return;
+  
+  var registry = mapInstance.registry;
+  if (registry) {
+    var allElements = registry.getAllElements();
+    allElements.forEach(function(element) {
+      if (element.overlayLayer) {
+        mapInstance.removeOverlayLayer(element.overlayLayer);
+        element.overlayLayer = null;
+      }
+      if (element.busRoutesOverlay) {
+        mapInstance.removeOverlayLayer(element.busRoutesOverlay);
+        element.busRoutesOverlay = null;
+      }
+    });
+  }
+  
+  if (mapInstance.neighborhoodManager) {
+    mapInstance.neighborhoodManager.setCurrentView(null, null);
+  }
+  
+  mapInstance.clear();
+  
+  if (mapInstance.legendManager) {
+    mapInstance.legendManager.setActiveDistrict(null);
+    mapInstance.legendManager.setActiveNeighborhood(null);
+  }
+  
+  if (mapInstance.neighborhoodManager) {
+    mapInstance.neighborhoodManager.renderNeighborhoods();
+  }
+  
+  var initialView = mapInstance.getInitialView();
+  
+  setTimeout(function() {
+    if (mapInstance && mapInstance.leafletMap) {
+      mapInstance.leafletMap.stop();
+      mapInstance.leafletMap.setView(initialView.center, initialView.zoom, {
+        animate: false
+      });
+      mapInstance.center = initialView.center;
+      mapInstance.zoom = initialView.zoom;
+      if (window.updateResetButtonVisibility) {
+        window.updateResetButtonVisibility();
+      }
+    }
+  }, 150);
+}
+
 function initApp() {
   mapInstance = new AppMap('map');
   window.mapInstance = mapInstance;
@@ -307,6 +373,26 @@ function initApp() {
     neighborhoodManager.renderNeighborhoods();
 
     setupEventListeners();
+    
+    mapInstance.on('zoomend', function() {
+      if (window.updateResetButtonVisibility) {
+        window.updateResetButtonVisibility();
+      }
+    });
+    
+    mapInstance.on('moveend', function() {
+      if (window.updateResetButtonVisibility) {
+        window.updateResetButtonVisibility();
+      }
+    });
+    
+    window.updateResetButtonVisibility = updateResetButtonVisibility;
+    
+    setTimeout(function() {
+      if (window.updateResetButtonVisibility) {
+        window.updateResetButtonVisibility();
+      }
+    }, 500);
   });
 }
 
@@ -340,9 +426,16 @@ function setupEventListeners() {
     this.classList.toggle('active');
   });
 
+  var resetButton = document.getElementById('reset-view-button');
+  if (resetButton) {
+    resetButton.addEventListener('click', function() {
+      resetMapView();
+    });
+  }
+
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && (mapInstance.currentDistrictView || mapInstance.currentNeighborhoodView)) {
-      mapInstance.resetView();
+    if (e.key === 'Escape') {
+      resetMapView();
     }
   });
 }

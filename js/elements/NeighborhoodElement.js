@@ -129,6 +129,13 @@ class NeighborhoodElement extends MapElement {
     if (map.updateLegend) {
       map.updateLegend(null, name);
     }
+    
+    if (window.updateResetButtonVisibility) {
+      window.updateResetButtonVisibility();
+      setTimeout(function() {
+        window.updateResetButtonVisibility();
+      }, 200);
+    }
   }
 
   onStateChange(oldState, newState) {

@@ -8,14 +8,30 @@ class AppMap extends Map {
   }
 
   resetView() {
-    if (this.neighborhoodManager) {
-      this.neighborhoodManager.setCurrentView(null, null);
-      this.neighborhoodManager.renderNeighborhoods();
+    var registry = this.registry;
+    
+    if (registry) {
+      var allElements = registry.getAllElements();
+      allElements.forEach(function(element) {
+        if (element.overlayLayer) {
+          this.removeOverlayLayer(element.overlayLayer);
+          element.overlayLayer = null;
+        }
+        if (element.busRoutesOverlay) {
+          this.removeOverlayLayer(element.busRoutesOverlay);
+          element.busRoutesOverlay = null;
+        }
+      }.bind(this));
     }
+    
     this.clear();
-    if (this.legendManager) {
-      this.legendManager.setActiveDistrict(null);
-      this.legendManager.setActiveNeighborhood(null);
+    
+    var initialView = this.getInitialView();
+    if (this.leafletMap) {
+      this.leafletMap.stop();
+      this.leafletMap.setView(initialView.center, initialView.zoom, {
+        animate: false
+      });
     }
   }
 
