@@ -73,9 +73,28 @@ function buildTransportIcon(category) {
       iconAnchor: [9, 9]
     });
   }
+  
+  if (category === 'gasolinera') {
+    var filterId = 'gasolinera-shadow-' + Math.random().toString(36).substr(2, 9);
+    var gasolineraSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">' +
+      '<defs>' +
+      '<filter id="' + filterId + '">' +
+      '<feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-color="#1565C0" flood-opacity="0.6"/>' +
+      '</filter>' +
+      '</defs>' +
+      '<circle cx="9" cy="9" r="7.5" fill="#FF9800" stroke="#1565C0" stroke-width="2" filter="url(#' + filterId + ')"/>' +
+      '<text x="9" y="12.5" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial, sans-serif" fill="#000000">G</text>' +
+      '</svg>';
+    return L.divIcon({
+      className: 'transport-icon',
+      html: gasolineraSvg,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+  }
+  
   var configs = {
-    metro_tren: { color: '#6a1b9a', bg: '#f3e5f5', text: 'M' },
-    gasolinera: { color: '#424242', bg: '#eeeeee', text: 'G' }
+    metro_tren: { color: '#6a1b9a', bg: '#f3e5f5', text: 'M' }
   };
   var cfg = configs[category] || configs.metro_tren;
   var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">' +
