@@ -5,7 +5,6 @@ class SportsElement extends MapElement {
 
   createLeafletLayer() {
     var hasUrl = this.metadata && this.metadata.url;
-
     var marker = L.circleMarker(this.coordinates, {
       radius: hasUrl ? 5 : 4,
       color: hasUrl ? '#1976D2' : '#1565c0',

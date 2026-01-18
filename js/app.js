@@ -2,6 +2,7 @@ var mapInstance = null;
 var elementRegistry = null;
 var filterManager = null;
 var districtsListManager = null;
+var selectionLegendManager = null;
 
 function loadJSON(url) {
   return fetch(url).then(r => r.json());
@@ -180,6 +181,7 @@ function createElementsFromData(data) {
         metadata: {
           name: item.name || defaultSports,
           category: 'sports',
+        tipologias: tipologias,
           district: item.address ? item.address.district : null,
           neighborhood: item.address ? item.address.neighborhood : null,
           url: item.url || null
@@ -295,7 +297,11 @@ function updateResetButtonVisibility() {
     }
   }
 
-  resetButton.style.display = hasSelection ? 'flex' : 'none';
+  var selectionLegendVisible = mapInstance.selectionLegendManager && 
+    mapInstance.selectionLegendManager.container && 
+    mapInstance.selectionLegendManager.container.style.display !== 'none';
+
+  resetButton.style.display = (hasSelection && !selectionLegendVisible) ? 'flex' : 'none';
 }
 
 function resetMapView() {
@@ -325,6 +331,10 @@ function resetMapView() {
   if (mapInstance.districtsListManager) {
     mapInstance.districtsListManager.setActiveDistrict(null);
     mapInstance.districtsListManager.setActiveNeighborhood(null);
+  }
+
+  if (mapInstance.selectionLegendManager) {
+    mapInstance.selectionLegendManager.update(null);
   }
 
   if (mapInstance.neighborhoodManager) {
@@ -360,8 +370,11 @@ function initApp() {
   filterManager = new FilterManager(mapInstance, elementRegistry);
   mapInstance.filterManager = filterManager;
 
-  districtsListManager = new DistrictsListManager('districts-list');
-  mapInstance.districtsListManager = districtsListManager;
+    districtsListManager = new DistrictsListManager('districts-list');
+    mapInstance.districtsListManager = districtsListManager;
+
+    selectionLegendManager = new SelectionLegendManager(mapInstance);
+    mapInstance.selectionLegendManager = selectionLegendManager;
 
   loadData().then(function(data) {
     var result = createElementsFromData(data);
@@ -376,6 +389,10 @@ function initApp() {
 
     districtsListManager.rebuild(result.districts, result.neighborhoods);
     neighborhoodManager.renderNeighborhoods();
+
+    if (selectionLegendManager) {
+      selectionLegendManager.update(null);
+    }
 
     setupEventListeners();
 
@@ -435,6 +452,14 @@ function updateTranslations() {
     mapInstance.renderedElements.forEach(function(id) {
       mapInstance.renderElement(id);
     });
+  }
+
+  if (mapInstance && mapInstance.selectionLegendManager) {
+    var view = null;
+    if (mapInstance.neighborhoodManager) {
+      view = mapInstance.neighborhoodManager.getCurrentView();
+    }
+    mapInstance.selectionLegendManager.update(view);
   }
 }
 

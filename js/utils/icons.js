@@ -34,20 +34,20 @@ function buildStopIcon(routeType) {
       iconAnchor: [10, 10]
     });
   } else if (routeType === '3') {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">' +
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20">' +
       '<defs>' +
       '<filter id="' + filterId + '">' +
       '<feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#212121" flood-opacity="0.5"/>' +
       '</filter>' +
       '</defs>' +
-      '<rect x="4" y="4" width="12" height="12" rx="2" ry="2" fill="#FFFFFF" stroke="#212121" stroke-width="2" filter="url(#' + filterId + ')"/>' +
-      '<text x="10" y="13" text-anchor="middle" font-size="7" font-weight="bold" font-family="Arial, sans-serif" fill="#000000">BUS</text>' +
+      '<rect x="3" y="4" width="18" height="12" rx="2" ry="2" fill="#FFFFFF" stroke="#212121" stroke-width="2" filter="url(#' + filterId + ')"/>' +
+      '<text x="12" y="12.8" text-anchor="middle" font-size="6.2" font-weight="bold" font-family="Arial, sans-serif" letter-spacing="0.4" fill="#000000">BUS</text>' +
       '</svg>';
     return L.divIcon({
       className: 'transport-stop-icon',
       html: svg,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10]
+      iconSize: [24, 20],
+      iconAnchor: [12, 10]
     });
   }
 
@@ -75,15 +75,13 @@ function buildTransportIcon(category) {
   }
 
   if (category === 'gasolinera') {
-    var filterId = 'gasolinera-shadow-' + Math.random().toString(36).substr(2, 9);
     var gasolineraSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">' +
-      '<defs>' +
-      '<filter id="' + filterId + '">' +
-      '<feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-color="#1565C0" flood-opacity="0.6"/>' +
-      '</filter>' +
-      '</defs>' +
-      '<circle cx="9" cy="9" r="7.5" fill="#FF9800" stroke="#1565C0" stroke-width="2" filter="url(#' + filterId + ')"/>' +
-      '<text x="9" y="12.5" text-anchor="middle" font-size="10" font-weight="bold" font-family="Arial, sans-serif" fill="#000000">G</text>' +
+      '<circle cx="9" cy="9" r="8.5" fill="#FF9800" stroke="#FF9800" stroke-width="0.5"/>' +
+      '<g transform="translate(5, 5)">' +
+      '<rect x="0" y="0" width="5" height="6" rx="0.5" fill="#000000"/>' +
+      '<rect x="1" y="1" width="3" height="3" fill="#FF9800"/>' +
+      '<path d="M4.5 -0.5h1.2c0.6 0 1.2 0.6 1.2 1.2v1.8" stroke="#000000" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+      '</g>' +
       '</svg>';
     return L.divIcon({
       className: 'transport-icon',
@@ -231,4 +229,64 @@ function getStopRouteNames(stopId, routes, stopCoordinates) {
   }
 
   return routeNames.sort();
+}
+
+function getStopsForRoutes(routes, allStops) {
+  if (!routes || !Array.isArray(routes) || routes.length === 0 || !allStops || !Array.isArray(allStops)) {
+    return [];
+  }
+
+  var routeNames = {};
+  var routeIds = {};
+  
+  routes.forEach(function(route) {
+    var meta = route.metadata || {};
+    var routeName = meta.name || route.id;
+    var routeId = route.id;
+    
+    if (routeName) {
+      routeNames[routeName] = true;
+    }
+    if (routeId) {
+      routeIds[routeId] = true;
+    }
+  });
+
+  var matchingStops = [];
+  var seenStopIds = {};
+  
+  allStops.forEach(function(stop) {
+    if (seenStopIds[stop.id]) return;
+    
+    var stopRouteNames = stop.metadata && stop.metadata.routeNames ? stop.metadata.routeNames : [];
+    var stopMatches = false;
+    
+    for (var i = 0; i < stopRouteNames.length; i++) {
+      if (routeNames[stopRouteNames[i]]) {
+        stopMatches = true;
+        break;
+      }
+    }
+    
+    if (!stopMatches && stop.id) {
+      var stopParts = stop.id.split('.');
+      if (stopParts.length >= 2) {
+        for (var j = 0; j < routes.length; j++) {
+          var route = routes[j];
+          var routeId = route.id || '';
+          if (routeId && stop.id.startsWith(routeId.split('.').slice(0, 2).join('.'))) {
+            stopMatches = true;
+            break;
+          }
+        }
+      }
+    }
+    
+    if (stopMatches) {
+      matchingStops.push(stop);
+      seenStopIds[stop.id] = true;
+    }
+  });
+
+  return matchingStops;
 }

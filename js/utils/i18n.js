@@ -28,7 +28,9 @@ var I18n = {
       teleferico: 'Teleférico',
       gondola: 'Gondola',
       funicular: 'Funicular',
-      transporte: 'Transporte'
+      transporte: 'Transporte',
+      leyendaSeleccion: 'Leyenda de selección',
+      gimnasios: 'Gimnasios'
     },
     ca: {
       appName: 'BCN Local',
@@ -56,7 +58,9 @@ var I18n = {
       teleferico: 'Telefèric',
       gondola: 'Gondola',
       funicular: 'Funicular',
-      transporte: 'Transport'
+      transporte: 'Transport',
+      leyendaSeleccion: 'Llegenda de selecció',
+      gimnasios: 'Gimnasos'
     },
     en: {
       appName: 'BCN Local',
@@ -84,7 +88,9 @@ var I18n = {
       teleferico: 'Cable Car',
       gondola: 'Gondola',
       funicular: 'Funicular',
-      transporte: 'Transport'
+      transporte: 'Transport',
+      leyendaSeleccion: 'Selection Legend',
+      gimnasios: 'Gyms'
     }
   },
 

@@ -70,8 +70,18 @@ class DistrictElement extends MapElement {
     var outerRing = Array.isArray(districtPolygon[0][0]) ? districtPolygon[0] : districtPolygon;
 
     var gasolineras = registry.getByCategory('gasolinera');
-    var metroRoutes = registry.getByCategory('metro_route');
-    var metroStops = registry.getByCategory('metro_stop');
+    var metroRoutes = registry.getAllElements().filter(function(el) {
+      return el.type === 'polyline' && (
+        (el.metadata && el.metadata.category === 'metro_route') ||
+        (el.metadata && el.metadata.routeType && el.metadata.routeType !== '3')
+      );
+    });
+    var metroStops = registry.getAllElements().filter(function(el) {
+      return el.type === 'marker' && (
+        (el.metadata && el.metadata.category === 'metro_stop') ||
+        (el.metadata && el.metadata.routeType && el.metadata.routeType !== '3')
+      );
+    });
 
     var filteredIds = [];
 
@@ -83,6 +93,40 @@ class DistrictElement extends MapElement {
 
     var filteredMetroStops = filterElementsByPolygon(metroStops, outerRing);
     filteredMetroStops.forEach(function(el) { filteredIds.push(el.id); });
+
+    if (typeof getStopsForRoutes === 'function' && filteredMetroRoutes.length > 0) {
+      var stopsForRoutes = getStopsForRoutes(filteredMetroRoutes, metroStops);
+      stopsForRoutes.forEach(function(stop) {
+        if (filteredIds.indexOf(stop.id) === -1) {
+          filteredIds.push(stop.id);
+        }
+      });
+    }
+
+    var busRoutes = registry.getAllElements().filter(function(el) {
+      return el.type === 'polyline' && (
+        (el.metadata && el.metadata.category === 'bus_route') ||
+        (el.metadata && el.metadata.routeType === '3')
+      );
+    });
+    var busStops = registry.getAllElements().filter(function(el) {
+      return el.type === 'marker' && (
+        (el.metadata && el.metadata.category === 'bus_stop') ||
+        (el.metadata && el.metadata.routeType === '3')
+      );
+    });
+    
+    var filteredBusRoutes = filterElementsByPolygon(busRoutes, outerRing);
+    filteredBusRoutes.forEach(function(el) { filteredIds.push(el.id); });
+
+    if (typeof getStopsForRoutes === 'function' && filteredBusRoutes.length > 0) {
+      var stopsForBusRoutes = getStopsForRoutes(filteredBusRoutes, busStops);
+      stopsForBusRoutes.forEach(function(stop) {
+        if (filteredIds.indexOf(stop.id) === -1) {
+          filteredIds.push(stop.id);
+        }
+      });
+    }
 
     if (neighborhoodManager) {
       neighborhoodManager.setCurrentView(this.id, null);
@@ -109,6 +153,11 @@ class DistrictElement extends MapElement {
 
     if (map.districtsListManager) {
       map.districtsListManager.setActiveDistrict(this.id);
+    }
+
+    if (map.selectionLegendManager && neighborhoodManager) {
+      var view = neighborhoodManager.getCurrentView();
+      map.selectionLegendManager.update(view);
     }
 
     if (window.updateResetButtonVisibility) {

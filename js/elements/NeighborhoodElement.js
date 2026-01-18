@@ -131,10 +131,41 @@ class NeighborhoodElement extends MapElement {
     var filteredElements = filterElementsByPolygon(allElements, outerRing);
     var filteredIds = filteredElements.map(function(el) { return el.id; });
 
+    var filteredRoutes = filteredElements.filter(function(el) {
+      return el.type === 'polyline' && (
+        (el.metadata && el.metadata.category === 'metro_route') ||
+        (el.metadata && el.metadata.category === 'bus_route') ||
+        (el.metadata && el.metadata.category === 'tram_route') ||
+        (el.metadata && el.metadata.routeType)
+      );
+    });
+
+    if (typeof getStopsForRoutes === 'function' && filteredRoutes.length > 0) {
+      var allStops = registry.getAllElements().filter(function(el) {
+        return el.type === 'marker' && (
+          (el.metadata && el.metadata.category === 'metro_stop') ||
+          (el.metadata && el.metadata.category === 'bus_stop') ||
+          (el.metadata && el.metadata.routeType)
+        );
+      });
+
+      var stopsForRoutes = getStopsForRoutes(filteredRoutes, allStops);
+      stopsForRoutes.forEach(function(stop) {
+        if (filteredIds.indexOf(stop.id) === -1) {
+          filteredIds.push(stop.id);
+        }
+      });
+    }
+
     map.renderElements(filteredIds);
 
     if (map.districtsListManager) {
       map.districtsListManager.setActiveNeighborhood(name);
+    }
+
+    if (map.selectionLegendManager && neighborhoodManager) {
+      var view = neighborhoodManager.getCurrentView();
+      map.selectionLegendManager.update(view);
     }
 
     if (window.updateResetButtonVisibility) {
