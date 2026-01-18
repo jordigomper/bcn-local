@@ -29,33 +29,22 @@ class LegendManager {
 
     for (var code in this.districts) {
       var district = this.districts[code];
-      var isHidden = this.hiddenDistricts[code];
       var neighborhoods = districtsByCode[code] || [];
 
-      html += '<div class="legend-district-header' + (isHidden ? ' hidden-district' : '') + '">';
+      html += '<div class="legend-district-header">';
       html += '<span class="district-name" data-district="' + code + '">' + (district.name || code) + '</span>';
-      html += '<span class="district-eye-icon" data-district="' + code + '">' + this.getEyeIcon(isHidden) + '</span>';
       html += '</div>';
 
-      if (!isHidden) {
-        neighborhoods.forEach(function(n) {
-          html += '<div class="legend-item" data-neighborhood="' + n.name + '">';
-          html += '<span class="legend-color" style="background-color: ' + n.color + '"></span>';
-          html += '<span class="legend-name">' + n.name + '</span>';
-          html += '</div>';
-        });
-      }
+      neighborhoods.forEach(function(n) {
+        html += '<div class="legend-item" data-neighborhood="' + n.name + '">';
+        html += '<span class="legend-color" style="background-color: ' + n.color + '"></span>';
+        html += '<span class="legend-name">' + n.name + '</span>';
+        html += '</div>';
+      });
     }
 
     this.container.innerHTML = html;
     this.attachEventListeners();
-  }
-
-  getEyeIcon(hidden) {
-    if (hidden) {
-      return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 8s2-4 7-4 7 4 7 4-2 4-7 4-7-4-7-4z"/><circle cx="8" cy="8" r="2"/></svg>';
-    }
-    return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l14 14M8 3c3 0 5 2 5 5M8 13c-3 0-5-2-5-5"/></svg>';
   }
 
   attachEventListeners() {
@@ -71,23 +60,6 @@ class LegendManager {
             var districtElement = registry.get(districtCode);
             if (districtElement && districtElement.onClick) {
               districtElement.onClick(window.mapInstance);
-            }
-          }
-        }
-      });
-    });
-
-    var eyeIcons = this.container.querySelectorAll('.district-eye-icon');
-    eyeIcons.forEach(function(icon) {
-      icon.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var districtCode = this.dataset.district;
-        if (window.mapInstance) {
-          var neighborhoodManager = window.mapInstance.getNeighborhoodManager();
-          if (neighborhoodManager) {
-            neighborhoodManager.toggleDistrictVisibility(districtCode);
-            if (window.mapInstance.legendManager) {
-              window.mapInstance.legendManager.toggleDistrictVisibility(districtCode);
             }
           }
         }
@@ -138,8 +110,4 @@ class LegendManager {
     });
   }
 
-  toggleDistrictVisibility(districtCode) {
-    this.hiddenDistricts[districtCode] = !this.hiddenDistricts[districtCode];
-    this.render();
-  }
 }

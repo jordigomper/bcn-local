@@ -40,7 +40,7 @@ class NeighborhoodManager {
     for (var name in this.neighborhoodData) {
       var neighborhood = this.neighborhoodData[name];
       var district = neighborhood.district || '';
-      if (!this.hiddenDistricts[district]) {
+      if (this.hiddenDistricts[district] === false) {
         neighborhoodsToShow.push(name);
       }
     }
@@ -58,7 +58,11 @@ class NeighborhoodManager {
   }
 
   toggleDistrictVisibility(districtCode) {
-    this.hiddenDistricts[districtCode] = !this.hiddenDistricts[districtCode];
+    if (this.hiddenDistricts[districtCode] === false) {
+      this.hiddenDistricts[districtCode] = true;
+    } else {
+      this.hiddenDistricts[districtCode] = false;
+    }
     this.saveHiddenDistricts();
     this.renderNeighborhoods();
   }

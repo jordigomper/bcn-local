@@ -9,15 +9,15 @@ class NeighborhoodElement extends MapElement {
     var coords = Array.isArray(this.coordinates[0][0]) ? this.coordinates : [this.coordinates];
     var isSelected = this.state.selected;
     var opacity = this.getOpacity();
-    var weight = isSelected ? 4 : 2.5;
-    var dashArray = isSelected ? null : '5, 5';
+    var weight = isSelected ? 4 : 0;
+    var dashArray = isSelected ? null : null;
 
     var polygon = L.polygon(coords, {
       color: this.color,
       fillColor: this.color,
       fillOpacity: opacity,
       weight: weight,
-      opacity: 0.9,
+      opacity: isSelected ? 0.9 : 0,
       dashArray: dashArray,
       className: 'neighborhood-polygon',
       interactive: true
@@ -59,6 +59,17 @@ class NeighborhoodElement extends MapElement {
     });
 
     allNeighborhoodElements.forEach(function(element) {
+      if (element.overlayLayer) {
+        map.removeOverlayLayer(element.overlayLayer);
+        element.overlayLayer = null;
+      }
+    });
+
+    var allDistrictElements = registry.getAllElements().filter(function(el) {
+      return el instanceof DistrictElement;
+    });
+
+    allDistrictElements.forEach(function(element) {
       if (element.overlayLayer) {
         map.removeOverlayLayer(element.overlayLayer);
         element.overlayLayer = null;
@@ -148,9 +159,12 @@ class NeighborhoodElement extends MapElement {
     if (!this.leafletLayer) return;
 
     var opacity = this.getOpacity();
+    var weight = isSelected ? 4 : 0;
 
     this.leafletLayer.setStyle({
       fillOpacity: opacity,
+      weight: weight,
+      opacity: isSelected ? 0.9 : 0
     });
   }
 

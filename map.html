@@ -18,6 +18,30 @@
       color: #333;
     }
 
+    .leaflet-interactive {
+      outline: none !important;
+    }
+
+    .leaflet-interactive:focus {
+      outline: none !important;
+    }
+
+    .leaflet-interactive path {
+      outline: none !important;
+    }
+
+    svg {
+      outline: none !important;
+    }
+
+    svg:focus {
+      outline: none !important;
+    }
+
+    svg path {
+      outline: none !important;
+    }
+
     .header {
       position: fixed;
       top: 0;
@@ -269,11 +293,25 @@
 
     .neighborhood-polygon {
       z-index: 100 !important;
+      outline: none !important;
+    }
+
+    .neighborhood-polygon:focus {
+      outline: none !important;
+    }
+
+    .neighborhood-polygon path {
+      outline: none !important;
     }
 
     .neighborhood-border {
       filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
       z-index: 2001 !important;
+      outline: none !important;
+    }
+
+    .neighborhood-border:focus {
+      outline: none !important;
     }
 
     .neighborhood-border path {
@@ -282,6 +320,7 @@
       fill: none !important;
       stroke-linejoin: round !important;
       stroke-linecap: round !important;
+      outline: none !important;
     }
 
     .legend-item.active {

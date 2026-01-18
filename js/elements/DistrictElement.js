@@ -15,10 +15,27 @@ class DistrictElement extends MapElement {
     var registry = map.getRegistry ? map.getRegistry() : null;
     if (!registry) return;
 
-    if (this.overlayLayer) {
-      map.removeOverlayLayer(this.overlayLayer);
-      this.overlayLayer = null;
-    }
+    var allDistrictElements = registry.getAllElements().filter(function(el) {
+      return el instanceof DistrictElement;
+    });
+
+    allDistrictElements.forEach(function(element) {
+      if (element.overlayLayer) {
+        map.removeOverlayLayer(element.overlayLayer);
+        element.overlayLayer = null;
+      }
+    });
+
+    var allNeighborhoodElements = registry.getAllElements().filter(function(el) {
+      return el instanceof NeighborhoodElement;
+    });
+
+    allNeighborhoodElements.forEach(function(element) {
+      if (element.overlayLayer) {
+        map.removeOverlayLayer(element.overlayLayer);
+        element.overlayLayer = null;
+      }
+    });
 
     var coords = Array.isArray(this.coordinates[0][0]) ? this.coordinates : [this.coordinates];
 
