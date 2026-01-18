@@ -5,7 +5,7 @@ class SportsElement extends MapElement {
 
   createLeafletLayer() {
     var hasUrl = this.metadata && this.metadata.url;
-    
+
     var marker = L.circleMarker(this.coordinates, {
       radius: hasUrl ? 5 : 4,
       color: hasUrl ? '#1976D2' : '#1565c0',
@@ -43,11 +43,11 @@ class SportsElement extends MapElement {
   getTooltip() {
     var name = this.metadata.name || 'Servicio deportivo';
     var hasUrl = this.metadata && this.metadata.url;
-    
+
     if (hasUrl) {
       return name + '<br><small style="color: #2196F3;">Haz click para ir a la web</small>';
     }
-    
+
     return name;
   }
 }

@@ -9,7 +9,7 @@ class AppMap extends Map {
 
   resetView() {
     var registry = this.registry;
-    
+
     if (registry) {
       var allElements = registry.getAllElements();
       allElements.forEach(function(element) {
@@ -23,9 +23,9 @@ class AppMap extends Map {
         }
       }.bind(this));
     }
-    
+
     this.clear();
-    
+
     var initialView = this.getInitialView();
     if (this.leafletMap) {
       this.leafletMap.stop();
@@ -37,19 +37,5 @@ class AppMap extends Map {
 
   getRegistry() {
     return this.registry;
-  }
-
-  getNeighborhoodManager() {
-    return this.neighborhoodManager;
-  }
-
-  updateLegend(districtCode, neighborhoodName) {
-    if (this.legendManager) {
-      if (districtCode) {
-        this.legendManager.setActiveDistrict(districtCode);
-      } else if (neighborhoodName) {
-        this.legendManager.setActiveNeighborhood(neighborhoodName);
-      }
-    }
   }
 }

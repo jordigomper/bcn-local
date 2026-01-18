@@ -139,7 +139,7 @@ function createElementsFromData(data) {
       'Pistes de patinatge',
       'Pistes de pàdel'
     ];
-    
+
     var excludedTipologies = [
       'Clubs',
       'Penyes',
@@ -155,23 +155,23 @@ function createElementsFromData(data) {
       'Lloguer',
       'Registres d\'interes pel web Esportabarcelona (Gestio DAC)'
     ];
-    
+
     data.sports.forEach(function(item) {
       if (!item.location || !item.location.lat || !item.location.lon) return;
-      
+
       var tipologias = item.categories && item.categories.Tipologia ? item.categories.Tipologia : [];
       if (tipologias.length === 0) return;
-      
+
       var hasAllowed = tipologias.some(function(tipo) {
         return allowedTipologies.indexOf(tipo) !== -1;
       });
-      
+
       var hasExcluded = tipologias.some(function(tipo) {
         return excludedTipologies.indexOf(tipo) !== -1;
       });
-      
+
       if (!hasAllowed || hasExcluded) return;
-      
+
       var transformedItem = {
         id: item.id ? String(item.id) : 'sports_' + Math.random().toString(36).substr(2, 9),
         type: 'marker',
@@ -184,7 +184,7 @@ function createElementsFromData(data) {
           url: item.url || null
         }
       };
-      
+
       var element = ElementFactory.createSingle(transformedItem, SportsElement);
       if (element) elements.push(element);
     });
@@ -285,7 +285,7 @@ function updateResetButtonVisibility() {
   var resetButton = document.getElementById('reset-view-button');
   if (!resetButton) return;
   if (!mapInstance) return;
-  
+
   var hasSelection = false;
   if (mapInstance.neighborhoodManager) {
     var view = mapInstance.neighborhoodManager.getCurrentView();
@@ -293,13 +293,13 @@ function updateResetButtonVisibility() {
       hasSelection = !!(view.district || view.neighborhood);
     }
   }
-  
+
   resetButton.style.display = hasSelection ? 'flex' : 'none';
 }
 
 function resetMapView() {
   if (!mapInstance || !mapInstance.leafletMap) return;
-  
+
   var registry = mapInstance.registry;
   if (registry) {
     var allElements = registry.getAllElements();
@@ -314,24 +314,24 @@ function resetMapView() {
       }
     });
   }
-  
+
   if (mapInstance.neighborhoodManager) {
     mapInstance.neighborhoodManager.setCurrentView(null, null);
   }
-  
+
   mapInstance.clear();
-  
+
   if (mapInstance.legendManager) {
     mapInstance.legendManager.setActiveDistrict(null);
     mapInstance.legendManager.setActiveNeighborhood(null);
   }
-  
+
   if (mapInstance.neighborhoodManager) {
     mapInstance.neighborhoodManager.renderNeighborhoods();
   }
-  
+
   var initialView = mapInstance.getInitialView();
-  
+
   setTimeout(function() {
     if (mapInstance && mapInstance.leafletMap) {
       mapInstance.leafletMap.stop();
@@ -373,21 +373,21 @@ function initApp() {
     neighborhoodManager.renderNeighborhoods();
 
     setupEventListeners();
-    
+
     mapInstance.on('zoomend', function() {
       if (window.updateResetButtonVisibility) {
         window.updateResetButtonVisibility();
       }
     });
-    
+
     mapInstance.on('moveend', function() {
       if (window.updateResetButtonVisibility) {
         window.updateResetButtonVisibility();
       }
     });
-    
+
     window.updateResetButtonVisibility = updateResetButtonVisibility;
-    
+
     setTimeout(function() {
       if (window.updateResetButtonVisibility) {
         window.updateResetButtonVisibility();

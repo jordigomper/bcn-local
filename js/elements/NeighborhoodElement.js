@@ -51,7 +51,7 @@ class NeighborhoodElement extends MapElement {
 
     var name = this.metadata.name || this.id;
 
-    var neighborhoodManager = map.getNeighborhoodManager ? map.getNeighborhoodManager() : null;
+    var neighborhoodManager = map.neighborhoodManager || null;
     if (!neighborhoodManager) return;
 
     var allNeighborhoodElements = registry.getAllElements().filter(function(el) {
@@ -137,10 +137,10 @@ class NeighborhoodElement extends MapElement {
 
     map.renderElements(filteredIds);
 
-    if (map.updateLegend) {
-      map.updateLegend(null, name);
+    if (map.legendManager) {
+      map.legendManager.setActiveNeighborhood(name);
     }
-    
+
     if (window.updateResetButtonVisibility) {
       window.updateResetButtonVisibility();
       setTimeout(function() {

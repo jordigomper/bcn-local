@@ -57,7 +57,7 @@ class DistrictElement extends MapElement {
       maxZoom: 15
     });
 
-    var neighborhoodManager = map.getNeighborhoodManager ? map.getNeighborhoodManager() : null;
+    var neighborhoodManager = map.neighborhoodManager || null;
     if (!neighborhoodManager) return;
 
     var districtData = neighborhoodManager.districtData;
@@ -111,10 +111,10 @@ class DistrictElement extends MapElement {
 
     map.renderElements(filteredIds);
 
-    if (map.updateLegend) {
-      map.updateLegend(this.id, null);
+    if (map.legendManager) {
+      map.legendManager.setActiveDistrict(this.id);
     }
-    
+
     if (window.updateResetButtonVisibility) {
       window.updateResetButtonVisibility();
       setTimeout(function() {

@@ -14,7 +14,7 @@ class GTFSFilterManager {
       metroStops: null,
       busStops: null
     };
-    
+
     this.setupZoomListener();
   }
 
@@ -237,7 +237,7 @@ class GTFSFilterManager {
     if (!this.map || !this.map.leafletMap) return;
     var button = document.getElementById('gtfs-metro-toggle');
     var self = this;
-    
+
     if (!this.gtfsTransportVisible) {
       this.loadGTFSData().then(function() {
         try {
@@ -283,7 +283,7 @@ class GTFSFilterManager {
     if (!this.map || !this.map.leafletMap) return;
     var button = document.getElementById('gtfs-bus-toggle');
     var self = this;
-    
+
     if (!this.gtfsBusVisible) {
       this.loadGTFSData().then(function() {
         try {

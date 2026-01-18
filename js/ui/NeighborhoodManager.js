@@ -77,7 +77,7 @@ class NeighborhoodManager {
         var routeType = element.metadata ? element.metadata.routeType : null;
         var isBus = routeType === '3' || (element.metadata && element.metadata.category === 'bus_route');
         var newWeight = isBus ? baseWeight / 2 : baseWeight;
-        
+
         if (element.leafletLayer._gtfsWeight !== newWeight) {
           element.leafletLayer.setStyle({ weight: newWeight });
           element.leafletLayer._gtfsWeight = newWeight;

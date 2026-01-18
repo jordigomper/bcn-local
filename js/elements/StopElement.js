@@ -31,42 +31,42 @@ class StopElement extends MapElement {
 
   onClick(map) {
     if (!map || this.routeType !== '3') return null;
-    
+
     var registry = map.getRegistry ? map.getRegistry() : null;
     if (!registry) return null;
-    
+
     var allStopElements = registry.getAllElements().filter(function(el) {
       return el instanceof StopElement && el.routeType === '3';
     });
-    
+
     allStopElements.forEach(function(element) {
       if (element.busRoutesOverlay) {
         map.removeOverlayLayer(element.busRoutesOverlay);
         element.busRoutesOverlay = null;
       }
     });
-    
+
     var busRoutes = registry.getByCategory('bus_route');
     if (!busRoutes || busRoutes.length === 0) return null;
-    
+
     var stopLat = this.coordinates[0];
     var stopLng = this.coordinates[1];
     var threshold = 0.001;
     var currentZoom = map.getZoom ? map.getZoom() : 13;
     var baseWeight = (currentZoom >= 12.5 && currentZoom <= 14.5) ? 2 : 4;
     var busWeight = baseWeight / 2;
-    
+
     var routesLayer = L.layerGroup();
     var routesFound = false;
-    
+
     for (var i = 0; i < busRoutes.length; i++) {
       var route = busRoutes[i];
       if (!route.coordinates || !Array.isArray(route.coordinates)) continue;
-      
+
       var routePassesNear = false;
       var sampleSize = Math.min(route.coordinates.length, 100);
       var step = Math.max(1, Math.floor(route.coordinates.length / sampleSize));
-      
+
       for (var j = 0; j < route.coordinates.length; j += step) {
         var coord = route.coordinates[j];
         if (Array.isArray(coord) && coord.length >= 2) {
@@ -80,45 +80,45 @@ class StopElement extends MapElement {
           }
         }
       }
-      
+
       if (routePassesNear) {
         var meta = route.metadata || {};
         var routeColor = meta.color || '#800020';
         var routeName = meta.name || route.id;
-        
+
         var polyline = L.polyline(route.coordinates, {
           color: routeColor,
           weight: busWeight,
           opacity: 0.9
         });
-        
+
         polyline.bindTooltip(routeName, {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
         });
-        
+
         routesLayer.addLayer(polyline);
         routesFound = true;
       }
     }
-    
+
     if (routesFound) {
       this.busRoutesOverlay = routesLayer;
       map.addOverlayLayer(routesLayer);
     }
-    
+
     return null;
   }
 
   getTooltip() {
     var name = this.metadata.name || 'Parada';
     var routeNames = this.metadata.routeNames || [];
-    
+
     if (routeNames.length > 0) {
       return name + '<br><small>Líneas: ' + routeNames.join(', ') + '</small>';
     }
-    
+
     return name;
   }
 }

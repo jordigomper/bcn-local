@@ -73,7 +73,7 @@ function buildTransportIcon(category) {
       iconAnchor: [9, 9]
     });
   }
-  
+
   if (category === 'gasolinera') {
     var filterId = 'gasolinera-shadow-' + Math.random().toString(36).substr(2, 9);
     var gasolineraSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">' +
@@ -92,7 +92,7 @@ function buildTransportIcon(category) {
       iconAnchor: [9, 9]
     });
   }
-  
+
   var configs = {
     metro_tren: { color: '#6a1b9a', bg: '#f3e5f5', text: 'M' }
   };
@@ -163,7 +163,7 @@ function getStopRouteNames(stopId, routes, stopCoordinates) {
   if (stopParts.length === 2) {
     var firstDigit = stopParts[1] && stopParts[1].length > 0 ? stopParts[1][0] : '1';
     var routePrefix = stopParts[0] + '.' + firstDigit;
-    
+
     for (var i = 0; i < routes.length; i++) {
       var route = routes[i];
       var routeId = route.id || route.routeId;
@@ -180,15 +180,15 @@ function getStopRouteNames(stopId, routes, stopCoordinates) {
     var stopLat = stopCoordinates[0];
     var stopLng = stopCoordinates[1];
     var threshold = 0.001;
-    
+
     for (var i = 0; i < routes.length; i++) {
       var route = routes[i];
       if (!route.coordinates || !Array.isArray(route.coordinates)) continue;
-      
+
       var routePassesNear = false;
       var sampleSize = Math.min(route.coordinates.length, 100);
       var step = Math.max(1, Math.floor(route.coordinates.length / sampleSize));
-      
+
       for (var j = 0; j < route.coordinates.length; j += step) {
         var coord = route.coordinates[j];
         if (Array.isArray(coord) && coord.length >= 2) {
@@ -202,7 +202,7 @@ function getStopRouteNames(stopId, routes, stopCoordinates) {
           }
         }
       }
-      
+
       if (routePassesNear) {
         var meta = route.metadata || {};
         var routeName = meta.name || route.id;
