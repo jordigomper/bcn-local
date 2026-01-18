@@ -21,6 +21,7 @@ class SelectionLegendManager {
   }
 
   update(view) {
+    var previousView = this.currentView;
     this.currentView = view;
     
     if (!view || (!view.district && !view.neighborhood)) {
@@ -29,8 +30,49 @@ class SelectionLegendManager {
       return;
     }
 
+    var viewChanged = !previousView || 
+                     previousView.district !== view.district || 
+                     previousView.neighborhood !== view.neighborhood;
+    
+    if (viewChanged && this.selectedRoute) {
+      this.selectedRoute = null;
+      this.restoreRouteOpacity();
+    }
+
     this.show();
     this.render();
+  }
+
+  restoreRouteOpacity() {
+    if (!this.map) return;
+    
+    var registry = this.map.getRegistry ? this.map.getRegistry() : null;
+    if (!registry) return;
+    
+    var allElements = registry.getAllElements();
+    var self = this;
+    
+    allElements.forEach(function(element) {
+      if (element.type === 'polyline' && element.leafletLayer) {
+        var meta = element.metadata || {};
+        var elementRouteType = meta.routeType;
+        var isTransportRoute = meta.category === 'metro_route' || meta.category === 'bus_route' || 
+                              meta.category === 'tram_route' || elementRouteType;
+        
+        if (isTransportRoute) {
+          element.leafletLayer.setStyle({ opacity: 0.8 });
+        }
+      } else if (element.type === 'marker' && element.leafletLayer) {
+        var meta = element.metadata || {};
+        var elementRouteType = meta.routeType;
+        var isTransportStop = meta.category === 'metro_stop' || meta.category === 'bus_stop' || 
+                             meta.category === 'tram_stop' || elementRouteType;
+        
+        if (isTransportStop) {
+          element.leafletLayer.setOpacity(1.0);
+        }
+      }
+    });
   }
 
   show() {
@@ -172,19 +214,20 @@ class SelectionLegendManager {
       }
     });
     
-    if (this.currentView) {
+    if (this.currentView && this.currentView.district) {
       var neighborhoodManager = this.map.neighborhoodManager;
       if (neighborhoodManager) {
-        if (this.currentView.district) {
-          var districtElement = registry.get(this.currentView.district);
-          if (districtElement && districtElement.onClick) {
-            districtElement.onClick(this.map);
-          }
-        } else if (this.currentView.neighborhood) {
-          var neighborhoodElement = registry.get(this.currentView.neighborhood);
-          if (neighborhoodElement && neighborhoodElement.onClick) {
-            neighborhoodElement.onClick(this.map);
-          }
+        var districtElement = registry.get(this.currentView.district);
+        if (districtElement && districtElement.onClick) {
+          districtElement.onClick(this.map);
+        }
+      }
+    } else if (this.currentView && this.currentView.neighborhood) {
+      var neighborhoodManager = this.map.neighborhoodManager;
+      if (neighborhoodManager) {
+        var neighborhoodElement = registry.get(this.currentView.neighborhood);
+        if (neighborhoodElement && neighborhoodElement.onClick) {
+          neighborhoodElement.onClick(this.map);
         }
       }
     }
