@@ -41,12 +41,12 @@ class SportsElement extends MapElement {
   }
 
   getTooltip() {
-    var defaultName = window.I18n ? window.I18n.t('servicioDeportivo') : 'Servicio deportivo';
+    var defaultName = window.I18n ? window.I18n.t('servicioDeportivo') : 'Sports service';
     var name = this.metadata.name || defaultName;
     var hasUrl = this.metadata && this.metadata.url;
 
     if (hasUrl) {
-      var clickText = window.I18n ? window.I18n.t('hazClickParaIrALaWeb') : 'Haz click para ir a la web';
+      var clickText = window.I18n ? window.I18n.t('hazClickParaIrALaWeb') : 'Click to visit website';
       return name + '<br><small style="color: #2196F3;">' + clickText + '</small>';
     }
 

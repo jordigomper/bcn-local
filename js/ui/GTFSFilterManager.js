@@ -40,28 +40,28 @@ class GTFSFilterManager {
         self.gtfsData.metroRoutes = data;
         return data;
       }).catch(function(err) {
-        console.error('Error cargando metro_routes.json:', err);
+        console.error('Error loading metro_routes.json:', err);
         return [];
       }),
       fetch('data/transport_public/bus_routes.json').then(function(r) { return r.json(); }).then(function(data) {
         self.gtfsData.busRoutes = data;
         return data;
       }).catch(function(err) {
-        console.error('Error cargando bus_routes.json:', err);
+        console.error('Error loading bus_routes.json:', err);
         return [];
       }),
       fetch('data/transport_public/metro_stops.json').then(function(r) { return r.json(); }).then(function(data) {
         self.gtfsData.metroStops = data;
         return data;
       }).catch(function(err) {
-        console.error('Error cargando metro_stops.json:', err);
+        console.error('Error loading metro_stops.json:', err);
         return [];
       }),
       fetch('data/transport_public/bus_stops.json').then(function(r) { return r.json(); }).then(function(data) {
         self.gtfsData.busStops = data;
         return data;
       }).catch(function(err) {
-        console.error('Error cargando bus_stops.json:', err);
+        console.error('Error loading bus_stops.json:', err);
         return [];
       })
     ]).then(function() {
@@ -93,7 +93,8 @@ class GTFSFilterManager {
         });
         polyline._gtfsWeight = metroWeight;
         polyline._gtfsRouteType = meta.routeType || '1';
-        polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '1'), {
+        var defaultRoute = window.I18n ? window.I18n.t('ruta') : 'Route';
+        polyline.bindTooltip((meta.name || defaultRoute) + ' - ' + getRouteTypeName(meta.routeType || '1'), {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
@@ -113,7 +114,8 @@ class GTFSFilterManager {
         });
         polyline._gtfsWeight = busWeight;
         polyline._gtfsRouteType = meta.routeType || '3';
-        polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '3'), {
+        var defaultRoute = window.I18n ? window.I18n.t('ruta') : 'Route';
+        polyline.bindTooltip((meta.name || defaultRoute) + ' - ' + getRouteTypeName(meta.routeType || '3'), {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
@@ -132,7 +134,7 @@ class GTFSFilterManager {
         var marker = L.marker([coords[0], coords[1]], {
           icon: buildStopIcon(routeType)
         });
-        var defaultStop = window.I18n ? window.I18n.t('parada') : 'Parada';
+        var defaultStop = window.I18n ? window.I18n.t('parada') : 'Stop';
         marker.bindTooltip(meta.name || defaultStop, {
           permanent: false,
           direction: 'top',
@@ -151,7 +153,7 @@ class GTFSFilterManager {
         var marker = L.marker([coords[0], coords[1]], {
           icon: buildStopIcon('3')
         });
-        var defaultStop = window.I18n ? window.I18n.t('parada') : 'Parada';
+        var defaultStop = window.I18n ? window.I18n.t('parada') : 'Stop';
         marker.bindTooltip(meta.name || defaultStop, {
           permanent: false,
           direction: 'top',
@@ -264,10 +266,10 @@ class GTFSFilterManager {
             if (button) button.classList.add('active');
           }
         } catch (error) {
-          console.error('Error construyendo capa metro:', error);
+          console.error('Error building metro layer:', error);
         }
       }).catch(function(error) {
-        console.error('Error cargando datos GTFS:', error);
+        console.error('Error loading GTFS data:', error);
       });
     } else {
       if (this.gtfsTransportLayer) {
@@ -307,10 +309,10 @@ class GTFSFilterManager {
             if (button) button.classList.add('active');
           }
         } catch (error) {
-          console.error('Error construyendo capa bus:', error);
+          console.error('Error building bus layer:', error);
         }
       }).catch(function(error) {
-        console.error('Error cargando datos GTFS:', error);
+        console.error('Error loading GTFS data:', error);
       });
     } else {
       if (this.gtfsBusLayer) {

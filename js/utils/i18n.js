@@ -4,6 +4,8 @@ var I18n = {
   translations: {
     es: {
       appName: 'BCN Local',
+      appTitle: 'BCN Local - Barcelona Native Mobility',
+      languageSelector: 'Idioma',
       metroTren: 'Metro/Tren',
       buses: 'Buses',
       gasolineras: 'Gasolineras',
@@ -29,6 +31,8 @@ var I18n = {
     },
     ca: {
       appName: 'BCN Local',
+      appTitle: 'BCN Local - Barcelona Native Mobility',
+      languageSelector: 'Idioma',
       metroTren: 'Metro/Tren',
       buses: 'Busos',
       gasolineras: 'Gasolineres',
@@ -54,6 +58,8 @@ var I18n = {
     },
     en: {
       appName: 'BCN Local',
+      appTitle: 'BCN Local - Barcelona Native Mobility',
+      languageSelector: 'Language',
       metroTren: 'Metro/Train',
       buses: 'Buses',
       gasolineras: 'Gas Stations',

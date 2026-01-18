@@ -8,7 +8,7 @@ class ElementFactory {
 
   static createSingle(jsonData, elementClass) {
     if (!jsonData.id || !jsonData.type || !jsonData.coordinates) {
-      console.warn('JSON inválido para crear elemento:', jsonData);
+      console.warn('Invalid JSON for element creation:', jsonData);
       return null;
     }
 

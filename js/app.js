@@ -172,7 +172,7 @@ function createElementsFromData(data) {
 
       if (!hasAllowed || hasExcluded) return;
 
-      var defaultSports = window.I18n ? window.I18n.t('servicioDeportivo') : 'Servicio deportivo';
+    var defaultSports = window.I18n ? window.I18n.t('servicioDeportivo') : 'Sports service';
       var transformedItem = {
         id: item.id ? String(item.id) : 'sports_' + Math.random().toString(36).substr(2, 9),
         type: 'marker',
@@ -417,6 +417,25 @@ function updateTranslations() {
       el.setAttribute('title', window.I18n.t(key));
     }
   });
+
+  var ariaElements = document.querySelectorAll('[data-i18n-aria]');
+  ariaElements.forEach(function(el) {
+    var key = el.getAttribute('data-i18n-aria');
+    if (key && window.I18n) {
+      el.setAttribute('aria-label', window.I18n.t(key));
+    }
+  });
+
+  if (window.I18n) {
+    document.documentElement.lang = window.I18n.currentLanguage;
+    document.title = window.I18n.t('appTitle');
+  }
+
+  if (mapInstance && mapInstance.renderedElements) {
+    mapInstance.renderedElements.forEach(function(id) {
+      mapInstance.renderElement(id);
+    });
+  }
 }
 
 window.updateTranslations = updateTranslations;

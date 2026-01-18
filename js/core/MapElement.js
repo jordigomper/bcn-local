@@ -25,7 +25,7 @@ class MapElement {
   }
 
   createLeafletLayer() {
-    throw new Error('createLeafletLayer debe ser implementado por la subclase');
+    throw new Error('createLeafletLayer must be implemented by the subclass');
   }
 
   updateState(newState) {
