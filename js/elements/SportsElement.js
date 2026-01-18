@@ -32,6 +32,9 @@ class SportsElement extends MapElement {
   }
 
   onClick(map) {
+    if (this.metadata && this.metadata.url) {
+      window.open(this.metadata.url, '_blank');
+    }
     return null;
   }
 

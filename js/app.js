@@ -117,8 +117,60 @@ function createElementsFromData(data) {
   }
 
   if (data.sports) {
+    var allowedTipologies = [
+      'Gimnasos',
+      'Piscines',
+      'Piscines - Refugis Climàtics',
+      'Pavellons poliesportius',
+      'Frontons curts',
+      'Frontons llargs',
+      'Pistes poliesportives',
+      'Pistes especialitzades',
+      'Pistes petites poliesportives',
+      'Complexos esportius',
+      'Complexos esportius - Refugis climàtics',
+      'Centres Esportius (CEM)',
+      'Instal·lacions esportives especialitzades, singulars',
+      'Sales poliesportives',
+      'Rocòdroms',
+      'Camps de futbol',
+      'Camps de rugbi',
+      'Camps especialitzats',
+      'Pistes de patinatge',
+      'Pistes de pàdel'
+    ];
+    
+    var excludedTipologies = [
+      'Clubs',
+      'Penyes',
+      'Federacions esportives',
+      'Pistes de tennis taula',
+      'Pistes de petanca',
+      'Associacions',
+      'Agrupaments escolta',
+      'Escoles',
+      'Esplais',
+      'Biblioplatges',
+      'Zones de joc',
+      'Lloguer',
+      'Registres d\'interes pel web Esportabarcelona (Gestio DAC)'
+    ];
+    
     data.sports.forEach(function(item) {
       if (!item.location || !item.location.lat || !item.location.lon) return;
+      
+      var tipologias = item.categories && item.categories.Tipologia ? item.categories.Tipologia : [];
+      if (tipologias.length === 0) return;
+      
+      var hasAllowed = tipologias.some(function(tipo) {
+        return allowedTipologies.indexOf(tipo) !== -1;
+      });
+      
+      var hasExcluded = tipologias.some(function(tipo) {
+        return excludedTipologies.indexOf(tipo) !== -1;
+      });
+      
+      if (!hasAllowed || hasExcluded) return;
       
       var transformedItem = {
         id: item.id ? String(item.id) : 'sports_' + Math.random().toString(36).substr(2, 9),
@@ -128,7 +180,8 @@ function createElementsFromData(data) {
           name: item.name || 'Servicio deportivo',
           category: 'sports',
           district: item.address ? item.address.district : null,
-          neighborhood: item.address ? item.address.neighborhood : null
+          neighborhood: item.address ? item.address.neighborhood : null,
+          url: item.url || null
         }
       };
       
