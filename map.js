@@ -228,16 +228,21 @@ function loadPort(name) {
       var districts = {};
       var neighborhoods = {};
       (data.districts || []).forEach(function(district) {
-        if (!district || !district.code || !district.geometry) return;
-        districts[district.code] = {
-          name: district.name || ('Distrito ' + district.code),
-          latLngs: geometryToLatLngs(district.geometry),
-          polygons: geometryToPolygonsLngLat(district.geometry)
+        if (!district || !district.id || !district.coordinates || district.type !== 'polygon') return;
+        var coords = district.coordinates;
+        var latLngs = Array.isArray(coords[0][0]) ? coords : [coords];
+        districts[district.id] = {
+          name: district.metadata ? district.metadata.name : ('Distrito ' + district.id),
+          latLngs: latLngs,
+          polygons: latLngs
         };
       });
       (data.neighborhoods || []).forEach(function(neighborhood) {
-        if (!neighborhood || !neighborhood.name || !neighborhood.geometry) return;
-        var jsonColor = neighborhood.color;
+        if (!neighborhood || !neighborhood.coordinates || neighborhood.type !== 'polygon') return;
+        var meta = neighborhood.metadata || {};
+        var name = meta.name || neighborhood.id || '';
+        if (!name) return;
+        var jsonColor = meta.color;
         var color;
         if (jsonColor && jsonColor !== '#000000' && jsonColor !== '#FFFFFF' && !usedColors[jsonColor]) {
           color = jsonColor;
@@ -248,23 +253,22 @@ function loadPort(name) {
             colorIndex++;
           } else {
             var hash = 0;
-            for (var i = 0; i < neighborhood.name.length; i++) {
-              hash = neighborhood.name.charCodeAt(i) + ((hash << 5) - hash);
+            for (var i = 0; i < name.length; i++) {
+              hash = name.charCodeAt(i) + ((hash << 5) - hash);
             }
             var hue = Math.abs(hash % 360);
             color = hslToHex(hue, 65 + (Math.abs(hash) % 20), 50 + (Math.abs(hash) % 15));
           }
         }
-        var latLngs = geometryToLatLngs(neighborhood.geometry);
-        if (!latLngs) return;
-        var outerRing = neighborhood.geometry.type === 'MultiPolygon' ? latLngs[0][0] : latLngs[0];
-        var flatCoords = outerRing.map(function(c) { return [c[1], c[0]]; });
-        neighborhoods[neighborhood.name] = {
+        var coords = neighborhood.coordinates;
+        var latLngs = Array.isArray(coords[0][0]) ? coords : [coords];
+        var outerRing = latLngs[0];
+        neighborhoods[name] = {
           color: color,
           coordinates: outerRing,
           latLngs: latLngs,
-          polygon: flatCoords,
-          district: neighborhood.district || ''
+          polygon: outerRing,
+          district: meta.district || ''
         };
       });
       return { districts: districts, neighborhoods: neighborhoods };
@@ -314,13 +318,15 @@ function buildTransportLayer() {
   if (!transportData || !transportData.length) return null;
   var layer = L.layerGroup();
   transportData.forEach(function(item) {
-    if (item.category !== 'gasolinera') return;
-    var loc = item.location;
-    if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return;
-    var marker = L.marker([loc.lat, loc.lng], {
-      icon: buildTransportIcon(item.category)
+    if (!item.coordinates || item.type !== 'marker') return;
+    var meta = item.metadata || {};
+    if (meta.category !== 'gasolinera') return;
+    var coords = item.coordinates;
+    if (!Array.isArray(coords) || coords.length < 2) return;
+    var marker = L.marker([coords[0], coords[1]], {
+      icon: buildTransportIcon(meta.category)
     });
-    marker.bindTooltip(item.name || 'Transporte', {
+    marker.bindTooltip(meta.name || 'Gasolinera', {
       permanent: false,
       direction: 'top',
       className: 'neighborhood-tooltip'
@@ -334,29 +340,11 @@ function buildSportsLayer() {
   if (!sportsData || !sportsData.length) return null;
   var layer = L.layerGroup();
   sportsData.forEach(function(item) {
-    var loc = item.location;
-    if (!loc) return;
-    var lat = null;
-    var lng = null;
-    if (Array.isArray(loc) && loc.length >= 2) {
-      if (typeof loc[0] === 'number' && typeof loc[1] === 'number') {
-        if (Math.abs(loc[0]) <= 90 && Math.abs(loc[1]) <= 180) {
-          lat = loc[0];
-          lng = loc[1];
-        } else if (Math.abs(loc[1]) <= 90 && Math.abs(loc[0]) <= 180) {
-          lat = loc[1];
-          lng = loc[0];
-        }
-      }
-    } else if (loc.lat && (loc.lng || loc.lon)) {
-      lat = loc.lat;
-      lng = loc.lng || loc.lon;
-    } else if (loc.latitude && loc.longitude) {
-      lat = loc.latitude;
-      lng = loc.longitude;
-    }
-    if (lat === null || lng === null) return;
-    var marker = L.circleMarker([lat, lng], {
+    if (!item.coordinates || item.type !== 'marker') return;
+    var coords = item.coordinates;
+    if (!Array.isArray(coords) || coords.length < 2) return;
+    var meta = item.metadata || {};
+    var marker = L.circleMarker([coords[0], coords[1]], {
       radius: 4,
       color: '#1565c0',
       weight: 1,
@@ -364,7 +352,7 @@ function buildSportsLayer() {
       fillColor: '#64b5f6',
       fillOpacity: 0.4
     });
-    marker.bindTooltip(item.name || 'Servicio deportivo', {
+    marker.bindTooltip(meta.name || 'Servicio deportivo', {
       permanent: false,
       direction: 'top',
       className: 'neighborhood-tooltip'
@@ -431,19 +419,23 @@ function showDistrictFilteredData(districtPolygon) {
     var gtfs = results[1];
 
     var filteredGasolineras = transportData.filter(function(item) {
-      if (item.category !== 'gasolinera') return false;
-      var loc = item.location;
-      if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return false;
-      return pointInPolygonLatLng([loc.lat, loc.lng], outerRing);
+      if (!item.coordinates || item.type !== 'marker') return false;
+      var meta = item.metadata || {};
+      if (meta.category !== 'gasolinera') return false;
+      var coords = item.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) return false;
+      return pointInPolygonLatLng([coords[0], coords[1]], outerRing);
     });
 
     if (filteredGasolineras.length > 0) {
       districtFilteredTransportLayer = L.layerGroup();
       filteredGasolineras.forEach(function(item) {
-        var marker = L.marker([item.location.lat, item.location.lng], {
-          icon: buildTransportIcon(item.category)
+        var coords = item.coordinates;
+        var meta = item.metadata || {};
+        var marker = L.marker([coords[0], coords[1]], {
+          icon: buildTransportIcon(meta.category)
         });
-        marker.bindTooltip(item.name || 'Gasolinera', {
+        marker.bindTooltip(meta.name || 'Gasolinera', {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
@@ -463,25 +455,29 @@ function showDistrictFilteredData(districtPolygon) {
       var filteredRouteIds = new Set();
 
       gtfs.metroRoutes.forEach(function(route) {
+        if (!route.coordinates || route.type !== 'polyline') return;
+        var path = route.coordinates;
         var routeInArea = false;
-        var sampleSize = Math.min(route.path.length, 50);
-        var step = Math.max(1, Math.floor(route.path.length / sampleSize));
-        for (var i = 0; i < route.path.length; i += step) {
-          if (pointInPolygonLatLng(route.path[i], outerRing)) {
+        var sampleSize = Math.min(path.length, 50);
+        var step = Math.max(1, Math.floor(path.length / sampleSize));
+        for (var i = 0; i < path.length; i += step) {
+          if (pointInPolygonLatLng(path[i], outerRing)) {
             routeInArea = true;
-            filteredRouteIds.add(route.routeId);
+            var meta = route.metadata || {};
+            filteredRouteIds.add(route.id);
             break;
           }
         }
         if (routeInArea) {
-          var polyline = L.polyline(route.path, {
-            color: route.color,
+          var meta = route.metadata || {};
+          var polyline = L.polyline(path, {
+            color: meta.color || '#000000',
             weight: weight,
             opacity: 0.8
           });
           polyline._gtfsWeight = weight;
-          polyline._gtfsRouteType = route.type;
-          polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+          polyline._gtfsRouteType = meta.routeType || '1';
+          polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '1'), {
             permanent: false,
             direction: 'top',
             className: 'neighborhood-tooltip'
@@ -491,12 +487,16 @@ function showDistrictFilteredData(districtPolygon) {
       });
 
       gtfs.metroStops.forEach(function(stop) {
-        if (pointInPolygonLatLng([stop.lat, stop.lng], outerRing)) {
+        if (!stop.coordinates || stop.type !== 'marker') return;
+        var coords = stop.coordinates;
+        if (!Array.isArray(coords) || coords.length < 2) return;
+        if (pointInPolygonLatLng([coords[0], coords[1]], outerRing)) {
+          var meta = stop.metadata || {};
           var routeType = getStopRouteType(stop.id, gtfs.metroRoutes);
-          var marker = L.marker([stop.lat, stop.lng], {
+          var marker = L.marker([coords[0], coords[1]], {
             icon: buildStopIcon(routeType)
           });
-          marker.bindTooltip(stop.name, {
+          marker.bindTooltip(meta.name || 'Parada', {
             permanent: false,
             direction: 'top',
             className: 'neighborhood-tooltip'
@@ -542,24 +542,27 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
 
       if (gtfs.metroRoutes) {
         gtfs.metroRoutes.forEach(function(route) {
+          if (!route.coordinates || route.type !== 'polyline') return;
+          var path = route.coordinates;
           var routeInArea = false;
-          var sampleSize = Math.min(route.path.length, 50);
-          var step = Math.max(1, Math.floor(route.path.length / sampleSize));
-          for (var i = 0; i < route.path.length; i += step) {
-            if (pointInPolygonLatLng(route.path[i], outerRing)) {
+          var sampleSize = Math.min(path.length, 50);
+          var step = Math.max(1, Math.floor(path.length / sampleSize));
+          for (var i = 0; i < path.length; i += step) {
+            if (pointInPolygonLatLng(path[i], outerRing)) {
               routeInArea = true;
               break;
             }
           }
           if (routeInArea) {
-            var polyline = L.polyline(route.path, {
-              color: route.color,
+            var meta = route.metadata || {};
+            var polyline = L.polyline(path, {
+              color: meta.color || '#000000',
               weight: weight,
               opacity: 0.8
             });
             polyline._gtfsWeight = weight;
-            polyline._gtfsRouteType = route.type;
-            polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+            polyline._gtfsRouteType = meta.routeType || '1';
+            polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '1'), {
               permanent: false,
               direction: 'top',
               className: 'neighborhood-tooltip'
@@ -571,24 +574,27 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
 
       if (gtfs.busRoutes) {
         gtfs.busRoutes.forEach(function(route) {
+          if (!route.coordinates || route.type !== 'polyline') return;
+          var path = route.coordinates;
           var routeInArea = false;
-          var sampleSize = Math.min(route.path.length, 50);
-          var step = Math.max(1, Math.floor(route.path.length / sampleSize));
-          for (var i = 0; i < route.path.length; i += step) {
-            if (pointInPolygonLatLng(route.path[i], outerRing)) {
+          var sampleSize = Math.min(path.length, 50);
+          var step = Math.max(1, Math.floor(path.length / sampleSize));
+          for (var i = 0; i < path.length; i += step) {
+            if (pointInPolygonLatLng(path[i], outerRing)) {
               routeInArea = true;
               break;
             }
           }
           if (routeInArea) {
-            var polyline = L.polyline(route.path, {
-              color: route.color,
+            var meta = route.metadata || {};
+            var polyline = L.polyline(path, {
+              color: meta.color || '#000000',
               weight: weight,
               opacity: 0.8
             });
             polyline._gtfsWeight = weight;
-            polyline._gtfsRouteType = route.type;
-            polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+            polyline._gtfsRouteType = meta.routeType || '3';
+            polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '3'), {
               permanent: false,
               direction: 'top',
               className: 'neighborhood-tooltip'
@@ -600,12 +606,16 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
 
       if (gtfs.metroStops) {
         gtfs.metroStops.forEach(function(stop) {
-          if (pointInPolygonLatLng([stop.lat, stop.lng], outerRing)) {
+          if (!stop.coordinates || stop.type !== 'marker') return;
+          var coords = stop.coordinates;
+          if (!Array.isArray(coords) || coords.length < 2) return;
+          if (pointInPolygonLatLng([coords[0], coords[1]], outerRing)) {
+            var meta = stop.metadata || {};
             var routeType = getStopRouteType(stop.id, gtfs.metroRoutes);
-            var marker = L.marker([stop.lat, stop.lng], {
+            var marker = L.marker([coords[0], coords[1]], {
               icon: buildStopIcon(routeType)
             });
-            marker.bindTooltip(stop.name, {
+            marker.bindTooltip(meta.name || 'Parada', {
               permanent: false,
               direction: 'top',
               className: 'neighborhood-tooltip'
@@ -617,11 +627,15 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
 
       if (gtfs.busStops) {
         gtfs.busStops.forEach(function(stop) {
-          if (pointInPolygonLatLng([stop.lat, stop.lng], outerRing)) {
-            var marker = L.marker([stop.lat, stop.lng], {
+          if (!stop.coordinates || stop.type !== 'marker') return;
+          var coords = stop.coordinates;
+          if (!Array.isArray(coords) || coords.length < 2) return;
+          if (pointInPolygonLatLng([coords[0], coords[1]], outerRing)) {
+            var meta = stop.metadata || {};
+            var marker = L.marker([coords[0], coords[1]], {
               icon: buildStopIcon('3')
             });
-            marker.bindTooltip(stop.name, {
+            marker.bindTooltip(meta.name || 'Parada', {
               permanent: false,
               direction: 'top',
               className: 'neighborhood-tooltip'
@@ -648,18 +662,21 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
     }
 
     var filteredBicing = bicingData.filter(function(item) {
-      var loc = item.location;
-      if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return false;
-      return pointInPolygonLatLng([loc.lat, loc.lng], outerRing);
+      if (!item.coordinates || item.type !== 'marker') return false;
+      var coords = item.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) return false;
+      return pointInPolygonLatLng([coords[0], coords[1]], outerRing);
     });
 
     if (filteredBicing.length > 0) {
       neighborhoodFilteredBicingLayer = L.layerGroup();
       filteredBicing.forEach(function(item) {
-        var marker = L.marker([item.location.lat, item.location.lng], {
+        var coords = item.coordinates;
+        var meta = item.metadata || {};
+        var marker = L.marker([coords[0], coords[1]], {
           icon: buildTransportIcon('bicing')
         });
-        marker.bindTooltip(item.name || 'Bicing', {
+        marker.bindTooltip(meta.name || 'Bicing', {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
@@ -670,56 +687,20 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
     }
 
     var filteredSports = sportsData.filter(function(item) {
-      var loc = item.location;
-      if (!loc) return false;
-      var lat = null;
-      var lng = null;
-      if (Array.isArray(loc) && loc.length >= 2) {
-        if (typeof loc[0] === 'number' && typeof loc[1] === 'number') {
-          if (Math.abs(loc[0]) <= 90 && Math.abs(loc[1]) <= 180) {
-            lat = loc[0];
-            lng = loc[1];
-          } else if (Math.abs(loc[1]) <= 90 && Math.abs(loc[0]) <= 180) {
-            lat = loc[1];
-            lng = loc[0];
-          }
-        }
-      } else if (loc.lat && (loc.lng || loc.lon)) {
-        lat = loc.lat;
-        lng = loc.lng || loc.lon;
-      } else if (loc.latitude && loc.longitude) {
-        lat = loc.latitude;
-        lng = loc.longitude;
-      }
-      if (lat === null || lng === null) return false;
-      return pointInPolygonLatLng([lat, lng], outerRing);
+      if (!item.coordinates || item.type !== 'marker') return false;
+      var coords = item.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) return false;
+      return pointInPolygonLatLng([coords[0], coords[1]], outerRing);
     });
 
     if (filteredSports.length > 0) {
       neighborhoodFilteredSportsLayer = L.layerGroup();
       filteredSports.forEach(function(item) {
-        var loc = item.location;
-        var lat = null;
-        var lng = null;
-        if (Array.isArray(loc) && loc.length >= 2) {
-          if (typeof loc[0] === 'number' && typeof loc[1] === 'number') {
-            if (Math.abs(loc[0]) <= 90 && Math.abs(loc[1]) <= 180) {
-              lat = loc[0];
-              lng = loc[1];
-            } else if (Math.abs(loc[1]) <= 90 && Math.abs(loc[0]) <= 180) {
-              lat = loc[1];
-              lng = loc[0];
-            }
-          }
-        } else if (loc.lat && (loc.lng || loc.lon)) {
-          lat = loc.lat;
-          lng = loc.lng || loc.lon;
-        } else if (loc.latitude && loc.longitude) {
-          lat = loc.latitude;
-          lng = loc.longitude;
-        }
-        if (lat === null || lng === null) return;
-        var marker = L.circleMarker([lat, lng], {
+        if (!item.coordinates || item.type !== 'marker') return;
+        var coords = item.coordinates;
+        if (!Array.isArray(coords) || coords.length < 2) return;
+        var meta = item.metadata || {};
+        var marker = L.circleMarker([coords[0], coords[1]], {
           radius: 4,
           color: '#1565c0',
           weight: 1,
@@ -727,7 +708,7 @@ function showNeighborhoodFilteredData(neighborhoodPolygon) {
           fillColor: '#64b5f6',
           fillOpacity: 0.4
         });
-        marker.bindTooltip(item.name || 'Servicio deportivo', {
+        marker.bindTooltip(meta.name || 'Servicio deportivo', {
           permanent: false,
           direction: 'top',
           className: 'neighborhood-tooltip'
@@ -793,12 +774,14 @@ function toggleBicingLayer() {
         if (!bicingLayer) {
           bicingLayer = L.layerGroup();
           bicingData.forEach(function(item) {
-            var loc = item.location;
-            if (!loc || typeof loc.lat !== 'number' || typeof loc.lng !== 'number') return;
-            var marker = L.marker([loc.lat, loc.lng], {
+            if (!item.coordinates || item.type !== 'marker') return;
+            var coords = item.coordinates;
+            if (!Array.isArray(coords) || coords.length < 2) return;
+            var meta = item.metadata || {};
+            var marker = L.marker([coords[0], coords[1]], {
               icon: buildTransportIcon('bicing')
             });
-            marker.bindTooltip(item.name || 'Bicing', {
+            marker.bindTooltip(meta.name || 'Bicing', {
               permanent: false,
               direction: 'top',
               className: 'neighborhood-tooltip'
@@ -1010,8 +993,11 @@ function getStopRouteType(stopId, routes) {
   var routePrefix = stopParts[0] + '.' + stopParts[1];
 
   for (var i = 0; i < routes.length; i++) {
-    if (routes[i].routeId && routes[i].routeId.startsWith(routePrefix)) {
-      return routes[i].type || '1';
+    var route = routes[i];
+    var routeId = route.id || route.routeId;
+    if (routeId && routeId.startsWith(routePrefix)) {
+      var meta = route.metadata || {};
+      return meta.routeType || route.type || '1';
     }
   }
 
@@ -1031,14 +1017,16 @@ function buildGTFSTransportLayer() {
 
   if (gtfsData.metroRoutes) {
     gtfsData.metroRoutes.forEach(function(route) {
-      var polyline = L.polyline(route.path, {
-        color: route.color,
+      if (!route.coordinates || route.type !== 'polyline') return;
+      var meta = route.metadata || {};
+      var polyline = L.polyline(route.coordinates, {
+        color: meta.color || '#000000',
         weight: weight,
         opacity: 0.8
       });
       polyline._gtfsWeight = weight;
-      polyline._gtfsRouteType = route.type;
-      polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+      polyline._gtfsRouteType = meta.routeType || '1';
+      polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '1'), {
         permanent: false,
         direction: 'top',
         className: 'neighborhood-tooltip'
@@ -1049,14 +1037,16 @@ function buildGTFSTransportLayer() {
 
   if (gtfsData.busRoutes) {
     gtfsData.busRoutes.forEach(function(route) {
-      var polyline = L.polyline(route.path, {
-        color: route.color,
+      if (!route.coordinates || route.type !== 'polyline') return;
+      var meta = route.metadata || {};
+      var polyline = L.polyline(route.coordinates, {
+        color: meta.color || '#000000',
         weight: weight,
         opacity: 0.8
       });
       polyline._gtfsWeight = weight;
-      polyline._gtfsRouteType = route.type;
-      polyline.bindTooltip(route.name + ' - ' + getRouteTypeName(route.type), {
+      polyline._gtfsRouteType = meta.routeType || '3';
+      polyline.bindTooltip((meta.name || 'Ruta') + ' - ' + getRouteTypeName(meta.routeType || '3'), {
         permanent: false,
         direction: 'top',
         className: 'neighborhood-tooltip'
@@ -1067,11 +1057,15 @@ function buildGTFSTransportLayer() {
 
   if (gtfsData.metroStops) {
     gtfsData.metroStops.forEach(function(stop) {
+      if (!stop.coordinates || stop.type !== 'marker') return;
+      var coords = stop.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) return;
+      var meta = stop.metadata || {};
       var routeType = getStopRouteType(stop.id, gtfsData.metroRoutes);
-      var marker = L.marker([stop.lat, stop.lng], {
+      var marker = L.marker([coords[0], coords[1]], {
         icon: buildStopIcon(routeType)
       });
-      marker.bindTooltip(stop.name, {
+      marker.bindTooltip(meta.name || 'Parada', {
         permanent: false,
         direction: 'top',
         className: 'neighborhood-tooltip'
@@ -1082,10 +1076,14 @@ function buildGTFSTransportLayer() {
 
   if (gtfsData.busStops) {
     gtfsData.busStops.forEach(function(stop) {
-      var marker = L.marker([stop.lat, stop.lng], {
+      if (!stop.coordinates || stop.type !== 'marker') return;
+      var coords = stop.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) return;
+      var meta = stop.metadata || {};
+      var marker = L.marker([coords[0], coords[1]], {
         icon: buildStopIcon('3')
       });
-      marker.bindTooltip(stop.name, {
+      marker.bindTooltip(meta.name || 'Parada', {
         permanent: false,
         direction: 'top',
         className: 'neighborhood-tooltip'

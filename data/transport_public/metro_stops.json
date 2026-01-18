@@ -1,1 +1,1982 @@
-[{"id":"1.111","name":"Hospital de Bellvitge","lat":41.344677,"lng":2.107242},{"id":"1.112","name":"Bellvitge","lat":41.350975,"lng":2.110917},{"id":"1.113","name":"Av. Carrilet","lat":41.358553,"lng":2.102632},{"id":"1.114","name":"Rambla Just Oliveras","lat":41.36409,"lng":2.099749},{"id":"1.115","name":"Can Serra","lat":41.367694,"lng":2.102758},{"id":"1.116","name":"Florida","lat":41.368316,"lng":2.110027},{"id":"1.117","name":"Torrassa","lat":41.368396,"lng":2.116594},{"id":"1.915","name":"Torrassa","lat":41.368223,"lng":2.115756},{"id":"1.118","name":"Santa Eulàlia","lat":41.368816,"lng":2.128617},{"id":"1.119","name":"Mercat Nou","lat":41.373003,"lng":2.133536},{"id":"1.120","name":"Plaça de Sants","lat":41.375353,"lng":2.138154},{"id":"1.517","name":"Plaça de Sants","lat":41.375727,"lng":2.135159},{"id":"1.121","name":"Hostafrancs","lat":41.375254,"lng":2.143291},{"id":"1.122","name":"Espanya","lat":41.37551,"lng":2.149382},{"id":"1.321","name":"Espanya","lat":41.375018,"lng":2.151555},{"id":"1.123","name":"Rocafort","lat":41.379232,"lng":2.154562},{"id":"1.124","name":"Urgell","lat":41.382487,"lng":2.158891},{"id":"1.125","name":"Universitat","lat":41.385815,"lng":2.164284},{"id":"1.212","name":"Universitat","lat":41.384768,"lng":2.163913},{"id":"1.126","name":"Catalunya","lat":41.387489,"lng":2.168995},{"id":"1.326","name":"Catalunya","lat":41.386322,"lng":2.170092},{"id":"1.127","name":"Urquinaona","lat":41.389636,"lng":2.174567},{"id":"1.424","name":"Urquinaona","lat":41.387961,"lng":2.173445},{"id":"1.128","name":"Arc de Triomf","lat":41.392337,"lng":2.181165},{"id":"1.129","name":"Marina","lat":41.394725,"lng":2.185801},{"id":"1.130","name":"Glòries","lat":41.402277,"lng":2.187537},{"id":"1.131","name":"Clot","lat":41.410163,"lng":2.187003},{"id":"1.218","name":"Clot","lat":41.410358,"lng":2.186835},{"id":"1.132","name":"Navas","lat":41.416187,"lng":2.187057},{"id":"1.133","name":"La Sagrera","lat":41.422369,"lng":2.186975},{"id":"1.526","name":"La Sagrera","lat":41.421296,"lng":2.186582},{"id":"1.930","name":"La Sagrera","lat":41.420494,"lng":2.186723},{"id":"1.134","name":"Fabra i Puig","lat":41.429633,"lng":2.183661},{"id":"1.135","name":"Sant Andreu","lat":41.4366,"lng":2.191187},{"id":"1.136","name":"Torras i Bages","lat":41.443225,"lng":2.190671},{"id":"1.137","name":"Trinitat Vella","lat":41.448956,"lng":2.193837},{"id":"1.138","name":"Baró de Viver","lat":41.449936,"lng":2.199563},{"id":"1.139","name":"Santa Coloma","lat":41.451067,"lng":2.207969},{"id":"1.140","name":"Fondo","lat":41.451583,"lng":2.218435},{"id":"1.942","name":"Fondo","lat":41.451876,"lng":2.218485},{"id":"1.210","name":"Paral·lel","lat":41.375004,"lng":2.169117},{"id":"1.323","name":"Paral·lel","lat":41.374892,"lng":2.169118},{"id":"1.9901","name":"Paral·lel","lat":41.373847,"lng":2.168853},{"id":"1.211","name":"Sant Antoni","lat":41.379833,"lng":2.163241},{"id":"1.213","name":"Passeig de Gràcia","lat":41.389416,"lng":2.168243},{"id":"1.327","name":"Passeig de Gràcia","lat":41.391603,"lng":2.165347},{"id":"1.425","name":"Passeig de Gràcia","lat":41.390057,"lng":2.167846},{"id":"1.214","name":"Tetuan","lat":41.394887,"lng":2.175559},{"id":"1.215","name":"Monumental","lat":41.400524,"lng":2.179462},{"id":"1.216","name":"Sagrada Família","lat":41.403985,"lng":2.175106},{"id":"1.523","name":"Sagrada Família","lat":41.403835,"lng":2.173618},{"id":"1.217","name":"Encants","lat":41.407236,"lng":2.1827},{"id":"1.219","name":"Bac de Roda","lat":41.415162,"lng":2.195503},{"id":"1.220","name":"Sant Martí","lat":41.419064,"lng":2.200724},{"id":"1.221","name":"La Pau","lat":41.424033,"lng":2.205608},{"id":"1.413","name":"La Pau","lat":41.423678,"lng":2.205194},{"id":"1.222","name":"Verneda","lat":41.430004,"lng":2.209883},{"id":"1.223","name":"Artigues | Sant Adrià","lat":41.433848,"lng":2.217772},{"id":"1.224","name":"Sant Roc","lat":41.435831,"lng":2.228606},{"id":"1.225","name":"Gorg","lat":41.440237,"lng":2.233441},{"id":"1.936","name":"Gorg","lat":41.440443,"lng":2.233892},{"id":"1.226","name":"Pep Ventura","lat":41.443905,"lng":2.237959},{"id":"1.227","name":"Badalona Pompeu Fabra","lat":41.449054,"lng":2.244097},{"id":"1.314","name":"Zona Universitària","lat":41.384115,"lng":2.111179},{"id":"1.918","name":"Zona Universitària","lat":41.383742,"lng":2.111621},{"id":"1.315","name":"Palau Reial","lat":41.38598,"lng":2.118538},{"id":"1.316","name":"Maria Cristina","lat":41.387816,"lng":2.125791},{"id":"1.317","name":"Les Corts","lat":41.38412,"lng":2.130871},{"id":"1.318","name":"Plaça del Centre","lat":41.381922,"lng":2.135884},{"id":"1.319","name":"Sants Estació","lat":41.381598,"lng":2.140992},{"id":"1.518","name":"Sants Estació","lat":41.379955,"lng":2.140398},{"id":"1.320","name":"Tarragona","lat":41.378493,"lng":2.145336},{"id":"1.322","name":"Poble Sec","lat":41.374996,"lng":2.160245},{"id":"1.324","name":"Drassanes","lat":41.376538,"lng":2.175664},{"id":"1.325","name":"Liceu","lat":41.381445,"lng":2.17303},{"id":"1.328","name":"Diagonal","lat":41.395888,"lng":2.160047},{"id":"1.521","name":"Diagonal","lat":41.394435,"lng":2.15883},{"id":"1.329","name":"Fontana","lat":41.402009,"lng":2.153022},{"id":"1.330","name":"Lesseps","lat":41.405738,"lng":2.150407},{"id":"1.331","name":"Vallcarca","lat":41.411975,"lng":2.144337},{"id":"1.332","name":"Penitents","lat":41.418279,"lng":2.140972},{"id":"1.333","name":"Vall d'Hebron","lat":41.425283,"lng":2.142565},{"id":"1.534","name":"Vall d'Hebron","lat":41.424993,"lng":2.142356},{"id":"1.334","name":"Montbau","lat":41.43062,"lng":2.145039},{"id":"1.335","name":"Mundet","lat":41.435645,"lng":2.148472},{"id":"1.336","name":"Valldaura","lat":41.437996,"lng":2.156878},{"id":"1.337","name":"Canyelles","lat":41.441754,"lng":2.166388},{"id":"1.338","name":"Roquetes","lat":41.44767,"lng":2.176098},{"id":"1.339","name":"Trinitat Nova","lat":41.4495,"lng":2.184097},{"id":"1.434","name":"Trinitat Nova","lat":41.449156,"lng":2.182434},{"id":"1.1136","name":"Trinitat Nova","lat":41.4499,"lng":2.1832},{"id":"1.414","name":"Besòs","lat":41.419901,"lng":2.210231},{"id":"1.415","name":"Besòs Mar","lat":41.415099,"lng":2.216082},{"id":"1.416","name":"El Maresme | Fòrum","lat":41.41178,"lng":2.216692},{"id":"1.417","name":"Selva de Mar","lat":41.408001,"lng":2.209122},{"id":"1.418","name":"Poblenou","lat":41.403716,"lng":2.203371},{"id":"1.419","name":"Llacuna","lat":41.399425,"lng":2.197712},{"id":"1.420","name":"Bogatell","lat":41.395107,"lng":2.192012},{"id":"1.421","name":"Ciutadella | Vila Olímpica","lat":41.386687,"lng":2.192991},{"id":"1.422","name":"Barceloneta","lat":41.381811,"lng":2.184787},{"id":"1.423","name":"Jaume I","lat":41.384126,"lng":2.178531},{"id":"1.426","name":"Girona","lat":41.39492,"lng":2.170825},{"id":"1.427","name":"Verdaguer","lat":41.400365,"lng":2.16806},{"id":"1.522","name":"Verdaguer","lat":41.398952,"lng":2.167089},{"id":"1.428","name":"Joanic","lat":41.406427,"lng":2.163225},{"id":"1.429","name":"Alfons X","lat":41.412377,"lng":2.166382},{"id":"1.430","name":"Guinardó | Hospital de Sant Pau","lat":41.415962,"lng":2.173989},{"id":"1.431","name":"Maragall","lat":41.423104,"lng":2.177397},{"id":"1.528","name":"Maragall","lat":41.425045,"lng":2.176485},{"id":"1.432","name":"Llucmajor","lat":41.436985,"lng":2.173343},{"id":"1.433","name":"Via Júlia","lat":41.44373,"lng":2.17855},{"id":"1.509","name":"Cornellà Centre","lat":41.35729,"lng":2.070428},{"id":"1.510","name":"Gavarra","lat":41.357993,"lng":2.079269},{"id":"1.511","name":"Sant Ildefons","lat":41.363381,"lng":2.084393},{"id":"1.512","name":"Can Boixeres","lat":41.366571,"lng":2.091506},{"id":"1.513","name":"Can Vidalet","lat":41.371279,"lng":2.099445},{"id":"1.514","name":"Pubilla Cases","lat":41.373838,"lng":2.107209},{"id":"1.515","name":"Collblanc","lat":41.375743,"lng":2.119195},{"id":"1.916","name":"Collblanc","lat":41.376056,"lng":2.118397},{"id":"1.516","name":"Badal","lat":41.375581,"lng":2.127402},{"id":"1.519","name":"Entença","lat":41.384467,"lng":2.145619},{"id":"1.520","name":"Hospital Clínic","lat":41.388608,"lng":2.151081},{"id":"1.524","name":"Sant Pau | Dos de Maig","lat":41.410753,"lng":2.176016},{"id":"1.525","name":"Camp de l'Arpa","lat":41.41506,"lng":2.181497},{"id":"1.527","name":"Congrés","lat":41.42344,"lng":2.181186},{"id":"1.529","name":"Virrei Amat","lat":41.429703,"lng":2.174913},{"id":"1.530","name":"Vilapicina","lat":41.430465,"lng":2.167619},{"id":"1.531","name":"Horta","lat":41.429692,"lng":2.159974},{"id":"1.532","name":"El Carmel","lat":41.42445,"lng":2.155099},{"id":"1.533","name":"El Coll | La Teixonera","lat":41.421997,"lng":2.148348},{"id":"1.555","name":"Ernest Lluch","lat":41.375898,"lng":2.112027},{"id":"1.901","name":"Aeroport T1","lat":41.288295,"lng":2.071152},{"id":"1.903","name":"Aeroport T2","lat":41.303823,"lng":2.073113},{"id":"1.904","name":"Mas Blau","lat":41.311225,"lng":2.073471},{"id":"1.905","name":"Parc Nou","lat":41.316628,"lng":2.087929},{"id":"1.906","name":"Cèntric","lat":41.32225,"lng":2.093463},{"id":"1.907","name":"El Prat Estació","lat":41.331993,"lng":2.089927},{"id":"1.909","name":"Les Moreres","lat":41.329119,"lng":2.103073},{"id":"1.910","name":"Mercabarna","lat":41.333485,"lng":2.111254},{"id":"1.911","name":"Parc Logístic","lat":41.341664,"lng":2.127401},{"id":"1.912","name":"Fira","lat":41.351988,"lng":2.130452},{"id":"1.913","name":"Europa | Fira","lat":41.35756,"lng":2.125924},{"id":"1.914","name":"Can Tries | Gornal","lat":41.360894,"lng":2.117993},{"id":"1.932","name":"Onze de Setembre","lat":41.429559,"lng":2.193564},{"id":"1.933","name":"Bon Pastor","lat":41.436203,"lng":2.205294},{"id":"1.934","name":"Llefià","lat":41.44136,"lng":2.216906},{"id":"1.935","name":"La Salut","lat":41.442817,"lng":2.224737},{"id":"1.940","name":"Can Peixauet","lat":41.443986,"lng":2.210027},{"id":"1.941","name":"Santa Rosa","lat":41.44685,"lng":2.215809},{"id":"1.943","name":"Església Major","lat":41.454797,"lng":2.212177},{"id":"1.944","name":"Singuerlín","lat":41.459413,"lng":2.205429},{"id":"1.945","name":"Can Zam","lat":41.456666,"lng":2.198569},{"id":"1.951","name":"ZAL | Riu Vell","lat":41.323706,"lng":2.133095},{"id":"1.952","name":"Ecoparc","lat":41.330159,"lng":2.137071},{"id":"1.953","name":"Port Comercial | La Factoria","lat":41.335983,"lng":2.140657},{"id":"1.954","name":"Zona Franca","lat":41.342976,"lng":2.144964},{"id":"1.956","name":"Foc","lat":41.356161,"lng":2.141804},{"id":"1.957","name":"Foneria","lat":41.361099,"lng":2.138229},{"id":"1.958","name":"Ciutat de la Justícia","lat":41.363137,"lng":2.132315},{"id":"1.959","name":"Provençana","lat":41.361354,"lng":2.1241},{"id":"1.1137","name":"Casa de l'Aigua","lat":41.451278,"lng":2.18484},{"id":"1.1138","name":"Torre Baró | Vallbona","lat":41.459196,"lng":2.179884},{"id":"1.1139","name":"Ciutat Meridiana","lat":41.460808,"lng":2.17465},{"id":"1.1140","name":"Can Cuiàs","lat":41.462413,"lng":2.173059},{"id":"1.9902","name":"Parc de Montjuïc","lat":41.368956,"lng":2.163269}]
+[
+  {
+    "id": "1.111",
+    "type": "marker",
+    "coordinates": [
+      41.344677,
+      2.107242
+    ],
+    "metadata": {
+      "name": "Hospital de Bellvitge",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.112",
+    "type": "marker",
+    "coordinates": [
+      41.350975,
+      2.110917
+    ],
+    "metadata": {
+      "name": "Bellvitge",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.113",
+    "type": "marker",
+    "coordinates": [
+      41.358553,
+      2.102632
+    ],
+    "metadata": {
+      "name": "Av. Carrilet",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.114",
+    "type": "marker",
+    "coordinates": [
+      41.36409,
+      2.099749
+    ],
+    "metadata": {
+      "name": "Rambla Just Oliveras",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.115",
+    "type": "marker",
+    "coordinates": [
+      41.367694,
+      2.102758
+    ],
+    "metadata": {
+      "name": "Can Serra",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.116",
+    "type": "marker",
+    "coordinates": [
+      41.368316,
+      2.110027
+    ],
+    "metadata": {
+      "name": "Florida",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.117",
+    "type": "marker",
+    "coordinates": [
+      41.368396,
+      2.116594
+    ],
+    "metadata": {
+      "name": "Torrassa",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.915",
+    "type": "marker",
+    "coordinates": [
+      41.368223,
+      2.115756
+    ],
+    "metadata": {
+      "name": "Torrassa",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.118",
+    "type": "marker",
+    "coordinates": [
+      41.368816,
+      2.128617
+    ],
+    "metadata": {
+      "name": "Santa Eulàlia",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.119",
+    "type": "marker",
+    "coordinates": [
+      41.373003,
+      2.133536
+    ],
+    "metadata": {
+      "name": "Mercat Nou",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.120",
+    "type": "marker",
+    "coordinates": [
+      41.375353,
+      2.138154
+    ],
+    "metadata": {
+      "name": "Plaça de Sants",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.517",
+    "type": "marker",
+    "coordinates": [
+      41.375727,
+      2.135159
+    ],
+    "metadata": {
+      "name": "Plaça de Sants",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.121",
+    "type": "marker",
+    "coordinates": [
+      41.375254,
+      2.143291
+    ],
+    "metadata": {
+      "name": "Hostafrancs",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.122",
+    "type": "marker",
+    "coordinates": [
+      41.37551,
+      2.149382
+    ],
+    "metadata": {
+      "name": "Espanya",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.321",
+    "type": "marker",
+    "coordinates": [
+      41.375018,
+      2.151555
+    ],
+    "metadata": {
+      "name": "Espanya",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.123",
+    "type": "marker",
+    "coordinates": [
+      41.379232,
+      2.154562
+    ],
+    "metadata": {
+      "name": "Rocafort",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.124",
+    "type": "marker",
+    "coordinates": [
+      41.382487,
+      2.158891
+    ],
+    "metadata": {
+      "name": "Urgell",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.125",
+    "type": "marker",
+    "coordinates": [
+      41.385815,
+      2.164284
+    ],
+    "metadata": {
+      "name": "Universitat",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.212",
+    "type": "marker",
+    "coordinates": [
+      41.384768,
+      2.163913
+    ],
+    "metadata": {
+      "name": "Universitat",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.126",
+    "type": "marker",
+    "coordinates": [
+      41.387489,
+      2.168995
+    ],
+    "metadata": {
+      "name": "Catalunya",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.326",
+    "type": "marker",
+    "coordinates": [
+      41.386322,
+      2.170092
+    ],
+    "metadata": {
+      "name": "Catalunya",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.127",
+    "type": "marker",
+    "coordinates": [
+      41.389636,
+      2.174567
+    ],
+    "metadata": {
+      "name": "Urquinaona",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.424",
+    "type": "marker",
+    "coordinates": [
+      41.387961,
+      2.173445
+    ],
+    "metadata": {
+      "name": "Urquinaona",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.128",
+    "type": "marker",
+    "coordinates": [
+      41.392337,
+      2.181165
+    ],
+    "metadata": {
+      "name": "Arc de Triomf",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.129",
+    "type": "marker",
+    "coordinates": [
+      41.394725,
+      2.185801
+    ],
+    "metadata": {
+      "name": "Marina",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.130",
+    "type": "marker",
+    "coordinates": [
+      41.402277,
+      2.187537
+    ],
+    "metadata": {
+      "name": "Glòries",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.131",
+    "type": "marker",
+    "coordinates": [
+      41.410163,
+      2.187003
+    ],
+    "metadata": {
+      "name": "Clot",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.218",
+    "type": "marker",
+    "coordinates": [
+      41.410358,
+      2.186835
+    ],
+    "metadata": {
+      "name": "Clot",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.132",
+    "type": "marker",
+    "coordinates": [
+      41.416187,
+      2.187057
+    ],
+    "metadata": {
+      "name": "Navas",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.133",
+    "type": "marker",
+    "coordinates": [
+      41.422369,
+      2.186975
+    ],
+    "metadata": {
+      "name": "La Sagrera",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.526",
+    "type": "marker",
+    "coordinates": [
+      41.421296,
+      2.186582
+    ],
+    "metadata": {
+      "name": "La Sagrera",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.930",
+    "type": "marker",
+    "coordinates": [
+      41.420494,
+      2.186723
+    ],
+    "metadata": {
+      "name": "La Sagrera",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.134",
+    "type": "marker",
+    "coordinates": [
+      41.429633,
+      2.183661
+    ],
+    "metadata": {
+      "name": "Fabra i Puig",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.135",
+    "type": "marker",
+    "coordinates": [
+      41.4366,
+      2.191187
+    ],
+    "metadata": {
+      "name": "Sant Andreu",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.136",
+    "type": "marker",
+    "coordinates": [
+      41.443225,
+      2.190671
+    ],
+    "metadata": {
+      "name": "Torras i Bages",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.137",
+    "type": "marker",
+    "coordinates": [
+      41.448956,
+      2.193837
+    ],
+    "metadata": {
+      "name": "Trinitat Vella",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.138",
+    "type": "marker",
+    "coordinates": [
+      41.449936,
+      2.199563
+    ],
+    "metadata": {
+      "name": "Baró de Viver",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.139",
+    "type": "marker",
+    "coordinates": [
+      41.451067,
+      2.207969
+    ],
+    "metadata": {
+      "name": "Santa Coloma",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.140",
+    "type": "marker",
+    "coordinates": [
+      41.451583,
+      2.218435
+    ],
+    "metadata": {
+      "name": "Fondo",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.942",
+    "type": "marker",
+    "coordinates": [
+      41.451876,
+      2.218485
+    ],
+    "metadata": {
+      "name": "Fondo",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.210",
+    "type": "marker",
+    "coordinates": [
+      41.375004,
+      2.169117
+    ],
+    "metadata": {
+      "name": "Paral·lel",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.323",
+    "type": "marker",
+    "coordinates": [
+      41.374892,
+      2.169118
+    ],
+    "metadata": {
+      "name": "Paral·lel",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.9901",
+    "type": "marker",
+    "coordinates": [
+      41.373847,
+      2.168853
+    ],
+    "metadata": {
+      "name": "Paral·lel",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.211",
+    "type": "marker",
+    "coordinates": [
+      41.379833,
+      2.163241
+    ],
+    "metadata": {
+      "name": "Sant Antoni",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.213",
+    "type": "marker",
+    "coordinates": [
+      41.389416,
+      2.168243
+    ],
+    "metadata": {
+      "name": "Passeig de Gràcia",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.327",
+    "type": "marker",
+    "coordinates": [
+      41.391603,
+      2.165347
+    ],
+    "metadata": {
+      "name": "Passeig de Gràcia",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.425",
+    "type": "marker",
+    "coordinates": [
+      41.390057,
+      2.167846
+    ],
+    "metadata": {
+      "name": "Passeig de Gràcia",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.214",
+    "type": "marker",
+    "coordinates": [
+      41.394887,
+      2.175559
+    ],
+    "metadata": {
+      "name": "Tetuan",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.215",
+    "type": "marker",
+    "coordinates": [
+      41.400524,
+      2.179462
+    ],
+    "metadata": {
+      "name": "Monumental",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.216",
+    "type": "marker",
+    "coordinates": [
+      41.403985,
+      2.175106
+    ],
+    "metadata": {
+      "name": "Sagrada Família",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.523",
+    "type": "marker",
+    "coordinates": [
+      41.403835,
+      2.173618
+    ],
+    "metadata": {
+      "name": "Sagrada Família",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.217",
+    "type": "marker",
+    "coordinates": [
+      41.407236,
+      2.1827
+    ],
+    "metadata": {
+      "name": "Encants",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.219",
+    "type": "marker",
+    "coordinates": [
+      41.415162,
+      2.195503
+    ],
+    "metadata": {
+      "name": "Bac de Roda",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.220",
+    "type": "marker",
+    "coordinates": [
+      41.419064,
+      2.200724
+    ],
+    "metadata": {
+      "name": "Sant Martí",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.221",
+    "type": "marker",
+    "coordinates": [
+      41.424033,
+      2.205608
+    ],
+    "metadata": {
+      "name": "La Pau",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.413",
+    "type": "marker",
+    "coordinates": [
+      41.423678,
+      2.205194
+    ],
+    "metadata": {
+      "name": "La Pau",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.222",
+    "type": "marker",
+    "coordinates": [
+      41.430004,
+      2.209883
+    ],
+    "metadata": {
+      "name": "Verneda",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.223",
+    "type": "marker",
+    "coordinates": [
+      41.433848,
+      2.217772
+    ],
+    "metadata": {
+      "name": "Artigues | Sant Adrià",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.224",
+    "type": "marker",
+    "coordinates": [
+      41.435831,
+      2.228606
+    ],
+    "metadata": {
+      "name": "Sant Roc",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.225",
+    "type": "marker",
+    "coordinates": [
+      41.440237,
+      2.233441
+    ],
+    "metadata": {
+      "name": "Gorg",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.936",
+    "type": "marker",
+    "coordinates": [
+      41.440443,
+      2.233892
+    ],
+    "metadata": {
+      "name": "Gorg",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.226",
+    "type": "marker",
+    "coordinates": [
+      41.443905,
+      2.237959
+    ],
+    "metadata": {
+      "name": "Pep Ventura",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.227",
+    "type": "marker",
+    "coordinates": [
+      41.449054,
+      2.244097
+    ],
+    "metadata": {
+      "name": "Badalona Pompeu Fabra",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.314",
+    "type": "marker",
+    "coordinates": [
+      41.384115,
+      2.111179
+    ],
+    "metadata": {
+      "name": "Zona Universitària",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.918",
+    "type": "marker",
+    "coordinates": [
+      41.383742,
+      2.111621
+    ],
+    "metadata": {
+      "name": "Zona Universitària",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.315",
+    "type": "marker",
+    "coordinates": [
+      41.38598,
+      2.118538
+    ],
+    "metadata": {
+      "name": "Palau Reial",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.316",
+    "type": "marker",
+    "coordinates": [
+      41.387816,
+      2.125791
+    ],
+    "metadata": {
+      "name": "Maria Cristina",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.317",
+    "type": "marker",
+    "coordinates": [
+      41.38412,
+      2.130871
+    ],
+    "metadata": {
+      "name": "Les Corts",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.318",
+    "type": "marker",
+    "coordinates": [
+      41.381922,
+      2.135884
+    ],
+    "metadata": {
+      "name": "Plaça del Centre",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.319",
+    "type": "marker",
+    "coordinates": [
+      41.381598,
+      2.140992
+    ],
+    "metadata": {
+      "name": "Sants Estació",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.518",
+    "type": "marker",
+    "coordinates": [
+      41.379955,
+      2.140398
+    ],
+    "metadata": {
+      "name": "Sants Estació",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.320",
+    "type": "marker",
+    "coordinates": [
+      41.378493,
+      2.145336
+    ],
+    "metadata": {
+      "name": "Tarragona",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.322",
+    "type": "marker",
+    "coordinates": [
+      41.374996,
+      2.160245
+    ],
+    "metadata": {
+      "name": "Poble Sec",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.324",
+    "type": "marker",
+    "coordinates": [
+      41.376538,
+      2.175664
+    ],
+    "metadata": {
+      "name": "Drassanes",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.325",
+    "type": "marker",
+    "coordinates": [
+      41.381445,
+      2.17303
+    ],
+    "metadata": {
+      "name": "Liceu",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.328",
+    "type": "marker",
+    "coordinates": [
+      41.395888,
+      2.160047
+    ],
+    "metadata": {
+      "name": "Diagonal",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.521",
+    "type": "marker",
+    "coordinates": [
+      41.394435,
+      2.15883
+    ],
+    "metadata": {
+      "name": "Diagonal",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.329",
+    "type": "marker",
+    "coordinates": [
+      41.402009,
+      2.153022
+    ],
+    "metadata": {
+      "name": "Fontana",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.330",
+    "type": "marker",
+    "coordinates": [
+      41.405738,
+      2.150407
+    ],
+    "metadata": {
+      "name": "Lesseps",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.331",
+    "type": "marker",
+    "coordinates": [
+      41.411975,
+      2.144337
+    ],
+    "metadata": {
+      "name": "Vallcarca",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.332",
+    "type": "marker",
+    "coordinates": [
+      41.418279,
+      2.140972
+    ],
+    "metadata": {
+      "name": "Penitents",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.333",
+    "type": "marker",
+    "coordinates": [
+      41.425283,
+      2.142565
+    ],
+    "metadata": {
+      "name": "Vall d'Hebron",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.534",
+    "type": "marker",
+    "coordinates": [
+      41.424993,
+      2.142356
+    ],
+    "metadata": {
+      "name": "Vall d'Hebron",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.334",
+    "type": "marker",
+    "coordinates": [
+      41.43062,
+      2.145039
+    ],
+    "metadata": {
+      "name": "Montbau",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.335",
+    "type": "marker",
+    "coordinates": [
+      41.435645,
+      2.148472
+    ],
+    "metadata": {
+      "name": "Mundet",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.336",
+    "type": "marker",
+    "coordinates": [
+      41.437996,
+      2.156878
+    ],
+    "metadata": {
+      "name": "Valldaura",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.337",
+    "type": "marker",
+    "coordinates": [
+      41.441754,
+      2.166388
+    ],
+    "metadata": {
+      "name": "Canyelles",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.338",
+    "type": "marker",
+    "coordinates": [
+      41.44767,
+      2.176098
+    ],
+    "metadata": {
+      "name": "Roquetes",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.339",
+    "type": "marker",
+    "coordinates": [
+      41.4495,
+      2.184097
+    ],
+    "metadata": {
+      "name": "Trinitat Nova",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.434",
+    "type": "marker",
+    "coordinates": [
+      41.449156,
+      2.182434
+    ],
+    "metadata": {
+      "name": "Trinitat Nova",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.1136",
+    "type": "marker",
+    "coordinates": [
+      41.4499,
+      2.1832
+    ],
+    "metadata": {
+      "name": "Trinitat Nova",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.414",
+    "type": "marker",
+    "coordinates": [
+      41.419901,
+      2.210231
+    ],
+    "metadata": {
+      "name": "Besòs",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.415",
+    "type": "marker",
+    "coordinates": [
+      41.415099,
+      2.216082
+    ],
+    "metadata": {
+      "name": "Besòs Mar",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.416",
+    "type": "marker",
+    "coordinates": [
+      41.41178,
+      2.216692
+    ],
+    "metadata": {
+      "name": "El Maresme | Fòrum",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.417",
+    "type": "marker",
+    "coordinates": [
+      41.408001,
+      2.209122
+    ],
+    "metadata": {
+      "name": "Selva de Mar",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.418",
+    "type": "marker",
+    "coordinates": [
+      41.403716,
+      2.203371
+    ],
+    "metadata": {
+      "name": "Poblenou",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.419",
+    "type": "marker",
+    "coordinates": [
+      41.399425,
+      2.197712
+    ],
+    "metadata": {
+      "name": "Llacuna",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.420",
+    "type": "marker",
+    "coordinates": [
+      41.395107,
+      2.192012
+    ],
+    "metadata": {
+      "name": "Bogatell",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.421",
+    "type": "marker",
+    "coordinates": [
+      41.386687,
+      2.192991
+    ],
+    "metadata": {
+      "name": "Ciutadella | Vila Olímpica",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.422",
+    "type": "marker",
+    "coordinates": [
+      41.381811,
+      2.184787
+    ],
+    "metadata": {
+      "name": "Barceloneta",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.423",
+    "type": "marker",
+    "coordinates": [
+      41.384126,
+      2.178531
+    ],
+    "metadata": {
+      "name": "Jaume I",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.426",
+    "type": "marker",
+    "coordinates": [
+      41.39492,
+      2.170825
+    ],
+    "metadata": {
+      "name": "Girona",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.427",
+    "type": "marker",
+    "coordinates": [
+      41.400365,
+      2.16806
+    ],
+    "metadata": {
+      "name": "Verdaguer",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.522",
+    "type": "marker",
+    "coordinates": [
+      41.398952,
+      2.167089
+    ],
+    "metadata": {
+      "name": "Verdaguer",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.428",
+    "type": "marker",
+    "coordinates": [
+      41.406427,
+      2.163225
+    ],
+    "metadata": {
+      "name": "Joanic",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.429",
+    "type": "marker",
+    "coordinates": [
+      41.412377,
+      2.166382
+    ],
+    "metadata": {
+      "name": "Alfons X",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.430",
+    "type": "marker",
+    "coordinates": [
+      41.415962,
+      2.173989
+    ],
+    "metadata": {
+      "name": "Guinardó | Hospital de Sant Pau",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.431",
+    "type": "marker",
+    "coordinates": [
+      41.423104,
+      2.177397
+    ],
+    "metadata": {
+      "name": "Maragall",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.528",
+    "type": "marker",
+    "coordinates": [
+      41.425045,
+      2.176485
+    ],
+    "metadata": {
+      "name": "Maragall",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.432",
+    "type": "marker",
+    "coordinates": [
+      41.436985,
+      2.173343
+    ],
+    "metadata": {
+      "name": "Llucmajor",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.433",
+    "type": "marker",
+    "coordinates": [
+      41.44373,
+      2.17855
+    ],
+    "metadata": {
+      "name": "Via Júlia",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.509",
+    "type": "marker",
+    "coordinates": [
+      41.35729,
+      2.070428
+    ],
+    "metadata": {
+      "name": "Cornellà Centre",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.510",
+    "type": "marker",
+    "coordinates": [
+      41.357993,
+      2.079269
+    ],
+    "metadata": {
+      "name": "Gavarra",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.511",
+    "type": "marker",
+    "coordinates": [
+      41.363381,
+      2.084393
+    ],
+    "metadata": {
+      "name": "Sant Ildefons",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.512",
+    "type": "marker",
+    "coordinates": [
+      41.366571,
+      2.091506
+    ],
+    "metadata": {
+      "name": "Can Boixeres",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.513",
+    "type": "marker",
+    "coordinates": [
+      41.371279,
+      2.099445
+    ],
+    "metadata": {
+      "name": "Can Vidalet",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.514",
+    "type": "marker",
+    "coordinates": [
+      41.373838,
+      2.107209
+    ],
+    "metadata": {
+      "name": "Pubilla Cases",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.515",
+    "type": "marker",
+    "coordinates": [
+      41.375743,
+      2.119195
+    ],
+    "metadata": {
+      "name": "Collblanc",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.916",
+    "type": "marker",
+    "coordinates": [
+      41.376056,
+      2.118397
+    ],
+    "metadata": {
+      "name": "Collblanc",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.516",
+    "type": "marker",
+    "coordinates": [
+      41.375581,
+      2.127402
+    ],
+    "metadata": {
+      "name": "Badal",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.519",
+    "type": "marker",
+    "coordinates": [
+      41.384467,
+      2.145619
+    ],
+    "metadata": {
+      "name": "Entença",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.520",
+    "type": "marker",
+    "coordinates": [
+      41.388608,
+      2.151081
+    ],
+    "metadata": {
+      "name": "Hospital Clínic",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.524",
+    "type": "marker",
+    "coordinates": [
+      41.410753,
+      2.176016
+    ],
+    "metadata": {
+      "name": "Sant Pau | Dos de Maig",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.525",
+    "type": "marker",
+    "coordinates": [
+      41.41506,
+      2.181497
+    ],
+    "metadata": {
+      "name": "Camp de l'Arpa",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.527",
+    "type": "marker",
+    "coordinates": [
+      41.42344,
+      2.181186
+    ],
+    "metadata": {
+      "name": "Congrés",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.529",
+    "type": "marker",
+    "coordinates": [
+      41.429703,
+      2.174913
+    ],
+    "metadata": {
+      "name": "Virrei Amat",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.530",
+    "type": "marker",
+    "coordinates": [
+      41.430465,
+      2.167619
+    ],
+    "metadata": {
+      "name": "Vilapicina",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.531",
+    "type": "marker",
+    "coordinates": [
+      41.429692,
+      2.159974
+    ],
+    "metadata": {
+      "name": "Horta",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.532",
+    "type": "marker",
+    "coordinates": [
+      41.42445,
+      2.155099
+    ],
+    "metadata": {
+      "name": "El Carmel",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.533",
+    "type": "marker",
+    "coordinates": [
+      41.421997,
+      2.148348
+    ],
+    "metadata": {
+      "name": "El Coll | La Teixonera",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.555",
+    "type": "marker",
+    "coordinates": [
+      41.375898,
+      2.112027
+    ],
+    "metadata": {
+      "name": "Ernest Lluch",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.901",
+    "type": "marker",
+    "coordinates": [
+      41.288295,
+      2.071152
+    ],
+    "metadata": {
+      "name": "Aeroport T1",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.903",
+    "type": "marker",
+    "coordinates": [
+      41.303823,
+      2.073113
+    ],
+    "metadata": {
+      "name": "Aeroport T2",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.904",
+    "type": "marker",
+    "coordinates": [
+      41.311225,
+      2.073471
+    ],
+    "metadata": {
+      "name": "Mas Blau",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.905",
+    "type": "marker",
+    "coordinates": [
+      41.316628,
+      2.087929
+    ],
+    "metadata": {
+      "name": "Parc Nou",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.906",
+    "type": "marker",
+    "coordinates": [
+      41.32225,
+      2.093463
+    ],
+    "metadata": {
+      "name": "Cèntric",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.907",
+    "type": "marker",
+    "coordinates": [
+      41.331993,
+      2.089927
+    ],
+    "metadata": {
+      "name": "El Prat Estació",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.909",
+    "type": "marker",
+    "coordinates": [
+      41.329119,
+      2.103073
+    ],
+    "metadata": {
+      "name": "Les Moreres",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.910",
+    "type": "marker",
+    "coordinates": [
+      41.333485,
+      2.111254
+    ],
+    "metadata": {
+      "name": "Mercabarna",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.911",
+    "type": "marker",
+    "coordinates": [
+      41.341664,
+      2.127401
+    ],
+    "metadata": {
+      "name": "Parc Logístic",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.912",
+    "type": "marker",
+    "coordinates": [
+      41.351988,
+      2.130452
+    ],
+    "metadata": {
+      "name": "Fira",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.913",
+    "type": "marker",
+    "coordinates": [
+      41.35756,
+      2.125924
+    ],
+    "metadata": {
+      "name": "Europa | Fira",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.914",
+    "type": "marker",
+    "coordinates": [
+      41.360894,
+      2.117993
+    ],
+    "metadata": {
+      "name": "Can Tries | Gornal",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.932",
+    "type": "marker",
+    "coordinates": [
+      41.429559,
+      2.193564
+    ],
+    "metadata": {
+      "name": "Onze de Setembre",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.933",
+    "type": "marker",
+    "coordinates": [
+      41.436203,
+      2.205294
+    ],
+    "metadata": {
+      "name": "Bon Pastor",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.934",
+    "type": "marker",
+    "coordinates": [
+      41.44136,
+      2.216906
+    ],
+    "metadata": {
+      "name": "Llefià",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.935",
+    "type": "marker",
+    "coordinates": [
+      41.442817,
+      2.224737
+    ],
+    "metadata": {
+      "name": "La Salut",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.940",
+    "type": "marker",
+    "coordinates": [
+      41.443986,
+      2.210027
+    ],
+    "metadata": {
+      "name": "Can Peixauet",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.941",
+    "type": "marker",
+    "coordinates": [
+      41.44685,
+      2.215809
+    ],
+    "metadata": {
+      "name": "Santa Rosa",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.943",
+    "type": "marker",
+    "coordinates": [
+      41.454797,
+      2.212177
+    ],
+    "metadata": {
+      "name": "Església Major",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.944",
+    "type": "marker",
+    "coordinates": [
+      41.459413,
+      2.205429
+    ],
+    "metadata": {
+      "name": "Singuerlín",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.945",
+    "type": "marker",
+    "coordinates": [
+      41.456666,
+      2.198569
+    ],
+    "metadata": {
+      "name": "Can Zam",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.951",
+    "type": "marker",
+    "coordinates": [
+      41.323706,
+      2.133095
+    ],
+    "metadata": {
+      "name": "ZAL | Riu Vell",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.952",
+    "type": "marker",
+    "coordinates": [
+      41.330159,
+      2.137071
+    ],
+    "metadata": {
+      "name": "Ecoparc",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.953",
+    "type": "marker",
+    "coordinates": [
+      41.335983,
+      2.140657
+    ],
+    "metadata": {
+      "name": "Port Comercial | La Factoria",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.954",
+    "type": "marker",
+    "coordinates": [
+      41.342976,
+      2.144964
+    ],
+    "metadata": {
+      "name": "Zona Franca",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.956",
+    "type": "marker",
+    "coordinates": [
+      41.356161,
+      2.141804
+    ],
+    "metadata": {
+      "name": "Foc",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.957",
+    "type": "marker",
+    "coordinates": [
+      41.361099,
+      2.138229
+    ],
+    "metadata": {
+      "name": "Foneria",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.958",
+    "type": "marker",
+    "coordinates": [
+      41.363137,
+      2.132315
+    ],
+    "metadata": {
+      "name": "Ciutat de la Justícia",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.959",
+    "type": "marker",
+    "coordinates": [
+      41.361354,
+      2.1241
+    ],
+    "metadata": {
+      "name": "Provençana",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.1137",
+    "type": "marker",
+    "coordinates": [
+      41.451278,
+      2.18484
+    ],
+    "metadata": {
+      "name": "Casa de l'Aigua",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.1138",
+    "type": "marker",
+    "coordinates": [
+      41.459196,
+      2.179884
+    ],
+    "metadata": {
+      "name": "Torre Baró | Vallbona",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.1139",
+    "type": "marker",
+    "coordinates": [
+      41.460808,
+      2.17465
+    ],
+    "metadata": {
+      "name": "Ciutat Meridiana",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.1140",
+    "type": "marker",
+    "coordinates": [
+      41.462413,
+      2.173059
+    ],
+    "metadata": {
+      "name": "Can Cuiàs",
+      "category": "metro_stop"
+    }
+  },
+  {
+    "id": "1.9902",
+    "type": "marker",
+    "coordinates": [
+      41.368956,
+      2.163269
+    ],
+    "metadata": {
+      "name": "Parc de Montjuïc",
+      "category": "metro_stop"
+    }
+  }
+]
