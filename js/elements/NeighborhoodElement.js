@@ -193,6 +193,18 @@ class NeighborhoodElement extends MapElement {
       weight: weight,
       opacity: isSelected ? 0.9 : 0
     });
+
+    var tooltip = this.getTooltip();
+    if (tooltip != null) {
+      this.leafletLayer.unbindTooltip();
+      this.leafletLayer.bindTooltip(tooltip, {
+        permanent: false,
+        direction: 'center',
+        className: 'neighborhood-tooltip'
+      });
+    } else {
+      this.leafletLayer.unbindTooltip();
+    }
   }
 
   getTooltip() {
