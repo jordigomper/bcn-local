@@ -1,7 +1,7 @@
 class Map {
   constructor(containerId, options = {}) {
     this.containerId = containerId;
-    this.center = options.center || [41.392328443726626, 2.1352100372314458];
+    this.center = options.center || [41.392328443726626, 2.1602100372314458];
     this.zoom = options.zoom || 13;
     this.initialCenter = this.center;
     this.initialZoom = this.zoom;
@@ -36,7 +36,7 @@ class Map {
     var center = this.initialCenter;
     var zoom = this.initialZoom;
     if (window.innerWidth === 1920 && window.innerHeight === 1080) {
-      center = [41.384803698683925, 2.140244417823851];
+      center = [41.384803698683925, 2.165244417823851];
       zoom = 12.5;
     }
     return { center: center, zoom: zoom };
