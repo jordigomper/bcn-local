@@ -1,0 +1,30 @@
+/
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(self), microphone=(), camera=()
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/index.html
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/leaflet.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/leaflet.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=86400
