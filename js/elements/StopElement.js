@@ -58,33 +58,34 @@ class StopElement extends MapElement {
 
     var routesLayer = L.layerGroup();
     var routesFound = false;
+    var stopRouteNames = this.metadata.routeNames || [];
 
     for (var i = 0; i < busRoutes.length; i++) {
       var route = busRoutes[i];
       if (!route.coordinates || !Array.isArray(route.coordinates)) continue;
 
+      var meta = route.metadata || {};
+      var routeName = meta.name || route.id;
       var routePassesNear = false;
-      var sampleSize = Math.min(route.coordinates.length, 100);
-      var step = Math.max(1, Math.floor(route.coordinates.length / sampleSize));
-
-      for (var j = 0; j < route.coordinates.length; j += step) {
-        var coord = route.coordinates[j];
-        if (Array.isArray(coord) && coord.length >= 2) {
-          var lat = coord[0];
-          var lng = coord[1];
-          var latDiff = Math.abs(lat - stopLat);
-          var lngDiff = Math.abs(lng - stopLng);
-          if (latDiff < threshold && lngDiff < threshold) {
-            routePassesNear = true;
-            break;
+      if (typeof distancePointToPolyline === 'function') {
+        var dist = distancePointToPolyline(stopLat, stopLng, route.coordinates);
+        routePassesNear = dist <= threshold;
+      }
+      if (!routePassesNear) {
+        var step = Math.max(1, Math.floor(route.coordinates.length / 100));
+        for (var j = 0; j < route.coordinates.length; j += step) {
+          var coord = route.coordinates[j];
+          if (Array.isArray(coord) && coord.length >= 2) {
+            if (Math.abs(coord[0] - stopLat) < threshold && Math.abs(coord[1] - stopLng) < threshold) {
+              routePassesNear = true;
+              break;
+            }
           }
         }
       }
-
-      if (routePassesNear) {
-        var meta = route.metadata || {};
+      var isAssignedToStop = stopRouteNames.indexOf(routeName) >= 0;
+      if (routePassesNear || isAssignedToStop) {
         var routeColor = meta.color || '#800020';
-        var routeName = meta.name || route.id;
 
         var polyline = L.polyline(route.coordinates, {
           color: routeColor,

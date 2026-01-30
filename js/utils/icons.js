@@ -280,31 +280,32 @@ function getStopsForRoutes(routes, allStops) {
       }
       
       if (!hasMatchingName) continue;
-      
-      var routePassesNear = false;
-      var sampleSize = Math.min(route.coordinates.length, 100);
-      var step = Math.max(1, Math.floor(route.coordinates.length / sampleSize));
-      
-      for (var k = 0; k < route.coordinates.length; k += step) {
-        var coord = route.coordinates[k];
-        if (Array.isArray(coord) && coord.length >= 2) {
-          var lat = coord[0];
-          var lng = coord[1];
-          var latDiff = Math.abs(lat - stopLat);
-          var lngDiff = Math.abs(lng - stopLng);
-          if (latDiff < threshold && lngDiff < threshold) {
-            routePassesNear = true;
-            break;
+
+      var dist = typeof distancePointToPolyline === 'function'
+        ? distancePointToPolyline(stopLat, stopLng, route.coordinates)
+        : Infinity;
+      var routePassesNear = dist <= threshold;
+      if (!routePassesNear) {
+        var step = Math.max(1, Math.floor(route.coordinates.length / 100));
+        for (var k = 0; k < route.coordinates.length; k += step) {
+          var coord = route.coordinates[k];
+          if (Array.isArray(coord) && coord.length >= 2) {
+            var lat = coord[0];
+            var lng = coord[1];
+            if (Math.abs(lat - stopLat) < threshold && Math.abs(lng - stopLng) < threshold) {
+              routePassesNear = true;
+              break;
+            }
           }
         }
       }
-      
-      if (routePassesNear) {
+
+      if (routePassesNear || hasMatchingName) {
         stopMatches = true;
         break;
       }
     }
-    
+
     if (stopMatches) {
       matchingStops.push(stop);
       seenStopIds[stop.id] = true;

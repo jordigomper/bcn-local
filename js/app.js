@@ -231,8 +231,10 @@ function createElementsFromData(data) {
     data.busStops.forEach(function(item) {
       if (item.type === 'marker') {
         var routes = data.busRoutes || [];
-        var routeNames = getStopRouteNames(item.id, routes, item.coordinates);
         var meta = item.metadata || {};
+        var routeNames = (meta.routeNames && Array.isArray(meta.routeNames) && meta.routeNames.length > 0)
+          ? meta.routeNames
+          : getStopRouteNames(item.id, routes, item.coordinates);
         meta.routeType = '3';
         meta.routeNames = routeNames;
         item.metadata = meta;
