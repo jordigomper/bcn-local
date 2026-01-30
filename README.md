@@ -4,29 +4,11 @@ Interactive Barcelona map with transport, services, and neighborhood data. The m
 
 ## Run
 
-- Open `index.html` in your browser.
+The app loads data with `fetch()`, so use a local web server (opening `index.html` with `file://` may block those requests). Options:
 
-## SEO
-
-El proyecto incluye meta description, Open Graph, Twitter Cards, JSON-LD (WebApplication) y `robots.txt`/`sitemap.xml`. Sustituye `https://bcnlocal.example.com/` en `index.html`, `robots.txt` y `sitemap.xml` por tu URL pública cuando despliegues.
-
-## Cloudflare (Pages)
-
-El archivo `_headers` configura cabeceras HTTP para Cloudflare Pages:
-
-- **Seguridad:** `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`.
-- **Caché:** HTML (1 h), JS/CSS y `/js/*` (1 año), `/data/*` (24 h), `robots.txt`/`sitemap.xml` (24 h).
-
-Si usas el subdominio `*.pages.dev` y no quieres que los previews se indexen, añade en `_headers` (sustituye `nombre-proyecto` por el nombre de tu proyecto en Pages):
-
-```
-https://nombre-proyecto.pages.dev/*
-  X-Robots-Tag: noindex
-https://:branch.nombre-proyecto.pages.dev/*
-  X-Robots-Tag: noindex
-```
-
-En el dashboard de Cloudflare puedes además: activar **Always Use HTTPS**, **Auto Minify** (HTML/CSS/JS), **Brotli** y en **Speed** > **Optimization** las opciones que quieras. Para un dominio propio, configura el canonical en el proyecto y en **Rules** > **Redirect Rules** una regla de redirección HTTP → HTTPS si no está ya.
+- **VS Code**: install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension, then right‑click `index.html` → “Open with Live Server”.
+- **Python**: from the project root run `python3 -m http.server 8000`, then open http://localhost:8000 in your browser.
+- **Node**: run `npx serve` in the project root, then open the URL shown in the terminal.
 
 ## Languages
 
