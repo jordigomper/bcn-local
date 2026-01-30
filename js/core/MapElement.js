@@ -24,6 +24,10 @@ class MapElement {
     return this.metadata.name || this.id;
   }
 
+  getMinZoom() {
+    return null;
+  }
+
   createLeafletLayer() {
     throw new Error('createLeafletLayer must be implemented by the subclass');
   }

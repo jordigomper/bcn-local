@@ -1,3 +1,29 @@
+function distancePointToSegment(px, py, x1, y1, x2, y2) {
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  var len2 = dx * dx + dy * dy;
+  if (len2 === 0) {
+    return Math.sqrt((px - x1) * (px - x1) + (py - y1) * (py - y1));
+  }
+  var t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2));
+  var qx = x1 + t * dx;
+  var qy = y1 + t * dy;
+  return Math.sqrt((px - qx) * (px - qx) + (py - qy) * (py - qy));
+}
+
+function distancePointToPolyline(lat, lng, coordinates) {
+  if (!coordinates || coordinates.length < 2) return Infinity;
+  var minDist = Infinity;
+  for (var i = 0; i < coordinates.length - 1; i++) {
+    var a = coordinates[i];
+    var b = coordinates[i + 1];
+    if (!Array.isArray(a) || a.length < 2 || !Array.isArray(b) || b.length < 2) continue;
+    var d = distancePointToSegment(lat, lng, a[0], a[1], b[0], b[1]);
+    if (d < minDist) minDist = d;
+  }
+  return minDist;
+}
+
 function pointInPolygon(point, polygon) {
   var x = point[0], y = point[1];
   var inside = false;

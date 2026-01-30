@@ -300,7 +300,7 @@ function getStopsForRoutes(routes, allStops) {
         }
       }
 
-      if (routePassesNear || hasMatchingName) {
+      if (hasMatchingName && routePassesNear) {
         stopMatches = true;
         break;
       }

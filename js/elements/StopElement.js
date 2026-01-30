@@ -5,6 +5,13 @@ class StopElement extends MapElement {
     this.busRoutesOverlay = null;
   }
 
+  getMinZoom() {
+    if (this.metadata && typeof this.metadata.minZoom === 'number') {
+      return this.metadata.minZoom;
+    }
+    return 14.5;
+  }
+
   createLeafletLayer() {
     var icon = buildStopIcon(this.routeType);
 

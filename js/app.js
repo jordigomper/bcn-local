@@ -486,9 +486,33 @@ function setupEventListeners() {
   });
 
   document.getElementById('gtfs-bus-toggle').addEventListener('click', function() {
-    filterManager.toggleFilter('bus_route');
-    filterManager.toggleFilter('bus_stop');
-    this.classList.toggle('active');
+    var busWasInactive = !filterManager.isActive('bus_route') && !filterManager.isActive('bus_stop');
+    if (busWasInactive) {
+      if (mapInstance.neighborhoodManager) {
+        mapInstance.neighborhoodManager.setCurrentView(null, null);
+      }
+      if (mapInstance.districtsListManager) {
+        mapInstance.districtsListManager.setActiveDistrict(null);
+        mapInstance.districtsListManager.setActiveNeighborhood(null);
+      }
+      if (mapInstance.selectionLegendManager) {
+        mapInstance.selectionLegendManager.selectedRoute = null;
+        mapInstance.selectionLegendManager.restoreRouteOpacity();
+      }
+      filterManager.clearFilters();
+      filterManager.activateFilter('bus_route');
+      filterManager.activateFilter('bus_stop');
+      var initialView = mapInstance.getInitialView();
+      mapInstance.leafletMap.setView(initialView.center, 14.5, { animate: true });
+      mapInstance.zoom = 14.5;
+      mapInstance.selectionLegendManager.update({ filterBus: true });
+      this.classList.add('active');
+    } else {
+      filterManager.toggleFilter('bus_route');
+      filterManager.toggleFilter('bus_stop');
+      mapInstance.selectionLegendManager.update(null);
+      this.classList.remove('active');
+    }
   });
 
   document.getElementById('transport-toggle').addEventListener('click', function() {

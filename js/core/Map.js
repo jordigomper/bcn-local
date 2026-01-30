@@ -46,7 +46,23 @@ class Map {
     var self = this;
     this.leafletMap.on('zoomend', function() {
       self.zoom = self.leafletMap.getZoom();
+      console.log('zoom', self.zoom);
       self.emit('zoomchange', { zoom: self.zoom });
+      self.renderedElements.forEach(function(id) {
+        var el = self.elements.get(id);
+        var minZoom = el && typeof el.getMinZoom === 'function' ? el.getMinZoom() : null;
+        if (minZoom !== null && el.leafletLayer) {
+          if (self.zoom >= minZoom) {
+            if (!self.leafletMap.hasLayer(el.leafletLayer)) {
+              el.leafletLayer.addTo(self.leafletMap);
+            }
+          } else {
+            if (self.leafletMap.hasLayer(el.leafletLayer)) {
+              self.leafletMap.removeLayer(el.leafletLayer);
+            }
+          }
+        }
+      });
     });
 
     this.leafletMap.on('moveend', function() {
@@ -147,7 +163,10 @@ class Map {
     }
 
     if (element.leafletLayer) {
-      element.leafletLayer.addTo(this.leafletMap);
+      var minZoom = typeof element.getMinZoom === 'function' ? element.getMinZoom() : null;
+      if (minZoom === null || this.zoom >= minZoom) {
+        element.leafletLayer.addTo(this.leafletMap);
+      }
       element.updateState({ visible: true });
     }
   }
@@ -156,7 +175,9 @@ class Map {
     var element = this.elements.get(elementId);
     if (!element || !element.leafletLayer) return;
 
-    this.leafletMap.removeLayer(element.leafletLayer);
+    if (this.leafletMap.hasLayer(element.leafletLayer)) {
+      this.leafletMap.removeLayer(element.leafletLayer);
+    }
     element.updateState({ visible: false });
   }
 

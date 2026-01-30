@@ -24,7 +24,7 @@ class SelectionLegendManager {
     var previousView = this.currentView;
     this.currentView = view;
     
-    if (!view || (!view.district && !view.neighborhood)) {
+    if (!view || (!view.district && !view.neighborhood && !view.filterBus)) {
       this.hide();
       this.selectedRoute = null;
       return;
@@ -241,7 +241,20 @@ class SelectionLegendManager {
     
     var allElements = registry.getAllElements();
     var self = this;
-    
+    var routePolylinesForBus = [];
+    if (routeType === '3') {
+      allElements.forEach(function(element) {
+        if (element.type !== 'polyline' || !element.coordinates || !Array.isArray(element.coordinates)) return;
+        var meta = element.metadata || {};
+        var elementRouteName = meta.name || element.id;
+        if ((meta.category === 'bus_route' || meta.routeType === '3') && elementRouteName === routeName) {
+          routePolylinesForBus.push(element);
+        }
+      });
+    }
+
+    var busStopProximityThreshold = 0.002;
+
     allElements.forEach(function(element) {
       if (element.type === 'polyline' && element.leafletLayer) {
         var meta = element.metadata || {};
@@ -296,7 +309,24 @@ class SelectionLegendManager {
               if (routeType === '1' || routeType === '2') {
                 stopMatches = (elementRouteType === '1' || elementRouteType === '2' || meta.category === 'metro_stop');
               } else if (routeType === '3') {
-                stopMatches = (elementRouteType === '3' || meta.category === 'bus_stop');
+                if (elementRouteType === '3' || meta.category === 'bus_stop') {
+                  if (routePolylinesForBus.length === 0) {
+                    stopMatches = true;
+                  } else if (element.coordinates && Array.isArray(element.coordinates) && element.coordinates.length >= 2) {
+                    var stopLat = element.coordinates[0];
+                    var stopLng = element.coordinates[1];
+                    for (var r = 0; r < routePolylinesForBus.length; r++) {
+                      var routeCoords = routePolylinesForBus[r].coordinates;
+                      var dist = typeof distancePointToPolyline === 'function'
+                        ? distancePointToPolyline(stopLat, stopLng, routeCoords)
+                        : Infinity;
+                      if (dist <= busStopProximityThreshold) {
+                        stopMatches = true;
+                        break;
+                      }
+                    }
+                  }
+                }
               } else if (routeType === '0') {
                 stopMatches = (elementRouteType === '0' || meta.category === 'tram_stop');
               }
@@ -326,6 +356,11 @@ class SelectionLegendManager {
         }
       }
     });
+
+    if (routeType === '3' && routePolylinesForBus.length > 0 && this.map.zoomToFit) {
+      var routeIds = routePolylinesForBus.map(function(el) { return el.id; });
+      this.map.zoomToFit(routeIds, { padding: [80, 80], maxZoom: 15 });
+    }
   }
 
   hasCategoryElements(visibleElements, category) {
