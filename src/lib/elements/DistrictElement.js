@@ -98,8 +98,8 @@ export class DistrictElement extends MapElement {
     })
     map.renderElements(filteredIds)
     if (map.districtsListManager) map.districtsListManager.setActiveDistrict(this.id)
-    if (map.selectionLegendManager && neighborhoodManager) {
-      map.selectionLegendManager.update(neighborhoodManager.getCurrentView())
+    if (map.legendMap && neighborhoodManager) {
+      map.legendMap.update(neighborhoodManager.getCurrentView())
     }
     if (window.updateResetButtonVisibility) {
       window.updateResetButtonVisibility()

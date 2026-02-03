@@ -3,7 +3,7 @@ import { AppMap } from '../lib/core/AppMap.js'
 import { FilterManager } from '../lib/ui/FilterManager.js'
 import { DistrictsListManager } from '../lib/ui/DistrictsListManager.js'
 import { NeighborhoodManager } from '../lib/ui/NeighborhoodManager.js'
-import { SelectionLegendManager } from '../lib/ui/SelectionLegendManager.js'
+import { LegendMap } from '../lib/ui/LegendMap.js'
 import { loadData, createElementsFromData } from '../lib/dataLoader.js'
 import { I18n } from '../lib/utils/i18n.js'
 
@@ -11,7 +11,10 @@ export const useMapStore = defineStore('map', {
   state: () => ({
     mapInstance: null,
     showResetButton: false,
-    ready: false
+    ready: false,
+    legendVisible: false,
+    legendItems: [],
+    legendSelectedRoute: null
   }),
   actions: {
     async initMap(mapContainerElement) {
@@ -23,8 +26,12 @@ export const useMapStore = defineStore('map', {
       mapInstance.filterManager = filterManager
       const districtsListManager = new DistrictsListManager('districts-list')
       mapInstance.districtsListManager = districtsListManager
-      const selectionLegendManager = new SelectionLegendManager(mapInstance)
-      mapInstance.selectionLegendManager = selectionLegendManager
+      const legendMap = new LegendMap(mapInstance, (items, visible, selectedRoute) => {
+        this.legendItems = items
+        this.legendVisible = visible
+        this.legendSelectedRoute = selectedRoute
+      })
+      mapInstance.legendMap = legendMap
       this.mapInstance = mapInstance
 
       const data = await loadData()
@@ -38,10 +45,13 @@ export const useMapStore = defineStore('map', {
       mapInstance.neighborhoodManager = neighborhoodManager
       districtsListManager.rebuild(result.districts, result.neighborhoods)
       neighborhoodManager.renderNeighborhoods()
-      selectionLegendManager.update(null)
+      legendMap.update(null)
       this.setupMapListeners()
       this.ready = true
       return mapInstance
+    },
+    handleLegendLineClick(routeName, routeType) {
+      if (this.mapInstance?.legendMap) this.mapInstance.legendMap.handleLineClick(routeName, routeType)
     },
     setupMapListeners() {
       if (!this.mapInstance) return
@@ -56,10 +66,7 @@ export const useMapStore = defineStore('map', {
         const view = this.mapInstance.neighborhoodManager.getCurrentView()
         if (view && (view.district || view.neighborhood)) hasSelection = true
       }
-      const selectionLegendVisible = this.mapInstance.selectionLegendManager &&
-        this.mapInstance.selectionLegendManager.container &&
-        this.mapInstance.selectionLegendManager.container.style.display !== 'none'
-      this.showResetButton = hasSelection && !selectionLegendVisible
+      this.showResetButton = hasSelection && !this.legendVisible
     },
     resetMapView() {
       if (!this.mapInstance || !this.mapInstance.leafletMap) return
@@ -82,9 +89,10 @@ export const useMapStore = defineStore('map', {
         this.mapInstance.districtsListManager.setActiveDistrict(null)
         this.mapInstance.districtsListManager.setActiveNeighborhood(null)
       }
-      if (this.mapInstance.selectionLegendManager) {
-        this.mapInstance.selectionLegendManager.selectedRoute = null
-        this.mapInstance.selectionLegendManager.update(null)
+      if (this.mapInstance.legendMap) {
+        this.mapInstance.legendMap.selectedRoute = null
+        this.mapInstance.legendMap.currentView = null
+        this.mapInstance.legendMap.update(null)
       }
       if (this.mapInstance.neighborhoodManager) this.mapInstance.neighborhoodManager.renderNeighborhoods()
       const initialView = this.mapInstance.getInitialView()
@@ -120,9 +128,9 @@ export const useMapStore = defineStore('map', {
           this.mapInstance.districtsListManager.setActiveDistrict(null)
           this.mapInstance.districtsListManager.setActiveNeighborhood(null)
         }
-        if (this.mapInstance.selectionLegendManager) {
-          this.mapInstance.selectionLegendManager.selectedRoute = null
-          this.mapInstance.selectionLegendManager.restoreRouteOpacity()
+        if (this.mapInstance.legendMap) {
+          this.mapInstance.legendMap.selectedRoute = null
+          this.mapInstance.legendMap.restoreRouteOpacity()
         }
         fm.clearFilters()
         fm.activateFilter('bus_route')
@@ -130,11 +138,11 @@ export const useMapStore = defineStore('map', {
         const initialView = this.mapInstance.getInitialView()
         this.mapInstance.leafletMap.setView(initialView.center, 14.5, { animate: true })
         this.mapInstance.zoom = 14.5
-        this.mapInstance.selectionLegendManager.update({ filterBus: true })
+        this.mapInstance.legendMap.update({ filterBus: true })
       } else {
         fm.toggleFilter('bus_route')
         fm.toggleFilter('bus_stop')
-        this.mapInstance.selectionLegendManager.update(null)
+        this.mapInstance.legendMap.update(null)
       }
     }
   }

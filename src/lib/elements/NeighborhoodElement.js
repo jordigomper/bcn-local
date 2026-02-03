@@ -107,8 +107,8 @@ export class NeighborhoodElement extends MapElement {
     }
     map.renderElements(filteredIds)
     if (map.districtsListManager) map.districtsListManager.setActiveNeighborhood(name)
-    if (map.selectionLegendManager && neighborhoodManager) {
-      map.selectionLegendManager.update(neighborhoodManager.getCurrentView())
+    if (map.legendMap && neighborhoodManager) {
+      map.legendMap.update(neighborhoodManager.getCurrentView())
     }
     if (window.updateResetButtonVisibility) {
       window.updateResetButtonVisibility()
